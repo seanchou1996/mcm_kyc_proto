@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if category %}
+        {{ category|replace('_', ' ')|capitalize }} 新聞 - MC Markets
+    {% else %}
+        市場新聞 - MC Markets
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-9">
+        <!-- 頁面標題 -->
+        <h1 class="mb-4">
+            {% if category %}
+                {{ category|replace('_', ' ')|capitalize }} 新聞
+            {% else %}
+                最新市場新聞
+            {% endif %}
+        </h1>
+        
+        <!-- 新聞列表 -->
+        <div class="row">
+            {% for article in news_articles %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title h5">{{ article.title }}</h3>
+                        <div class="d-flex justify-content-between mb-2">
+                            <small class="text-muted">{{ article.published_at|format_date('%Y-%m-%d %H:%M') }}</small>
+                            <small class="text-muted">{{ article.author }}</small>
+                        </div>
+                        <p class="card-text">{{ article.summary }}</p>
+                        <div class="card-text">
+                            <span class="badge bg-secondary me-1">{{ article.category|replace('_', ' ')|capitalize }}</span>
+                            {% for tag in article.tags[:2] %}
+                            <span class="badge bg-light text-dark me-1">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <a href="{{ url_for('news.news_detail', article_id=article.id) }}" class="btn btn-sm btn-primary">閱讀全文</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            {% if not news_articles %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    目前沒有相關新聞。請稍後再查看。
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- 分頁控制 -->
+        <nav aria-label="新聞分頁" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一頁</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">下一頁</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    
+    <!-- 側邊欄 -->
+    <div class="col-lg-3">
+        <!-- 分類列表 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h4 class="mb-3">新聞分類</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('news.news_list') }}" class="text-decoration-none">全部新聞</a>
+                    <span class="badge bg-primary rounded-pill">12</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('news.news_list', category='precious_metals') }}" class="text-decoration-none">貴金屬</a>
+                    <span class="badge bg-primary rounded-pill">4</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('news.news_list', category='forex') }}" class="text-decoration-none">外匯</a>
+                    <span class="badge bg-primary rounded-pill">3</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('news.news_list', category='commodities') }}" class="text-decoration-none">商品</a>
+                    <span class="badge bg-primary rounded-pill">2</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('news.news_list', category='crypto') }}" class="text-decoration-none">加密貨幣</a>
+                    <span class="badge bg-primary rounded-pill">3</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- 熱門標籤 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h4 class="mb-3">熱門標籤</h4>
+            <div class="d-flex flex-wrap">
+                <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">黃金</a>
+                <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">外匯</a>
+                <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">美元</a>
+                <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">原油</a>
+                <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">比特幣</a>
+                <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">美聯儲</a>
+                <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">央行</a>
+                <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">通脹</a>
+                <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">歐元</a>
+            </div>
+        </div>
+        
+        <!-- 訂閱區塊 -->
+        <div class="bg-primary text-white p-4 rounded shadow-sm mb-4">
+            <h4 class="mb-3">訂閱市場動態</h4>
+            <p class="mb-3">獲取最新市場分析和交易機會，直接發送到您的郵箱。</p>
+            <form>
+                <div class="mb-3">
+                    <input type="email" class="form-control" placeholder="輸入您的電子郵件">
+                </div>
+                <div class="d-grid">
+                    <button type="button" class="btn btn-light">
+                        <i class="far fa-envelope me-1"></i> 立即訂閱
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

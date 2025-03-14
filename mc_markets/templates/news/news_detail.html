@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }} - MC Markets{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-9">
+        <!-- 文章內容 -->
+        <article class="bg-white p-4 rounded shadow-sm mb-4">
+            <!-- 文章標題 -->
+            <h1 class="mb-3">{{ article.title }}</h1>
+            
+            <!-- 文章元數據 -->
+            <div class="d-flex flex-wrap align-items-center text-muted mb-4">
+                <div class="me-4">
+                    <i class="far fa-calendar-alt me-1"></i>
+                    {{ article.published_at|format_date('%Y年%m月%d日 %H:%M') }}
+                </div>
+                <div class="me-4">
+                    <i class="far fa-user me-1"></i>
+                    {{ article.author }}
+                </div>
+                <div>
+                    <i class="far fa-folder me-1"></i>
+                    <a href="{{ url_for('news.news_list', category=article.category) }}" class="text-decoration-none">
+                        {{ article.category|replace('_', ' ')|capitalize }}
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 文章摘要 -->
+            <div class="lead mb-4 p-3 bg-light rounded">
+                {{ article.summary }}
+            </div>
+            
+            <!-- 文章內容 -->
+            <div class="article-content mb-4">
+                {{ article.content|safe }}
+            </div>
+            
+            <!-- 文章標籤 -->
+            <div class="mb-4">
+                <h5>相關標籤：</h5>
+                <div>
+                    {% for tag in article.tags %}
+                    <a href="#" class="badge bg-light text-dark text-decoration-none me-2 mb-2 p-2">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- 分享按鈕 -->
+            <div class="d-flex align-items-center mb-4">
+                <span class="me-3">分享文章：</span>
+                <a href="#" class="btn btn-outline-primary btn-sm me-2">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="btn btn-outline-info btn-sm me-2">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="btn btn-outline-success btn-sm me-2">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="#" class="btn btn-outline-secondary btn-sm">
+                    <i class="far fa-envelope"></i>
+                </a>
+            </div>
+        </article>
+        
+        <!-- 相關文章 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h3 class="mb-4">相關文章</h3>
+            <div class="row">
+                {% for related_article in related_articles %}
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <div class="bg-light rounded p-2 text-center" style="width: 60px;">
+                                <div class="small">{{ related_article.published_at|format_date('%b') }}</div>
+                                <div class="h5 mb-0">{{ related_article.published_at|format_date('%d') }}</div>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="mb-1">
+                                <a href="{{ url_for('news.news_detail', article_id=related_article.id) }}" class="text-decoration-none">
+                                    {{ related_article.title }}
+                                </a>
+                            </h5>
+                            <div class="small text-muted">
+                                <i class="far fa-folder me-1"></i>
+                                {{ related_article.category|replace('_', ' ')|capitalize }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- 評論區 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h3 class="mb-4">評論 ({{ article.comments|length }})</h3>
+            
+            <!-- 評論表單 -->
+            <div class="mb-4">
+                <h5>發表評論</h5>
+                <form>
+                    <div class="mb-3">
+                        <textarea class="form-control" rows="4" placeholder="分享您的想法..."></textarea>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <input type="text" class="form-control" placeholder="您的名字">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="email" class="form-control" placeholder="您的電子郵件">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary">
+                            <i class="far fa-paper-plane me-1"></i> 提交評論
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- 評論列表 -->
+            <div>
+                {% for comment in article.comments %}
+                <div class="d-flex mb-4">
+                    <div class="flex-shrink-0">
+                        <div class="bg-light rounded-circle p-3 text-center" style="width: 60px; height: 60px;">
+                            <i class="far fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0">{{ comment.author }}</h5>
+                            <small class="text-muted">{{ comment.created_at|format_date('%Y-%m-%d %H:%M') }}</small>
+                        </div>
+                        <p class="mb-0">{{ comment.content }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                {% if not article.comments %}
+                <div class="alert alert-light">
+                    暫無評論。成為第一個評論的人！
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- 側邊欄 -->
+    <div class="col-lg-3">
+        <!-- 作者資訊 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h4 class="mb-3">關於作者</h4>
+            <div class="text-center mb-3">
+                <div class="bg-light rounded-circle p-3 d-inline-block mb-2" style="width: 80px; height: 80px;">
+                    <i class="far fa-user fa-2x"></i>
+                </div>
+                <h5>{{ article.author }}</h5>
+                <p class="text-muted small">金融市場分析師</p>
+            </div>
+            <p class="small">專注於貴金屬和外匯市場分析，擁有超過10年的交易經驗。定期為MC Markets提供市場洞察和交易策略。</p>
+            <div class="d-flex justify-content-center">
+                <a href="#" class="btn btn-sm btn-outline-primary me-2">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-outline-primary me-2">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-outline-primary">
+                    <i class="far fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- 熱門文章 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h4 class="mb-3">熱門文章</h4>
+            <ul class="list-unstyled">
+                {% for popular_article in popular_articles %}
+                <li class="mb-3 pb-3 border-bottom">
+                    <h6 class="mb-1">
+                        <a href="{{ url_for('news.news_detail', article_id=popular_article.id) }}" class="text-decoration-none">
+                            {{ popular_article.title }}
+                        </a>
+                    </h6>
+                    <div class="small text-muted">
+                        <i class="far fa-calendar-alt me-1"></i>
+                        {{ popular_article.published_at|format_date('%Y-%m-%d') }}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <!-- 市場行情 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h4 class="mb-3">市場行情</h4>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <span class="fw-bold">黃金</span>
+                        <small class="text-muted">XAU/USD</small>
+                    </div>
+                    <div>
+                        <span class="fw-bold">2,345.67</span>
+                        <span class="text-success small">+0.75%</span>
+                    </div>
+                </div>
+                <div class="progress" style="height: 5px;">
+                    <div class="progress-bar bg-success" style="width: 65%"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <span class="fw-bold">白銀</span>
+                        <small class="text-muted">XAG/USD</small>
+                    </div>
+                    <div>
+                        <span class="fw-bold">28.45</span>
+                        <span class="text-success small">+1.25%</span>
+                    </div>
+                </div>
+                <div class="progress" style="height: 5px;">
+                    <div class="progress-bar bg-success" style="width: 70%"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <span class="fw-bold">歐元/美元</span>
+                        <small class="text-muted">EUR/USD</small>
+                    </div>
+                    <div>
+                        <span class="fw-bold">1.0845</span>
+                        <span class="text-danger small">-0.15%</span>
+                    </div>
+                </div>
+                <div class="progress" style="height: 5px;">
+                    <div class="progress-bar bg-danger" style="width: 40%"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <span class="fw-bold">比特幣</span>
+                        <small class="text-muted">BTC/USD</small>
+                    </div>
+                    <div>
+                        <span class="fw-bold">58,432.10</span>
+                        <span class="text-success small">+2.35%</span>
+                    </div>
+                </div>
+                <div class="progress" style="height: 5px;">
+                    <div class="progress-bar bg-success" style="width: 85%"></div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" class="btn btn-sm btn-outline-primary">查看更多行情</a>
+            </div>
+        </div>
+        
+        <!-- 訂閱區塊 -->
+        <div class="bg-primary text-white p-4 rounded shadow-sm mb-4">
+            <h4 class="mb-3">訂閱市場動態</h4>
+            <p class="mb-3">獲取最新市場分析和交易機會，直接發送到您的郵箱。</p>
+            <form>
+                <div class="mb-3">
+                    <input type="email" class="form-control" placeholder="輸入您的電子郵件">
+                </div>
+                <div class="d-grid">
+                    <button type="button" class="btn btn-light">
+                        <i class="far fa-envelope me-1"></i> 立即訂閱
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

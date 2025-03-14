@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ platform.name }} - CFD平台評測 | MC Markets{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- 平台詳情主體 -->
+    <div class="col-lg-8">
+        <!-- 頂部資訊卡 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="mb-3">{{ platform.name }}</h1>
+                    <div class="mb-3">
+                        <span class="text-warning fs-4">{{ platform.rating|stars }}</span>
+                        <span class="badge bg-success ms-2">{{ platform.rating }}/5</span>
+                    </div>
+                    <p class="lead mb-3">{{ platform.description }}</p>
+                    <p class="mb-3">
+                        <strong>成立年份:</strong> {{ platform.established_year }}
+                    </p>
+                    <div class="d-flex flex-wrap mb-3">
+                        {% for reg in platform.regulations %}
+                        <span class="badge bg-secondary me-2 mb-2">{{ reg }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="d-flex mt-4">
+                        <a href="{{ platform.website_url }}" target="_blank" class="btn btn-primary me-2">
+                            <i class="fas fa-external-link-alt me-1"></i> 訪問官網
+                        </a>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="far fa-heart me-1"></i> 收藏
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="p-3 bg-light rounded mb-3">
+                        <h3 class="mb-0">MC Markets</h3>
+                        <p class="text-muted">專業評測</p>
+                        <div class="display-4 fw-bold text-success mb-2">{{ platform.rating }}</div>
+                        <p class="mb-0">綜合評分</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 平台優劣勢 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h2 class="mb-4">平台優劣勢</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card border-success h-100">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="card-title mb-0"><i class="fas fa-thumbs-up me-2"></i>優勢</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="mb-0">
+                                {% for pro in platform.pros %}
+                                <li class="mb-2">{{ pro }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-danger h-100">
+                        <div class="card-header bg-danger text-white">
+                            <h4 class="card-title mb-0"><i class="fas fa-thumbs-down me-2"></i>劣勢</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="mb-0">
+                                {% for con in platform.cons %}
+                                <li class="mb-2">{{ con }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 平台詳細信息 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h2 class="mb-4">詳細信息</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5 class="border-bottom pb-2 mb-3">基本信息</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>成立年份</span>
+                            <span class="badge bg-primary rounded-pill">{{ platform.established_year }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>最低入金</span>
+                            <span class="badge bg-primary rounded-pill">{{ platform.min_deposit|currency }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>最高槓桿</span>
+                            <span class="badge bg-primary rounded-pill">{{ platform.leverage }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>點差</span>
+                            <span>{{ platform.spreads }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="border-bottom pb-2 mb-3">監管與支付</h5>
+                    <h6 class="mb-2">監管機構</h6>
+                    <p class="mb-3">
+                        {% for reg in platform.regulations %}
+                        <span class="badge bg-secondary me-2 mb-2">{{ reg }}</span>
+                        {% endfor %}
+                    </p>
+                    
+                    <h6 class="mb-2">支付方式</h6>
+                    <p class="mb-0">
+                        {% for method in platform.payment_methods %}
+                        <span class="badge bg-light text-dark me-2 mb-2">{{ method }}</span>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3">交易產品</h5>
+                    <div class="d-flex flex-wrap">
+                        {% for instrument in platform.trading_instruments %}
+                        <div class="bg-light rounded-pill px-3 py-2 me-2 mb-2">
+                            {{ instrument }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用戶評價區塊 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h2 class="mb-4">用戶評價</h2>
+            
+            <!-- 評分統計 -->
+            <div class="row align-items-center mb-4">
+                <div class="col-md-4 text-center">
+                    <div class="display-1 fw-bold text-success">{{ platform.rating }}</div>
+                    <div class="text-warning fs-3 mb-2">{{ platform.rating|stars }}</div>
+                    <p class="mb-0">基於50+用戶評價</p>
+                </div>
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">5星</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">75%</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">4星</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">15%</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">3星</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 5%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">5%</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">2星</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 3%;" aria-valuenow="3" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">3%</span>
+                        </div>
+                    </div>
+                    <div class="mb-0">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">1星</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 2%;" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">2%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 示例評價 -->
+            <div class="mb-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <h5 class="card-title mb-1">張先生</h5>
+                                <div class="text-warning">★★★★★</div>
+                            </div>
+                            <div class="text-muted">2025-03-10</div>
+                        </div>
+                        <p class="card-text">這個平台的點差非常低，交易執行也很快速。客服響應及時，解決問題效率高。推薦給需要低成本高效率交易的投資者。</p>
+                    </div>
+                </div>
+                
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <h5 class="card-title mb-1">王小姐</h5>
+                                <div class="text-warning">★★★★☆</div>
+                            </div>
+                            <div class="text-muted">2025-03-05</div>
+                        </div>
+                        <p class="card-text">交易平台功能齊全，分析工具豐富。出金速度不錯，但有時客服回應較慢。總體來說是一個不錯的選擇。</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <h5 class="card-title mb-1">李先生</h5>
+                                <div class="text-warning">★★★☆☆</div>
+                            </div>
+                            <div class="text-muted">2025-02-28</div>
+                        </div>
+                        <p class="card-text">入金方便，但出金流程較複雜。平台穩定性一般，偶爾會出現卡頓。教育資源豐富是個加分項。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button type="button" class="btn btn-outline-primary">查看更多評價</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 側邊欄 -->
+    <div class="col-lg-4">
+        <!-- 開戶優惠卡片 -->
+        <div class="bg-primary text-white p-4 rounded shadow-sm mb-4">
+            <h4 class="mb-3">特別優惠</h4>
+            <p class="mb-3">通過MC Markets開戶，即可獲得以下專屬福利：</p>
+            <ul class="mb-4">
+                <li class="mb-2">首次入金贈送10%額外資金</li>
+                <li class="mb-2">專屬VIP客戶經理一對一服務</li>
+                <li class="mb-2">免費獲取高級市場分析報告</li>
+                <li>交易手續費返還計劃</li>
+            </ul>
+            <div class="d-grid">
+                <a href="{{ platform.website_url }}" target="_blank" class="btn btn-light">
+                    <i class="fas fa-user-plus me-1"></i> 立即開戶
+                </a>
+            </div>
+        </div>
+        
+        <!-- 類似平台推薦 -->
+        <div class="bg-white p-4 rounded shadow-sm mb-4">
+            <h4 class="mb-3">類似平台推薦</h4>
+            
+            {% for similar in similar_platforms %}
+            <div class="card mb-3 border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ similar.name }}</h5>
+                    <div class="mb-2">
+                        <span class="text-warning">{{ similar.rating|stars }}</span>
+                        <span class="ms-1">{{ similar.rating }}/5</span>
+                    </div>
+                    
+                    <p class="card-text mb-3">{{ similar.description|truncate_html(80) }}</p>
+                    
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small class="d-block text-muted mb-1">最低入金</small>
+                            <strong>{{ similar.min_deposit|currency }}</strong>
+                        </div>
+                        <div class="col-6">
+                            <small class="d-block text-muted mb-1">最高槓桿</small>
+                            <strong>{{ similar.leverage }}</strong>
+                        </div>
+                    </div>
+                    
+                    <a href="{{ url_for('platforms.platform_detail', platform_id=similar.id) }}" class="btn btn-sm btn-outline-primary">查看詳情</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- 風險提示 -->
+        <div class="bg-light p-4 rounded shadow-sm mb-4">
+            <h5 class="mb-3"><i class="fas fa-exclamation-triangle text-warning me-2"></i>風險警告</h5>
+            <p class="mb-0">CFD是複雜的工具，由於槓桿作用，存在快速虧損的高風險。79%的零售投資者在交易CFD時虧損資金。您應該考慮自己是否了解CFD的運作方式，以及是否能夠承擔資金虧損的高風險。</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

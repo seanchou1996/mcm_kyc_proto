@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block title %}聯繫我們 - MC Markets{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="bg-white p-5 rounded shadow-sm mb-4">
+            <h1 class="mb-4 text-center">聯繫我們</h1>
+            <p class="lead text-center mb-5">有任何問題或建議？請隨時與我們聯繫，我們的團隊將盡快回覆您。</p>
+            
+            <!-- 聯繫表單 -->
+            <form id="contactForm">
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-4 mb-md-0">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="name" placeholder="您的姓名" required>
+                            <label for="name">您的姓名</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="email" placeholder="您的電子郵件" required>
+                            <label for="email">您的電子郵件</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="form-floating">
+                        <select class="form-select" id="subject" required>
+                            <option value="" selected disabled>請選擇主題</option>
+                            <option value="general">一般查詢</option>
+                            <option value="platform">平台相關問題</option>
+                            <option value="news">新聞內容反饋</option>
+                            <option value="suggestion">網站建議</option>
+                            <option value="partnership">合作機會</option>
+                            <option value="other">其他</option>
+                        </select>
+                        <label for="subject">主題</label>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="form-floating">
+                        <textarea class="form-control" id="message" placeholder="您的訊息" style="height: 200px" required></textarea>
+                        <label for="message">您的訊息</label>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="privacy" required>
+                        <label class="form-check-label" for="privacy">
+                            我同意根據<a href="#" class="text-decoration-none">隱私政策</a>處理我的個人數據
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="far fa-paper-plane me-2"></i>發送訊息
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- 聯繫信息 -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="bg-white p-4 rounded shadow-sm h-100 text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-envelope fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">電子郵件</h4>
+                    <p class="mb-0">
+                        <a href="mailto:info@mcmarkets.com" class="text-decoration-none">info@mcmarkets.com</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="bg-white p-4 rounded shadow-sm h-100 text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-phone-alt fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">電話</h4>
+                    <p class="mb-0">
+                        <a href="tel:+85212345678" class="text-decoration-none">+852 1234 5678</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-white p-4 rounded shadow-sm h-100 text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-map-marker-alt fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">地址</h4>
+                    <p class="mb-0">
+                        香港中環金融街88號<br>
+                        環球金融中心25樓
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 常見問題 -->
+        <div class="bg-white p-5 rounded shadow-sm mb-4">
+            <h2 class="mb-4 text-center">常見問題</h2>
+            
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            MC Markets 提供哪些服務？
+                        </button>
+                    </h3>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            MC Markets 是一個專注於金融市場的資訊平台，提供貴金屬、外匯和指數等市場的最新新聞、分析和見解。我們還提供CFD交易平台的比較和評測，幫助交易者選擇最適合自己的交易平台。
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            如何訂閱MC Markets的市場分析？
+                        </button>
+                    </h3>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            您可以在我們網站的任何頁面底部或側邊欄找到訂閱表單。只需輸入您的電子郵件地址並點擊"訂閱"按鈕即可。我們會定期向您發送最新的市場分析和交易機會。
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            MC Markets是否提供交易服務？
+                        </button>
+                    </h3>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            MC Markets不是交易平台，我們不提供直接的交易服務。我們是一個獨立的資訊平台，提供市場新聞和交易平台的比較。我們與多家交易平台合作，但我們的評測和比較是基於客觀標準進行的。
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            如何評估交易平台的可靠性？
+                        </button>
+                    </h3>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            評估交易平台的可靠性時，應考慮以下因素：監管狀態（是否受到知名金融監管機構的監管）、公司歷史和聲譽、客戶評價、資金安全措施（如隔離賬戶）、提款速度和客戶服務質量。在我們的平台比較頁面，您可以找到這些信息。
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingFive">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            我可以投稿或提供市場分析嗎？
+                        </button>
+                    </h3>
+                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            是的，我們歡迎高質量的市場分析和見解。如果您是金融市場專家或分析師，並希望在MC Markets上發表您的分析，請通過本頁的聯繫表單與我們聯繫，主題選擇"合作機會"，並在訊息中提供您的專業背景和寫作樣本。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 地圖 -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="bg-white p-3 rounded shadow-sm">
+            <div class="ratio ratio-21x9">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.9398949345174!2d114.15786281495434!3d22.28496998533052!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3404006400000001%3A0x5b7d0a7687e3e得0!2z6aaZ5riv5Lit5b-D!5e0!3m2!1szh-TW!2stw!4v1623123456789!5m2!1szh-TW!2stw" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 風險提示 -->
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-warning">
+            <h4 class="alert-heading">風險提示</h4>
+            <p>CFD是複雜的工具，由於槓桿作用，存在快速虧損的高風險。大多數零售投資者賬戶在與該提供商交易CFD時會虧損資金。您應該考慮自己是否了解CFD的運作方式，以及您是否能夠承擔資金虧損的高風險。</p>
+            <p class="mb-0">本網站提供的信息僅供參考，不構成投資建議。投資決策應基於您自己的研究和判斷。過去的表現不代表未來的結果。</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 這裡可以添加表單驗證和提交邏輯
+            
+            // 模擬表單提交成功
+            alert('感謝您的訊息！我們將盡快回覆您。');
+            contactForm.reset();
+        });
+    });
+</script>
+{% endblock %} 

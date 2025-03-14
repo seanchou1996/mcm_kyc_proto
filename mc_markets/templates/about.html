@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+
+{% block title %}關於我們 - MC Markets{% endblock %}
+
+{% block content %}
+<!-- 頁面標題 -->
+<div class="bg-primary text-white py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">關於 MC Markets</h1>
+                <p class="lead mb-0">您值得信賴的金融市場資訊平台</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <!-- 我們的使命 -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="bg-white p-5 rounded shadow-sm">
+                <h2 class="mb-4 text-center">我們的使命</h2>
+                <p class="lead text-center mb-4">為交易者提供準確、及時的市場資訊和客觀的交易平台評測</p>
+                <p>在當今快速變化的金融市場中，獲取準確、及時的資訊對於交易者至關重要。MC Markets 致力於成為交易者的可靠夥伴，提供高質量的市場新聞、深入的分析和客觀的交易平台評測。</p>
+                <p>我們的目標是幫助交易者做出明智的決策，無論是選擇合適的交易平台，還是了解市場動態。我們相信，通過提供透明、客觀的資訊，我們可以幫助交易者提高交易成功的機會。</p>
+                <p class="mb-0">MC Markets 不僅僅是一個資訊平台，我們是一個致力於提升交易者知識和技能的社區。我們希望通過我們的平台，交易者可以獲得所需的工具和資源，在金融市場中取得成功。</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 我們的團隊 -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="bg-white p-5 rounded shadow-sm">
+                <h2 class="mb-4 text-center">我們的團隊</h2>
+                <p class="text-center mb-5">MC Markets 由一群擁有豐富金融市場經驗的專業人士組成，致力於為交易者提供最佳的資訊和服務。</p>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
+                                        <i class="fas fa-user fa-3x text-primary"></i>
+                                    </div>
+                                </div>
+                                <h4>陳志明</h4>
+                                <p class="text-muted">創始人兼首席執行官</p>
+                                <p class="small">擁有超過15年的金融市場經驗，曾在多家頂級投資銀行工作。專注於貴金屬和外匯市場分析。</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="#" class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">
+                                        <i class="far fa-envelope"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
+                                        <i class="fas fa-user fa-3x text-primary"></i>
+                                    </div>
+                                </div>
+                                <h4>林美玲</h4>
+                                <p class="text-muted">首席內容官</p>
+                                <p class="small">資深金融記者，擁有10年的財經媒體經驗。專注於全球經濟趨勢和市場分析。</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="#" class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">
+                                        <i class="far fa-envelope"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
+                                        <i class="fas fa-user fa-3x text-primary"></i>
+                                    </div>
+                                </div>
+                                <h4>王建國</h4>
+                                <p class="text-muted">首席分析師</p>
+                                <p class="small">特許金融分析師（CFA），擁有12年的市場分析經驗。專注於技術分析和交易策略開發。</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="#" class="btn btn-sm btn-outline-primary me-2">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">
+                                        <i class="far fa-envelope"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('main.contact') }}" class="btn btn-primary">
+                        <i class="fas fa-envelope me-2"></i>聯繫我們的團隊
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 我們的價值觀 -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="bg-white p-5 rounded shadow-sm">
+                <h2 class="mb-4 text-center">我們的價值觀</h2>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-check fa-2x text-white"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h4>準確性</h4>
+                                <p class="mb-0">我們致力於提供準確、可靠的市場資訊，確保我們的用戶可以基於事實做出決策。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-balance-scale fa-2x text-white"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h4>客觀性</h4>
+                                <p class="mb-0">我們的平台評測和市場分析基於客觀標準，不受任何外部影響。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-lightbulb fa-2x text-white"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h4>教育</h4>
+                                <p class="mb-0">我們相信知識是成功的關鍵，因此我們致力於提供教育性的內容，幫助交易者提升技能。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-users fa-2x text-white"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h4>社區</h4>
+                                <p class="mb-0">我們重視用戶的反饋和參與，致力於建立一個互助互利的交易者社區。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 我們的合作夥伴 -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="bg-white p-5 rounded shadow-sm">
+                <h2 class="mb-4 text-center">我們的合作夥伴</h2>
+                <p class="text-center mb-5">MC Markets 與多家知名金融機構和交易平台合作，為用戶提供全面的市場資訊和服務。</p>
+                
+                <div class="row justify-content-center">
+                    <div class="col-4 col-md-2 mb-4 text-center">
+                        <div class="bg-light rounded p-3 h-100 d-flex align-items-center justify-content-center">
+                            <span class="fw-bold text-muted">Partner 1</span>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2 mb-4 text-center">
+                        <div class="bg-light rounded p-3 h-100 d-flex align-items-center justify-content-center">
+                            <span class="fw-bold text-muted">Partner 2</span>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2 mb-4 text-center">
+                        <div class="bg-light rounded p-3 h-100 d-flex align-items-center justify-content-center">
+                            <span class="fw-bold text-muted">Partner 3</span>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2 mb-4 text-center">
+                        <div class="bg-light rounded p-3 h-100 d-flex align-items-center justify-content-center">
+                            <span class="fw-bold text-muted">Partner 4</span>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2 mb-4 text-center">
+                        <div class="bg-light rounded p-3 h-100 d-flex align-items-center justify-content-center">
+                            <span class="fw-bold text-muted">Partner 5</span>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2 mb-4 text-center">
+                        <div class="bg-light rounded p-3 h-100 d-flex align-items-center justify-content-center">
+                            <span class="fw-bold text-muted">Partner 6</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('main.contact') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-handshake me-2"></i>成為我們的合作夥伴
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加入我們 -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="bg-primary text-white p-5 rounded shadow-sm">
+                <div class="row align-items-center">
+                    <div class="col-md-8 mb-4 mb-md-0">
+                        <h2 class="mb-3">加入 MC Markets 社區</h2>
+                        <p class="mb-0">訂閱我們的電子郵件通訊，獲取最新的市場分析、交易策略和平台評測。</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-grid">
+                            <a href="#" class="btn btn-light btn-lg">
+                                <i class="far fa-envelope me-2"></i>立即訂閱
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 風險提示 -->
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-warning">
+                <h4 class="alert-heading">風險提示</h4>
+                <p>CFD是複雜的工具，由於槓桿作用，存在快速虧損的高風險。大多數零售投資者賬戶在與該提供商交易CFD時會虧損資金。您應該考慮自己是否了解CFD的運作方式，以及您是否能夠承擔資金虧損的高風險。</p>
+                <p class="mb-0">本網站提供的信息僅供參考，不構成投資建議。投資決策應基於您自己的研究和判斷。過去的表現不代表未來的結果。</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

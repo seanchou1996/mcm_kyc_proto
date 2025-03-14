@@ -1,0 +1,105 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <span class="fw-bold text-primary">Trade</span>Medal<span class="text-primary">FX</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}" href="{{ url_for('main.index') }}">{{ _('首頁') }}</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if request.endpoint and request.endpoint.startswith('news.') %}active{% endif %}" href="#" id="navbarDropdownNews" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ _('市場新聞') }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownNews">
+                            <li><a class="dropdown-item" href="{{ url_for('news.news_list') }}">{{ _('全部新聞') }}</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('news.news_list', category='precious_metals') }}">{{ _('貴金屬') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('news.news_list', category='forex') }}">{{ _('外匯') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('news.news_list', category='commodities') }}">{{ _('商品') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('news.news_list', category='crypto') }}">{{ _('加密貨幣') }}</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint and request.endpoint.startswith('platforms.') %}active{% endif %}" href="{{ url_for('platforms.platform_list') }}">{{ _('CFD平台比較') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'main.contact' %}active{% endif %}" href="{{ url_for('main.contact') }}">{{ _('聯繫我們') }}</a>
+                    </li>
+                </ul>
+                
+                <!-- 搜索表單 -->
+                <form class="d-flex me-2" action="{{ url_for('main.search') }}" method="get">
+                    <div class="input-group">
+                        <input class="form-control" type="search" name="q" placeholder="{{ _('搜索...') }}" aria-label="{{ _('搜索...') }}" required>
+                        <button class="btn btn-outline-light" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- 語言選擇 -->
+                <div class="dropdown me-2">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe"></i> {{ _('語言') }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                        <li><a class="dropdown-item {% if CURRENT_LANG == 'zh' %}active{% endif %}" href="{{ url_for('main.set_language', lang='zh') }}">{{ _('中文') }}</a></li>
+                        <li><a class="dropdown-item {% if CURRENT_LANG == 'en' %}active{% endif %}" href="{{ url_for('main.set_language', lang='en') }}">{{ _('English') }}</a></li>
+                        <li><a class="dropdown-item {% if CURRENT_LANG == 'es' %}active{% endif %}" href="{{ url_for('main.set_language', lang='es') }}">{{ _('Español') }}</a></li>
+                    </ul>
+                </div>
+                
+                <div class="d-flex">
+                    <a href="#" class="btn btn-outline-light d-none d-md-block">{{ _('訂閱') }}</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 市場行情條 -->
+    <div class="bg-light py-2 border-bottom">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center overflow-auto">
+                <div class="d-flex" id="market-ticker">
+                    <div class="me-4">
+                        <span class="fw-bold me-1">{{ _('黃金') }}</span>
+                        <span class="text-success" data-symbol="GOLD">
+                            <span class="price">{{ _('載入中...') }}</span> 
+                            <i class="fas fa-caret-up"></i>
+                        </span>
+                    </div>
+                    <div class="me-4">
+                        <span class="fw-bold me-1">{{ _('白銀') }}</span>
+                        <span class="text-success" data-symbol="SILVER">
+                            <span class="price">{{ _('載入中...') }}</span> 
+                            <i class="fas fa-caret-up"></i>
+                        </span>
+                    </div>
+                    <div class="me-4">
+                        <span class="fw-bold me-1">EUR/USD</span>
+                        <span class="text-success" data-symbol="EURUSD">
+                            <span class="price">{{ _('載入中...') }}</span> 
+                            <i class="fas fa-caret-up"></i>
+                        </span>
+                    </div>
+                    <div class="me-4">
+                        <span class="fw-bold me-1">{{ _('比特幣') }}</span>
+                        <span class="text-success" data-symbol="BTC">
+                            <span class="price">{{ _('載入中...') }}</span> 
+                            <i class="fas fa-caret-up"></i>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-muted small">{{ _('最後更新') }}: <span id="market-update-time">{{ now|format_date('%Y-%m-%d %H:%M') }}</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

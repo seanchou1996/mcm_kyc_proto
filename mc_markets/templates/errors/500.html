@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}伺服器錯誤 - MC Markets{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+            <div class="bg-white p-5 rounded shadow-sm">
+                <div class="mb-4">
+                    <span class="display-1 text-muted">500</span>
+                </div>
+                <h1 class="mb-4">伺服器錯誤</h1>
+                <p class="lead mb-4">抱歉，伺服器遇到了問題。我們的技術團隊已經收到通知，正在努力解決。</p>
+                <div class="mb-4">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>返回首頁
+                    </a>
+                </div>
+                <div class="mt-5">
+                    <h4 class="mb-3">您可以嘗試：</h4>
+                    <ul class="list-unstyled text-start">
+                        <li class="mb-2">
+                            <i class="fas fa-redo me-2 text-primary"></i>刷新頁面
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-clock me-2 text-primary"></i>稍後再試
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-envelope me-2 text-primary"></i>如果問題持續存在，請<a href="{{ url_for('main.contact') }}">聯繫我們</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

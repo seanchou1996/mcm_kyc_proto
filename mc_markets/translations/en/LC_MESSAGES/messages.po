@@ -1,0 +1,75 @@
+# English translations for MC Markets project.
+msgid ""
+msgstr ""
+"Project-Id-Version: MC Markets 1.0\n"
+"Report-Msgid-Bugs-To: support@mc-markets.com\n"
+"POT-Creation-Date: 2025-03-14 18:00+0800\n"
+"PO-Revision-Date: 2025-03-14 18:00+0800\n"
+"Last-Translator: Admin <admin@mc-markets.com>\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.14.0\n"
+
+#: 網站通用文本
+msgid "首頁"
+msgstr "Home"
+
+msgid "市場新聞"
+msgstr "Market News"
+
+msgid "全部新聞"
+msgstr "All News"
+
+msgid "貴金屬"
+msgstr "Precious Metals"
+
+msgid "外匯"
+msgstr "Forex"
+
+msgid "商品"
+msgstr "Commodities"
+
+msgid "加密貨幣"
+msgstr "Cryptocurrencies"
+
+msgid "CFD平台比較"
+msgstr "CFD Platform Comparison"
+
+msgid "聯繫我們"
+msgstr "Contact Us"
+
+msgid "搜索..."
+msgstr "Search..."
+
+msgid "訂閱"
+msgstr "Subscribe"
+
+msgid "黃金"
+msgstr "Gold"
+
+msgid "白銀"
+msgstr "Silver"
+
+msgid "比特幣"
+msgstr "Bitcoin"
+
+msgid "最後更新"
+msgstr "Last Updated"
+
+msgid "載入中..."
+msgstr "Loading..."
+
+msgid "語言"
+msgstr "Language"
+
+msgid "中文"
+msgstr "Chinese"
+
+msgid "English"
+msgstr "English"
+
+msgid "Español"
+msgstr "Spanish" 

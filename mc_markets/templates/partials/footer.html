@@ -1,0 +1,56 @@
+<footer class="bg-dark text-light py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="mb-3"><span class="text-primary">Trade</span>Medal<span class="text-primary">FX</span></h5>
+                <p class="mb-1">專業的金融市場新聞與CFD平台比較平台</p>
+                <p class="mb-3">幫助投資者做出明智的交易決策</p>
+                <div class="social-links">
+                    <a href="#" class="text-light me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-light me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-light me-2"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="text-light"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2 mb-4 mb-md-0">
+                <h6 class="mb-3">市場新聞</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{{ url_for('news.news_list', category='precious_metals') }}" class="text-light text-decoration-none">貴金屬</a></li>
+                    <li class="mb-2"><a href="{{ url_for('news.news_list', category='forex') }}" class="text-light text-decoration-none">外匯</a></li>
+                    <li class="mb-2"><a href="{{ url_for('news.news_list', category='commodities') }}" class="text-light text-decoration-none">商品</a></li>
+                    <li><a href="{{ url_for('news.news_list', category='crypto') }}" class="text-light text-decoration-none">加密貨幣</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 mb-4 mb-md-0">
+                <h6 class="mb-3">平台比較</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{{ url_for('platforms.platform_list') }}" class="text-light text-decoration-none">所有平台</a></li>
+                    <li class="mb-2"><a href="{{ url_for('platforms.platform_list', instrument='外匯') }}" class="text-light text-decoration-none">外匯平台</a></li>
+                    <li class="mb-2"><a href="{{ url_for('platforms.platform_list', instrument='貴金屬') }}" class="text-light text-decoration-none">貴金屬平台</a></li>
+                    <li><a href="{{ url_for('platforms.platform_list', instrument='加密貨幣') }}" class="text-light text-decoration-none">加密貨幣平台</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="mb-3">訂閱最新資訊</h6>
+                <p class="mb-3">獲取最新市場動態和投資機會</p>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="輸入您的電子郵件" aria-label="Email" aria-describedby="button-subscribe">
+                        <button class="btn btn-primary" type="button" id="button-subscribe">訂閱</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <p class="mb-0">&copy; 2025 TradeMedalFX. 版權所有。</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="#" class="text-light text-decoration-none me-3">隱私政策</a>
+                <a href="#" class="text-light text-decoration-none me-3">使用條款</a>
+                <a href="#" class="text-light text-decoration-none">風險披露</a>
+            </div>
+        </div>
+    </div>
+</footer>

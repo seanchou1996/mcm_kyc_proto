@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}頁面未找到 - MC Markets{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+            <div class="bg-white p-5 rounded shadow-sm">
+                <div class="mb-4">
+                    <span class="display-1 text-muted">404</span>
+                </div>
+                <h1 class="mb-4">頁面未找到</h1>
+                <p class="lead mb-4">抱歉，您請求的頁面不存在或已被移除。</p>
+                <div class="mb-4">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>返回首頁
+                    </a>
+                </div>
+                <div class="mt-5">
+                    <h4 class="mb-3">您可能想要查看：</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ url_for('news.news_list') }}" class="btn btn-outline-primary d-block">
+                                <i class="far fa-newspaper me-2"></i>最新市場新聞
+                            </a>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ url_for('platforms.platform_list') }}" class="btn btn-outline-primary d-block">
+                                <i class="fas fa-exchange-alt me-2"></i>CFD平台比較
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
