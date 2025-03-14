@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block title %}MC Markets - 專業金融市場新聞與CFD平台比較{% endblock %}
+
+{% block content %}
+<!-- 頭條新聞區 -->
+<section class="mb-5">
+    <h2 class="mb-4 border-bottom pb-2">今日焦點</h2>
+    <div class="row">
+        {% for article in news_articles[:2] %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title h5">{{ article.title }}</h3>
+                    <div class="d-flex justify-content-between mb-2">
+                        <small class="text-muted">{{ article.published_at|format_date('%Y-%m-%d %H:%M') }}</small>
+                        <small class="text-muted">{{ article.author }}</small>
+                    </div>
+                    <p class="card-text">{{ article.summary }}</p>
+                    <div class="card-text">
+                        <span class="badge bg-secondary me-1">{{ article.category|replace('_', ' ')|capitalize }}</span>
+                        {% for tag in article.tags[:2] %}
+                        <span class="badge bg-light text-dark me-1">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <a href="{{ url_for('news.news_detail', article_id=article.id) }}" class="btn btn-sm btn-primary">閱讀全文</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="row">
+        {% for article in news_articles[2:4] %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title h5">{{ article.title }}</h3>
+                    <div class="d-flex justify-content-between mb-2">
+                        <small class="text-muted">{{ article.published_at|format_date('%Y-%m-%d %H:%M') }}</small>
+                        <small class="text-muted">{{ article.author }}</small>
+                    </div>
+                    <p class="card-text">{{ article.summary }}</p>
+                    <div class="card-text">
+                        <span class="badge bg-secondary me-1">{{ article.category|replace('_', ' ')|capitalize }}</span>
+                        {% for tag in article.tags[:2] %}
+                        <span class="badge bg-light text-dark me-1">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <a href="{{ url_for('news.news_detail', article_id=article.id) }}" class="btn btn-sm btn-primary">閱讀全文</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- 市場數據區 -->
+<section class="mb-5">
+    <h2 class="mb-4 border-bottom pb-2">市場行情</h2>
+    <div class="row">
+        {% for item in market_data %}
+        <div class="col-md-3 col-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.name }} <small class="text-muted">({{ item.symbol }})</small></h5>
+                    <h3 class="mb-2">{{ item.price|currency }}</h3>
+                    <p class="card-text {% if item.change > 0 %}text-success{% elif item.change < 0 %}text-danger{% endif %}">
+                        {{ item.change|currency }} ({{ item.change_percent }}%)
+                        {% if item.change > 0 %}
+                        <i class="fas fa-arrow-up"></i>
+                        {% elif item.change < 0 %}
+                        <i class="fas fa-arrow-down"></i>
+                        {% endif %}
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            高: {{ item.high|currency }} | 低: {{ item.low|currency }}
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- CFD平台比較區 -->
+<section class="mb-5">
+    <h2 class="mb-4 border-bottom pb-2">熱門CFD平台比較</h2>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>平台名稱</th>
+                    <th>最低入金</th>
+                    <th>槓桿</th>
+                    <th>點差</th>
+                    <th>評分</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for platform in top_platforms %}
+                <tr>
+                    <td>
+                        <strong>{{ platform.name }}</strong>
+                    </td>
+                    <td>{{ platform.min_deposit|currency }}</td>
+                    <td>{{ platform.leverage }}</td>
+                    <td>{{ platform.spreads }}</td>
+                    <td>
+                        <span class="text-warning">{{ platform.rating|stars }}</span>
+                        <span class="ms-1">{{ platform.rating }}</span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('platforms.platform_detail', platform_id=platform.id) }}" class="btn btn-sm btn-outline-primary">查看詳情</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="text-end mt-3">
+        <a href="{{ url_for('platforms.platform_list') }}" class="btn btn-primary">查看所有平台 <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+</section>
+
+<!-- 精選平台推薦 -->
+<section class="mb-5">
+    <h2 class="mb-4 border-bottom pb-2">本週平台精選</h2>
+    <div class="row">
+        {% for platform in featured_platforms %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title h5 mb-0">
+                        {% if loop.index == 1 %}
+                        <i class="fas fa-award me-2"></i>精選平台
+                        {% else %}
+                        <i class="fas fa-user-graduate me-2"></i>新手推薦
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <span class="display-6">{{ platform.name }}</span>
+                        </div>
+                        <div class="ms-auto">
+                            <span class="text-warning">{{ platform.rating|stars }}</span>
+                            <span class="badge bg-success ms-1">{{ platform.rating }}/5</span>
+                        </div>
+                    </div>
+                    
+                    <p class="card-text mb-3">{{ platform.description|truncate_html(150) }}</p>
+                    
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <p class="mb-1"><strong>最低入金:</strong></p>
+                            <p>{{ platform.min_deposit|currency }}</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="mb-1"><strong>槓桿:</strong></p>
+                            <p>{{ platform.leverage }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="card-subtitle mb-2">優勢:</h6>
+                        <ul class="list-unstyled">
+                            {% for pro in platform.pros[:3] %}
+                            <li><i class="fas fa-check text-success me-2"></i>{{ pro }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('platforms.platform_detail', platform_id=platform.id) }}" class="btn btn-primary">查看詳情</a>
+                        <a href="{{ platform.website_url }}" target="_blank" class="btn btn-outline-primary">訪問官網 <i class="fas fa-external-link-alt ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,5 +1,5 @@
 import os
-from mc_markets import create_app
+from trademedalfx import create_app
 
 # 創建應用實例
 app = create_app(os.getenv('FLASK_CONFIG') or 'production')

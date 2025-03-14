@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+
+{% block title %}CFD交易平台比較 - TradeMedalFX{% endblock %}
+
+{% block content %}
+<!-- 頁面版本信息 -->
+<div class="alert alert-info mb-3">
+    <small>頁面更新時間: {{ now.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+</div>
+
+<h1 class="mb-4">CFD交易平台比較</h1>
+
+<!-- 過濾器區域 -->
+<div class="bg-white p-4 rounded shadow-sm mb-4">
+    <h3 class="mb-3">過濾選項</h3>
+    <form id="filter-form" method="get" action="{{ url_for('platforms.platform_list') }}">
+        <div class="row">
+            <!-- 最低入金過濾器 -->
+            <div class="col-md-4 mb-3">
+                <label for="min_deposit" class="form-label">最低入金</label>
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input type="number" class="form-control" id="min_deposit" name="min_deposit" value="{{ request.args.get('min_deposit', '') }}" placeholder="最高金額">
+                </div>
+                <div class="form-text">顯示最低入金小於或等於此金額的平台</div>
+            </div>
+            
+            <!-- 監管機構過濾器 -->
+            <div class="col-md-4 mb-3">
+                <label for="regulation" class="form-label">監管機構</label>
+                <select class="form-select" id="regulation" name="regulation">
+                    <option value="">全部監管機構</option>
+                    {% for reg in all_regulations %}
+                    <option value="{{ reg }}" {% if request.args.get('regulation') == reg %}selected{% endif %}>{{ reg }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- 交易產品過濾器 -->
+            <div class="col-md-4 mb-3">
+                <label for="instrument" class="form-label">交易產品</label>
+                <select class="form-select" id="instrument" name="instrument">
+                    <option value="">全部產品</option>
+                    {% for ins in all_instruments %}
+                    <option value="{{ ins }}" {% if request.args.get('instrument') == ins %}selected{% endif %}>{{ ins }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <!-- 排序選項 -->
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="sort" class="form-label">排序方式</label>
+                <select class="form-select" id="sort" name="sort">
+                    <option value="rating" {% if request.args.get('sort') == 'rating' or not request.args.get('sort') %}selected{% endif %}>評分</option>
+                    <option value="min_deposit" {% if request.args.get('sort') == 'min_deposit' %}selected{% endif %}>最低入金</option>
+                    <option value="name" {% if request.args.get('sort') == 'name' %}selected{% endif %}>名稱</option>
+                    <option value="established_year" {% if request.args.get('sort') == 'established_year' %}selected{% endif %}>成立年份</option>
+                </select>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <label for="order" class="form-label">排序順序</label>
+                <select class="form-select" id="order" name="order">
+                    <option value="desc" {% if request.args.get('order') == 'desc' or not request.args.get('order') %}selected{% endif %}>降序</option>
+                    <option value="asc" {% if request.args.get('order') == 'asc' %}selected{% endif %}>升序</option>
+                </select>
+            </div>
+            
+            <div class="col-md-4 d-flex align-items-end mb-3">
+                <button type="button" id="clear-filters" class="btn btn-outline-secondary w-100">清除所有過濾器</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 平台比較表格 -->
+<div class="bg-white p-4 rounded shadow-sm mb-4">
+    <h3 class="mb-4">平台比較</h3>
+    
+    {% if platforms %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>平台</th>
+                    <th>成立年份</th>
+                    <th>最低入金</th>
+                    <th>槓桿</th>
+                    <th class="d-none d-md-table-cell">點差</th>
+                    <th class="d-none d-md-table-cell">監管</th>
+                    <th>評分</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for platform in platforms %}
+                <tr>
+                    <td>
+                        <strong>{{ platform.name }}</strong>
+                    </td>
+                    <td>{{ platform.established_year }}</td>
+                    <td>{{ platform.min_deposit|currency }}</td>
+                    <td>{{ platform.leverage }}</td>
+                    <td class="d-none d-md-table-cell">{{ platform.spreads }}</td>
+                    <td class="d-none d-md-table-cell">
+                        {% for reg in platform.regulations %}
+                        <span class="badge bg-secondary me-1">{{ reg }}</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <span class="text-warning">{{ platform.rating|stars }}</span>
+                        <span class="ms-1 d-none d-sm-inline">{{ platform.rating }}</span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('platforms.platform_detail', platform_id=platform.id) }}" class="btn btn-sm btn-outline-primary">查看詳情</a>
+                    </td>
+                </tr>
+                <!-- 手機版點差和監管信息顯示 -->
+                <tr class="d-md-none bg-light">
+                    <td colspan="8">
+                        <div class="mb-2">
+                            <strong>點差：</strong> {{ platform.spreads }}
+                        </div>
+                        <div>
+                            <strong>監管：</strong>
+                            {% for reg in platform.regulations %}
+                            <span class="badge bg-secondary me-1">{{ reg }}</span>
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        根據您的過濾條件，未找到匹配的平台。請嘗試調整過濾條件。
+    </div>
+    {% endif %}
+</div>
+
+<!-- 平台詳細對比 -->
+<div class="bg-white p-4 rounded shadow-sm mb-4">
+    <h3 class="mb-4">平台詳細對比</h3>
+    
+    <div class="row">
+        {% for platform in platforms[:3] %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="card-title mb-0">{{ platform.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <span class="text-warning fs-4">{{ platform.rating|stars }}</span>
+                        <span class="badge bg-success ms-1">{{ platform.rating }}/5</span>
+                    </div>
+                    
+                    <p class="card-text mb-3">{{ platform.description|truncate_html(150) }}</p>
+                    
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>成立年份</span>
+                            <span class="badge bg-primary rounded-pill">{{ platform.established_year }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>最低入金</span>
+                            <span class="badge bg-primary rounded-pill">{{ platform.min_deposit|currency }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>最高槓桿</span>
+                            <span class="badge bg-primary rounded-pill">{{ platform.leverage }}</span>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex flex-column">
+                                <span class="mb-2">點差</span>
+                                <span class="badge bg-info text-dark">{{ platform.spreads }}</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex flex-column">
+                                <span class="mb-2">監管機構</span>
+                                <div>
+                                    {% for reg in platform.regulations %}
+                                    <span class="badge bg-secondary me-1 mb-1">{{ reg }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <div class="mb-3">
+                        <h6>優勢:</h6>
+                        <ul class="mb-0">
+                            {% for pro in platform.pros %}
+                            <li>{{ pro }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>劣勢:</h6>
+                        <ul class="mb-0">
+                            {% for con in platform.cons %}
+                            <li>{{ con }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('platforms.platform_detail', platform_id=platform.id) }}" class="btn btn-primary">查看詳情</a>
+                        <a href="{{ platform.website_url }}" target="_blank" class="btn btn-outline-primary">訪問官網 <i class="fas fa-external-link-alt ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- 平台選擇指南 -->
+<div class="bg-white p-4 rounded shadow-sm mb-4">
+    <h3 class="mb-4">如何選擇適合的CFD交易平台</h3>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h5 class="mb-3">選擇平台時需要考慮的因素</h5>
+            <ul>
+                <li class="mb-2"><strong>監管狀況</strong> - 確保平台受到知名金融機構的監管</li>
+                <li class="mb-2"><strong>交易成本</strong> - 考慮點差、佣金和其他可能的費用</li>
+                <li class="mb-2"><strong>交易工具</strong> - 確認平台提供您想要交易的產品</li>
+                <li class="mb-2"><strong>交易平台</strong> - 平台應該易於使用且功能強大</li>
+                <li class="mb-2"><strong>客戶服務</strong> - 良好的客戶支持對解決問題至關重要</li>
+                <li class="mb-2"><strong>教育資源</strong> - 特別是對新手交易者來說十分重要</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h5 class="mb-3">避免常見陷阱</h5>
+            <ul>
+                <li class="mb-2"><strong>不受監管的平台</strong> - 增加資金安全風險</li>
+                <li class="mb-2"><strong>隱藏費用</strong> - 某些平台可能有不明顯的額外費用</li>
+                <li class="mb-2"><strong>過高槓桿</strong> - 可能導致巨大損失</li>
+                <li class="mb-2"><strong>提款困難</strong> - 一些平台可能設置複雜的提款程序</li>
+                <li class="mb-2"><strong>虛假評價</strong> - 不要僅依賴平台自身提供的評價</li>
+                <li class="mb-2"><strong>誇大宣傳</strong> - 對"保證收益"的承諾持謹慎態度</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="alert alert-warning">
+        <h5 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>風險警告</h5>
+        <p class="mb-0">CFD是複雜的工具，由於槓桿作用，存在快速虧損的高風險。大多數零售投資者在交易CFD時會虧損資金。您應該考慮自己是否了解CFD的運作方式，以及是否能夠承擔資金虧損的高風險。</p>
+    </div>
+</div>
+{% endblock %}

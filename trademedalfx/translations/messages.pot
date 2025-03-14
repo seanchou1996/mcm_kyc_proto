@@ -1,0 +1,74 @@
+# Translations template for MC Markets project.
+msgid ""
+msgstr ""
+"Project-Id-Version: MC Markets 1.0\n"
+"Report-Msgid-Bugs-To: support@mc-markets.com\n"
+"POT-Creation-Date: 2025-03-14 18:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.14.0\n"
+
+#: 網站通用文本
+msgid "首頁"
+msgstr ""
+
+msgid "市場新聞"
+msgstr ""
+
+msgid "全部新聞"
+msgstr ""
+
+msgid "貴金屬"
+msgstr ""
+
+msgid "外匯"
+msgstr ""
+
+msgid "商品"
+msgstr ""
+
+msgid "加密貨幣"
+msgstr ""
+
+msgid "CFD平台比較"
+msgstr ""
+
+msgid "聯繫我們"
+msgstr ""
+
+msgid "搜索..."
+msgstr ""
+
+msgid "訂閱"
+msgstr ""
+
+msgid "黃金"
+msgstr ""
+
+msgid "白銀"
+msgstr ""
+
+msgid "比特幣"
+msgstr ""
+
+msgid "最後更新"
+msgstr ""
+
+msgid "載入中..."
+msgstr ""
+
+msgid "語言"
+msgstr ""
+
+msgid "中文"
+msgstr ""
+
+msgid "English"
+msgstr ""
+
+msgid "Español"
+msgstr "" 
