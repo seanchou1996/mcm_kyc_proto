@@ -569,31 +569,50 @@
     <script>
         // 頁面載入時從 localStorage 恢復之前填寫的資料
         document.addEventListener('DOMContentLoaded', function() {
+            // 恢復之前填寫的資料
             const formData = JSON.parse(localStorage.getItem('residentialAddress') || '{}');
             
-            if (formData.addressType) {
-                document.querySelector(`input[name="addressType"][value="${formData.addressType}"]`).checked = true;
+            if (Object.keys(formData).length > 0) {
+                // 如果有保存的資料，恢復表單
+                if (formData.country) document.getElementById('country').value = formData.country;
+                if (formData.addressLine1) document.getElementById('addressLine1').value = formData.addressLine1;
+                if (formData.addressLine2) document.getElementById('addressLine2').value = formData.addressLine2;
+                if (formData.city) document.getElementById('city').value = formData.city;
+                if (formData.state) document.getElementById('state').value = formData.state;
+                if (formData.postalCode) document.getElementById('postalCode').value = formData.postalCode;
+                if (formData.phoneNumber) document.getElementById('phoneNumber').value = formData.phoneNumber;
+                if (formData.isTemporaryAddress) document.getElementById('isTemporaryAddress').checked = formData.isTemporaryAddress;
+                
+                if (formData.isTemporaryAddress && formData.permanentCountry) {
+                    document.getElementById('permanentCountry').value = formData.permanentCountry;
+                    document.getElementById('permanent-address-section').style.display = 'block';
+                }
+            } else {
+                // 自動填寫香港測試地址
+                document.getElementById('country').value = 'HK';
+                document.getElementById('addressLine1').value = '荃灣青山公路388號中染大廈15樓';
+                document.getElementById('addressLine2').value = '中染大廈 (測試用地址)';
+                document.getElementById('city').value = '荃灣區';
+                document.getElementById('state').value = '新界';
+                document.getElementById('postalCode').value = '00000';
+                document.getElementById('phoneNumber').value = '85212345678';
+                
+                // 保存測試地址到localStorage
+                saveFormData();
+                console.log('已自動填寫香港測試地址');
             }
-            if (formData.country) document.getElementById('country').value = formData.country;
-            if (formData.addressLine1) document.getElementById('addressLine1').value = formData.addressLine1;
-            if (formData.addressLine2) document.getElementById('addressLine2').value = formData.addressLine2;
-            if (formData.city) document.getElementById('city').value = formData.city;
-            if (formData.state) document.getElementById('state').value = formData.state;
-            if (formData.postalCode) document.getElementById('postalCode').value = formData.postalCode;
-            if (formData.phoneNumber) document.getElementById('phoneNumber').value = formData.phoneNumber;
-            if (formData.isTemporaryAddress) {
-                document.getElementById('isTemporaryAddress').checked = formData.isTemporaryAddress;
-                togglePanel('temporaryAddressPanel', formData.isTemporaryAddress);
-            }
-            if (formData.permanentCountry) document.getElementById('permanentCountry').value = formData.permanentCountry;
+            
+            // 設置臨時地址選項的事件處理
+            document.getElementById('isTemporaryAddress').addEventListener('change', function() {
+                if (this.checked) {
+                    document.getElementById('permanent-address-section').style.display = 'block';
+                } else {
+                    document.getElementById('permanent-address-section').style.display = 'none';
+                }
+            });
             
             // 設置手風琴面板的點擊事件
             setupAccordions();
-            
-            // 設置複選框的變更事件
-            document.getElementById('isTemporaryAddress').addEventListener('change', function() {
-                togglePanel('temporaryAddressPanel', this.checked);
-            });
         });
         
         // 設置手風琴面板
@@ -621,17 +640,6 @@
                         panel.style.maxHeight = panel.scrollHeight + "px";
                     }
                 });
-            }
-        }
-        
-        // 切換面板顯示
-        function togglePanel(panelId, show) {
-            const panel = document.getElementById(panelId);
-            panel.style.display = show ? 'block' : 'none';
-            if (show) {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-            } else {
-                panel.style.maxHeight = null;
             }
         }
         
@@ -801,8 +809,8 @@
                     
                     // 檢查是否在mcmarkets_prototype目錄中
                     if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
-                        // 在mcmarkets_prototype中，直接添加trading_platform.html
-                        targetPath = pathParts.join('/') + '/trading_platform.html';
+                        // 在mcmarkets_prototype中，直接添加deposit.html
+                        targetPath = pathParts.join('/') + '/deposit.html';
                     } 
                     // 處理桌面路徑
                     else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
@@ -811,25 +819,25 @@
                         const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
                         // 檢查桌面上是否有mcmarkets_prototype目錄
                         if (currentPath.includes('mcmarkets_prototype')) {
-                            targetPath = userPath + '/mcmarkets_prototype/trading_platform.html';
+                            targetPath = userPath + '/mcmarkets_prototype/deposit.html';
                         } else {
-                            targetPath = userPath + '/trading_platform.html';
+                            targetPath = userPath + '/deposit.html';
                         }
                     }
                     else {
-                        // 嘗試添加trading_platform.html
+                        // 嘗試添加deposit.html
                         const baseDir = pathParts.join('/');
                         // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
                         if (baseDir.includes('/seanchou/')) {
-                            targetPath = baseDir + '/trading_platform.html';
+                            targetPath = baseDir + '/deposit.html';
                         } else {
                             // 回退方案 - 使用絕對路徑
-                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/trading_platform.html';
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/deposit.html';
                         }
                     }
                 } else {
                     // 網站路徑，使用相對路徑
-                    targetPath = 'trading_platform.html';
+                    targetPath = 'deposit.html';
                 }
                 
                 // 記錄並跳轉
