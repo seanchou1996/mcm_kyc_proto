@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 交易賬戶申請</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* 全局變量 */
+        :root {
+            --primary-color: #f8ba13;
+            --secondary-color: #333;
+            --dark-bg: #101630;
+            --darker-bg: #0a0e1f;
+            --light-text: #fff;
+            --muted-text: #888;
+            --border-color: #1e2747;
+            --button-color: #1e88e5;
+            --button-hover: #1976d2;
+        }
+
+        /* 全局重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--darker-bg);
+            color: var(--light-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+            max-width: 160px;
+        }
+
+        .content-box {
+            background-color: var(--dark-bg);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .city-icon {
+            width: 100%;
+            max-width: 240px;
+            margin: 0 auto 30px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: var(--light-text);
+        }
+
+        .cta-button {
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--muted-text);
+        }
+    </style>
+</head>
+<body>
+    <img src="assets/images/logo.png" alt="Plus500 Logo" class="logo" onerror="this.src='https://via.placeholder.com/160x50/f8ba13/000000?text=MC+Markets';this.onerror='';">
+    
+    <div class="content-box">
+        <img src="assets/images/city.png" alt="City Skyline" class="city-icon" onerror="this.src='https://via.placeholder.com/240x160/1e88e5/ffffff?text=MC+Markets';this.onerror='';">
+        
+        <h1>您的交易之旅從這裡開始！</h1>
+        
+        <p>完成註冊流程後，您將能夠申請一個專業交易賬戶，獲得全球金融市場的無限交易機會。我們將為您提供頂級的交易平台、豐富的教育資源和專業的客戶服務，助您實現投資目標。</p>
+        
+        <a href="#" class="cta-button" id="enter-application-btn">進入申請</a>
+    </div>
+    
+    <div class="footer">
+        © 2023 MC Markets Group. 保留所有權利。
+    </div>
+
+    <script>
+        // 進入申請按鈕點擊事件
+        document.getElementById('enter-application-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // 設置標記，表示來源是註冊頁面
+            sessionStorage.setItem('from_register', 'true');
+            // 跳轉到主頁面
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html> 

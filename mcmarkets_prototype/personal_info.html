@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 個人資料</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #135cc5;
+            --accent-color: #4285f4;
+            --light-color: #f1f5f9;
+            --dark-color: #0a0a14;
+            --border-color: #dadce0;
+            --gray-color: #70757a;
+            --bg-color: #ffffff;
+            --error-color: #d93025;
+            --success-color: #0f9d58;
+            --info-bg: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: #202124;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--bg-color);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .header .logo {
+            height: 40px;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            max-width: 720px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #202124;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .info-box {
+            background-color: var(--info-bg);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            width: 100%;
+            border: 1px solid var(--border-color);
+        }
+        
+        .info-box-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .info-box-title i {
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+        
+        .info-text {
+            color: var(--gray-color);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #202124;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            font-size: 16px;
+            appearance: none;
+            padding-right: 30px;
+        }
+        
+        .select-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid var(--gray-color);
+            pointer-events: none;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 30px;
+        }
+        
+        .help-link {
+            display: flex;
+            align-items: center;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+        
+        .help-link i {
+            margin-right: 8px;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+        }
+        
+        .input-col {
+            flex: 1;
+        }
+        
+        .date-selects {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .date-selects .select-wrapper {
+            flex: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .input-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+        
+        /* 頂部錯誤訊息 */
+        .error-banner {
+            background-color: var(--error-color);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+        }
+        
+        /* 響應式媒體查詢 - 針對H5移動設備優化 */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 12px 0;
+            }
+            
+            .account-balance {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            
+            .balance-item {
+                margin: 5px;
+                width: 45%;
+                text-align: left;
+            }
+            
+            .content-container {
+                padding: 15px;
+            }
+            
+            .personal-form {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .form-label {
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            
+            .form-select, .form-input {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .info-text {
+                font-size: 13px;
+            }
+        }
+        
+        /* 更小屏幕設備的進一步優化 */
+        @media screen and (max-width: 480px) {
+            .content-container {
+                padding: 10px;
+            }
+            
+            .personal-form {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            .back-button {
+                left: 10px;
+            }
+            
+            .balance-item {
+                width: 100%;
+                margin: 3px 0;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .form-select, .form-input {
+                padding: 8px 10px;
+            }
+            
+            .info-text {
+                font-size: 12px;
+            }
+            
+            .form-input::placeholder {
+                font-size: 12px;
+            }
+            
+            .date-inputs {
+                flex-direction: column;
+            }
+            
+            .date-inputs .form-group {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 添加頂部錯誤橫幅 -->
+    <div id="error-banner" class="error-banner"></div>
+    
+    <div class="header">
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <img src="assets/images/logo.png" alt="MC Markets Logo" class="logo" onerror="this.src='https://via.placeholder.com/180x40/1a73e8/ffffff?text=MC+Markets';this.onerror='';">
+    </div>
+    
+    <div class="content-container">
+        <h1 class="page-title">個人資料</h1>
+        
+        <div class="info-box">
+            <div class="info-box-title">
+                <i class="fas fa-info-circle"></i>
+                <span>為何需要此資訊？</span>
+            </div>
+            <p class="info-text">請提供您的個人基本資料，這些資訊將用於帳戶開立與身分驗證，符合全球反洗錢與了解客戶法規要求。</p>
+        </div>
+        
+        <form id="personal-info-form">
+            <div class="form-group">
+                <label class="form-label" for="title">稱謂</label>
+                <div class="select-wrapper">
+                    <select class="form-select" id="title" name="title">
+                        <option value="" selected disabled>請選擇</option>
+                        <option value="mr">先生</option>
+                        <option value="ms">女士</option>
+                        <option value="mrs">太太</option>
+                        <option value="dr">博士</option>
+                    </select>
+                </div>
+                <span id="title-error" class="error-message">請選擇稱謂</span>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-col">
+                    <div class="form-group">
+                        <label class="form-label" for="firstName">名字</label>
+                        <input type="text" class="form-input" id="firstName" name="firstName" placeholder="請輸入您的名字">
+                        <span id="firstName-error" class="error-message">請輸入名字</span>
+                    </div>
+                </div>
+                <div class="input-col">
+                    <div class="form-group">
+                        <label class="form-label" for="middleName">中間名（可選）</label>
+                        <input type="text" class="form-input" id="middleName" name="middleName" placeholder="請輸入您的中間名">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="lastName">姓氏</label>
+                <input type="text" class="form-input" id="lastName" name="lastName" placeholder="請輸入您的姓氏">
+                <span id="lastName-error" class="error-message">請輸入姓氏</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="birthdate">出生日期</label>
+                <div class="date-selects">
+                    <div class="select-wrapper">
+                        <select class="form-select" id="day" name="day">
+                            <option value="" selected disabled>日</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <!-- 生成 1-31 日 -->
+                            <script>
+                                for (let i = 3; i <= 31; i++) {
+                                    document.write(`<option value="${i}">${i}</option>`);
+                                }
+                            </script>
+                        </select>
+                    </div>
+                    <div class="select-wrapper">
+                        <select class="form-select" id="month" name="month">
+                            <option value="" selected disabled>月</option>
+                            <option value="1">一月</option>
+                            <option value="2">二月</option>
+                            <option value="3">三月</option>
+                            <option value="4">四月</option>
+                            <option value="5">五月</option>
+                            <option value="6">六月</option>
+                            <option value="7">七月</option>
+                            <option value="8">八月</option>
+                            <option value="9">九月</option>
+                            <option value="10">十月</option>
+                            <option value="11">十一月</option>
+                            <option value="12">十二月</option>
+                        </select>
+                    </div>
+                    <div class="select-wrapper">
+                        <select class="form-select" id="year" name="year">
+                            <option value="" selected disabled>年</option>
+                            <!-- 生成 1950-2005 年 -->
+                            <script>
+                                for (let i = 2005; i >= 1950; i--) {
+                                    document.write(`<option value="${i}">${i}</option>`);
+                                }
+                            </script>
+                        </select>
+                    </div>
+                </div>
+                <span id="birthdate-error" class="error-message">請選擇完整的出生日期</span>
+            </div>
+            
+            <div class="btn-container">
+                <button type="button" class="btn" onclick="goBack()">返回</button>
+                <button type="button" class="btn" onclick="saveAndContinue()">下一步</button>
+            </div>
+        </form>
+        
+        <a href="#" class="help-link">
+            <i class="fas fa-question-circle"></i>
+            需要協助？聯絡客戶支援
+        </a>
+    </div>
+    
+    <script>
+        // 頁面載入時從 localStorage 恢復之前填寫的資料
+        document.addEventListener('DOMContentLoaded', function() {
+            const formData = JSON.parse(localStorage.getItem('personalInfo') || '{}');
+            
+            if (formData.title) document.getElementById('title').value = formData.title;
+            if (formData.firstName) document.getElementById('firstName').value = formData.firstName;
+            if (formData.middleName) document.getElementById('middleName').value = formData.middleName;
+            if (formData.lastName) document.getElementById('lastName').value = formData.lastName;
+            if (formData.day) document.getElementById('day').value = formData.day;
+            if (formData.month) document.getElementById('month').value = formData.month;
+            if (formData.year) document.getElementById('year').value = formData.year;
+        });
+        
+        // 返回按鈕功能
+        function goBack() {
+            try {
+                // 儲存當前表單數據
+                saveFormData();
+                
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (personal_info.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加kyc_verification.html
+                        targetPath = pathParts.join('/') + '/kyc_verification.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/kyc_verification.html';
+                        } else {
+                            targetPath = userPath + '/kyc_verification.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加kyc_verification.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/kyc_verification.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/kyc_verification.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'kyc_verification.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('返回到:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('導航過程中出現錯誤:', error);
+                const errorBanner = document.getElementById('error-banner');
+                errorBanner.textContent = '返回導航錯誤: ' + error.message;
+                errorBanner.style.display = 'block';
+                setTimeout(function() {
+                    errorBanner.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // 儲存表單數據
+        function saveFormData() {
+            const formData = {
+                title: document.getElementById('title').value,
+                firstName: document.getElementById('firstName').value,
+                middleName: document.getElementById('middleName').value,
+                lastName: document.getElementById('lastName').value,
+                day: document.getElementById('day').value,
+                month: document.getElementById('month').value,
+                year: document.getElementById('year').value
+            };
+            
+            localStorage.setItem('personalInfo', JSON.stringify(formData));
+            console.log('個人資料已儲存:', formData);
+        }
+        
+        // 繼續到下一步
+        function saveAndContinue() {
+            // 移除所有錯誤提示
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            let hasError = false;
+            
+            // 表單驗證
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const day = document.getElementById('day').value;
+            const month = document.getElementById('month').value;
+            const year = document.getElementById('year').value;
+            
+            if (!firstName) {
+                document.getElementById('firstName-error').style.display = 'block';
+                hasError = true;
+            }
+            
+            if (!lastName) {
+                document.getElementById('lastName-error').style.display = 'block';
+                hasError = true;
+            }
+            
+            if (!day || !month || !year) {
+                document.getElementById('birthdate-error').style.display = 'block';
+                hasError = true;
+            }
+            
+            if (hasError) {
+                return;
+            }
+            
+            // 儲存資料
+            saveFormData();
+            
+            // 跳轉到稅務國家頁面
+            window.location.href = 'tax_country.html';
+        }
+    </script>
+</body>
+</html> 

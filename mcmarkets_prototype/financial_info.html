@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 財務信息</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #212529;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --border-color: #333;
+            --accent-color: #007bff;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --gray-color: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .back-button {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        
+        .back-button:hover {
+            color: var(--primary-color);
+        }
+        
+        .logo {
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .account-balance {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .balance-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .content-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .content-subtitle {
+            color: var(--gray-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .info-box {
+            background-color: rgba(23, 162, 184, 0.1);
+            border-left: 4px solid var(--info-color);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.25);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-color);
+            font-size: 1rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23e0e0e0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.25);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: #0069d9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e0a800;
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+        
+        .section-divider {
+            border-top: 1px solid var(--border-color);
+            margin: 30px 0;
+            padding-top: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            .buttons-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* 響應式媒體查詢 - 針對H5移動設備優化 */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 12px 0;
+            }
+            
+            .account-balance {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            
+            .balance-item {
+                margin: 5px;
+                width: 45%;
+                text-align: left;
+            }
+            
+            .content-container {
+                padding: 15px;
+            }
+            
+            .financial-form {
+                padding: 20px;
+            }
+            
+            .form-section {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .page-subtitle {
+                font-size: 14px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .form-label {
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            
+            .form-select, .form-input {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .section-title {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .info-box {
+                padding: 12px;
+                font-size: 13px;
+            }
+        }
+        
+        /* 更小屏幕設備的進一步優化 */
+        @media screen and (max-width: 480px) {
+            .content-container {
+                padding: 10px;
+            }
+            
+            .financial-form {
+                padding: 15px;
+            }
+            
+            .form-section {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            
+            .page-subtitle {
+                font-size: 13px;
+                margin-bottom: 15px;
+            }
+            
+            .back-button {
+                left: 10px;
+            }
+            
+            .balance-item {
+                width: 100%;
+                margin: 3px 0;
+            }
+            
+            .section-title {
+                font-size: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .info-box {
+                padding: 10px;
+                font-size: 12px;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="logo">
+            <img src="https://via.placeholder.com/150x40/ffc107/212529.png?text=MC+MARKETS" alt="MC Markets Logo">
+        </div>
+        <div style="width: 40px;"></div> <!-- 平衡空間 -->
+    </div>
+    
+    <div class="account-balance">
+        <span>帳戶餘額</span>
+        <span class="balance-amount">$ 10,000.00</span>
+    </div>
+    
+    <div class="content-container">
+        <h1 class="content-title">財務信息</h1>
+        <p class="content-subtitle">請提供您的財務資訊，以完成您的帳戶驗證</p>
+        
+        <div class="info-box">
+            <p>根據國際金融法規要求，我們需要了解您的財務狀況，以確保我們提供適合您的服務。所有提供的資料都將被安全存儲並保密處理。</p>
+        </div>
+        
+        <form id="financial-form">
+            <h2 class="section-title">收入與資產</h2>
+            
+            <div class="form-group">
+                <label for="annual-income" class="form-label">年收入 (美元)</label>
+                <select id="annual-income" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="0-25000">$0 - $25,000</option>
+                    <option value="25001-50000">$25,001 - $50,000</option>
+                    <option value="50001-100000">$50,001 - $100,000</option>
+                    <option value="100001-250000">$100,001 - $250,000</option>
+                    <option value="250001-500000">$250,001 - $500,000</option>
+                    <option value="500001-1000000">$500,001 - $1,000,000</option>
+                    <option value="1000001+">$1,000,001+</option>
+                </select>
+                <div id="annual-income-error" class="error-message">請選擇您的年收入範圍</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="income-source" class="form-label">主要收入來源</label>
+                <select id="income-source" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="salary">薪資</option>
+                    <option value="business">企業收入</option>
+                    <option value="investment">投資收益</option>
+                    <option value="pension">退休金/養老金</option>
+                    <option value="inheritance">遺產/贈與</option>
+                    <option value="rental">租金收入</option>
+                    <option value="other">其他</option>
+                </select>
+                <div id="income-source-error" class="error-message">請選擇您的主要收入來源</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="net-worth" class="form-label">凈資產 (美元)</label>
+                <select id="net-worth" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="0-50000">$0 - $50,000</option>
+                    <option value="50001-100000">$50,001 - $100,000</option>
+                    <option value="100001-250000">$100,001 - $250,000</option>
+                    <option value="250001-500000">$250,001 - $500,000</option>
+                    <option value="500001-1000000">$500,001 - $1,000,000</option>
+                    <option value="1000001-5000000">$1,000,001 - $5,000,000</option>
+                    <option value="5000001+">$5,000,001+</option>
+                </select>
+                <div id="net-worth-error" class="error-message">請選擇您的凈資產範圍</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="liquid-assets" class="form-label">流動資產 (美元)</label>
+                <select id="liquid-assets" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="0-10000">$0 - $10,000</option>
+                    <option value="10001-50000">$10,001 - $50,000</option>
+                    <option value="50001-100000">$50,001 - $100,000</option>
+                    <option value="100001-250000">$100,001 - $250,000</option>
+                    <option value="250001-500000">$250,001 - $500,000</option>
+                    <option value="500001+">$500,001+</option>
+                </select>
+                <div id="liquid-assets-error" class="error-message">請選擇您的流動資產範圍</div>
+            </div>
+            
+            <div class="section-divider"></div>
+            
+            <h2 class="section-title">投資經驗與知識</h2>
+            
+            <div class="form-group">
+                <label for="trading-experience" class="form-label">外匯/CFD交易經驗</label>
+                <select id="trading-experience" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="none">無經驗</option>
+                    <option value="beginner">新手 (少於1年)</option>
+                    <option value="intermediate">中級 (1-3年)</option>
+                    <option value="experienced">經驗豐富 (3-5年)</option>
+                    <option value="professional">專業 (5年以上)</option>
+                </select>
+                <div id="trading-experience-error" class="error-message">請選擇您的交易經驗</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="trading-frequency" class="form-label">交易頻率</label>
+                <select id="trading-frequency" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="never">從未交易</option>
+                    <option value="rarely">很少 (每年幾次)</option>
+                    <option value="occasionally">偶爾 (每月幾次)</option>
+                    <option value="frequently">頻繁 (每週幾次)</option>
+                    <option value="daily">每天</option>
+                </select>
+                <div id="trading-frequency-error" class="error-message">請選擇您的交易頻率</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="average-trade-size" class="form-label">平均交易規模 (美元)</label>
+                <select id="average-trade-size" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="0">從未交易</option>
+                    <option value="1-1000">$1 - $1,000</option>
+                    <option value="1001-10000">$1,001 - $10,000</option>
+                    <option value="10001-50000">$10,001 - $50,000</option>
+                    <option value="50001-100000">$50,001 - $100,000</option>
+                    <option value="100001+">$100,001+</option>
+                </select>
+                <div id="average-trade-size-error" class="error-message">請選擇您的平均交易規模</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="understanding-level" class="form-label">對槓桿產品風險的理解程度</label>
+                <select id="understanding-level" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="none">無理解</option>
+                    <option value="basic">基本理解</option>
+                    <option value="good">良好理解</option>
+                    <option value="advanced">高級理解</option>
+                    <option value="expert">專家級理解</option>
+                </select>
+                <div id="understanding-level-error" class="error-message">請選擇您對槓桿產品風險的理解程度</div>
+            </div>
+            
+            <div class="section-divider"></div>
+            
+            <h2 class="section-title">投資目標</h2>
+            
+            <div class="form-group">
+                <label for="investment-objective" class="form-label">主要投資目標</label>
+                <select id="investment-objective" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="capital-preservation">資本保全</option>
+                    <option value="income">收入</option>
+                    <option value="growth">資本增值</option>
+                    <option value="speculation">投機/高風險高回報</option>
+                    <option value="hedging">避險</option>
+                </select>
+                <div id="investment-objective-error" class="error-message">請選擇您的主要投資目標</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="risk-tolerance" class="form-label">風險承受度</label>
+                <select id="risk-tolerance" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="low">低 (偏好低風險投資，接受較低回報)</option>
+                    <option value="medium-low">中低 (偏好較低風險，接受適度回報)</option>
+                    <option value="medium">中等 (平衡風險和回報)</option>
+                    <option value="medium-high">中高 (願意承擔較高風險以獲取更高回報)</option>
+                    <option value="high">高 (願意承擔高風險以追求最高回報)</option>
+                </select>
+                <div id="risk-tolerance-error" class="error-message">請選擇您的風險承受度</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="investment-horizon" class="form-label">投資期限</label>
+                <select id="investment-horizon" class="form-select">
+                    <option value="">請選擇</option>
+                    <option value="short">短期 (少於1年)</option>
+                    <option value="medium">中期 (1-3年)</option>
+                    <option value="long">長期 (3-5年)</option>
+                    <option value="very-long">超長期 (5年以上)</option>
+                </select>
+                <div id="investment-horizon-error" class="error-message">請選擇您的投資期限</div>
+            </div>
+            
+            <div class="buttons-container">
+                <button type="button" class="btn btn-secondary" onclick="goBack()">返回</button>
+                <button type="button" class="btn btn-primary" onclick="saveAndContinue()">保存並繼續</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 檢查是否有保存的表單數據並恢復
+            restoreFormData();
+        });
+        
+        // 返回上一頁
+        function goBack() {
+            try {
+                // 保存當前表單數據
+                saveFormData();
+                
+                // 檢查是否來自test_all頁面
+                if (sessionStorage.getItem('fromTestAll') === 'true') {
+                    // 獲取當前文件的完整路徑
+                    const currentPath = window.location.href;
+                    
+                    // 分析路徑以處理各種情況
+                    let targetPath;
+                    
+                    // 檢查是否是文件系統路徑 (file://)
+                    if (currentPath.startsWith('file://')) {
+                        // 拆分路徑並替換最後一個部分
+                        const pathParts = currentPath.split('/');
+                        pathParts.pop(); // 移除最後一個部分 (financial_info.html)
+                        
+                        // 檢查是否在mcmarkets_prototype目錄中
+                        if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                            // 在mcmarkets_prototype中，直接添加test_all.html
+                            targetPath = pathParts.join('/') + '/test_all.html';
+                        } 
+                        // 處理桌面路徑
+                        else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                            // 用戶正在桌面上開啟文件
+                            const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                            const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                            // 檢查桌面上是否有mcmarkets_prototype目錄
+                            if (currentPath.includes('mcmarkets_prototype')) {
+                                targetPath = userPath + '/mcmarkets_prototype/test_all.html';
+                            } else {
+                                targetPath = userPath + '/test_all.html';
+                            }
+                        }
+                        else {
+                            // 嘗試添加test_all.html
+                            const baseDir = pathParts.join('/');
+                            // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                            if (baseDir.includes('/seanchou/')) {
+                                targetPath = baseDir + '/test_all.html';
+                            } else {
+                                // 回退方案 - 使用絕對路徑
+                                targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/test_all.html';
+                            }
+                        }
+                    } else {
+                        // 網站路徑，使用相對路徑
+                        targetPath = 'test_all.html';
+                    }
+                    
+                    // 記錄並跳轉
+                    console.log('返回到test_all頁面:', targetPath);
+                    window.location.href = targetPath;
+                } else {
+                    // 返回驗證中心
+                    // 獲取當前文件的完整路徑
+                    const currentPath = window.location.href;
+                    
+                    // 分析路徑以處理各種情況
+                    let targetPath;
+                    
+                    // 檢查是否是文件系統路徑 (file://)
+                    if (currentPath.startsWith('file://')) {
+                        // 拆分路徑並替換最後一個部分
+                        const pathParts = currentPath.split('/');
+                        pathParts.pop(); // 移除最後一個部分 (financial_info.html)
+                        
+                        // 檢查是否在mcmarkets_prototype目錄中
+                        if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                            // 在mcmarkets_prototype中，直接添加verification_center.html
+                            targetPath = pathParts.join('/') + '/verification_center.html';
+                        } 
+                        // 處理桌面路徑
+                        else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                            // 用戶正在桌面上開啟文件
+                            const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                            const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                            // 檢查桌面上是否有mcmarkets_prototype目錄
+                            if (currentPath.includes('mcmarkets_prototype')) {
+                                targetPath = userPath + '/mcmarkets_prototype/verification_center.html';
+                            } else {
+                                targetPath = userPath + '/verification_center.html';
+                            }
+                        }
+                        else {
+                            // 嘗試添加verification_center.html
+                            const baseDir = pathParts.join('/');
+                            // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                            if (baseDir.includes('/seanchou/')) {
+                                targetPath = baseDir + '/verification_center.html';
+                            } else {
+                                // 回退方案 - 使用絕對路徑
+                                targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/verification_center.html';
+                            }
+                        }
+                    } else {
+                        // 網站路徑，使用相對路徑
+                        targetPath = 'verification_center.html';
+                    }
+                    
+                    // 記錄並跳轉
+                    console.log('返回到驗證中心:', targetPath);
+                    window.location.href = targetPath;
+                }
+            } catch (error) {
+                console.error('返回過程中出現錯誤:', error);
+                alert('返回錯誤: ' + error.message);
+            }
+        }
+        
+        // 保存表單數據到localStorage
+        function saveFormData() {
+            try {
+                const formData = {
+                    annualIncome: document.getElementById('annual-income').value,
+                    incomeSource: document.getElementById('income-source').value,
+                    netWorth: document.getElementById('net-worth').value,
+                    liquidAssets: document.getElementById('liquid-assets').value,
+                    tradingExperience: document.getElementById('trading-experience').value,
+                    tradingFrequency: document.getElementById('trading-frequency').value,
+                    averageTradeSize: document.getElementById('average-trade-size').value,
+                    understandingLevel: document.getElementById('understanding-level').value,
+                    investmentObjective: document.getElementById('investment-objective').value,
+                    riskTolerance: document.getElementById('risk-tolerance').value,
+                    investmentHorizon: document.getElementById('investment-horizon').value
+                };
+                
+                localStorage.setItem('financial_form_data', JSON.stringify(formData));
+                console.log('表單數據已保存到localStorage');
+            } catch (error) {
+                console.error('保存表單數據時出錯:', error);
+            }
+        }
+        
+        // 從localStorage恢復表單數據
+        function restoreFormData() {
+            try {
+                const savedData = localStorage.getItem('financial_form_data');
+                if (savedData) {
+                    const formData = JSON.parse(savedData);
+                    
+                    // 填充表單字段
+                    document.getElementById('annual-income').value = formData.annualIncome || '';
+                    document.getElementById('income-source').value = formData.incomeSource || '';
+                    document.getElementById('net-worth').value = formData.netWorth || '';
+                    document.getElementById('liquid-assets').value = formData.liquidAssets || '';
+                    document.getElementById('trading-experience').value = formData.tradingExperience || '';
+                    document.getElementById('trading-frequency').value = formData.tradingFrequency || '';
+                    document.getElementById('average-trade-size').value = formData.averageTradeSize || '';
+                    document.getElementById('understanding-level').value = formData.understandingLevel || '';
+                    document.getElementById('investment-objective').value = formData.investmentObjective || '';
+                    document.getElementById('risk-tolerance').value = formData.riskTolerance || '';
+                    document.getElementById('investment-horizon').value = formData.investmentHorizon || '';
+                    
+                    console.log('已從localStorage恢復表單數據');
+                }
+            } catch (error) {
+                console.error('恢復表單數據時出錯:', error);
+            }
+        }
+        
+        // 驗證表單
+        function validateForm() {
+            let isValid = true;
+            
+            // 重置所有錯誤消息
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+            });
+            
+            // 驗證年收入
+            if (!document.getElementById('annual-income').value) {
+                document.getElementById('annual-income-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證收入來源
+            if (!document.getElementById('income-source').value) {
+                document.getElementById('income-source-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證凈資產
+            if (!document.getElementById('net-worth').value) {
+                document.getElementById('net-worth-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證流動資產
+            if (!document.getElementById('liquid-assets').value) {
+                document.getElementById('liquid-assets-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證交易經驗
+            if (!document.getElementById('trading-experience').value) {
+                document.getElementById('trading-experience-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證交易頻率
+            if (!document.getElementById('trading-frequency').value) {
+                document.getElementById('trading-frequency-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證平均交易規模
+            if (!document.getElementById('average-trade-size').value) {
+                document.getElementById('average-trade-size-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證風險理解程度
+            if (!document.getElementById('understanding-level').value) {
+                document.getElementById('understanding-level-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證投資目標
+            if (!document.getElementById('investment-objective').value) {
+                document.getElementById('investment-objective-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證風險承受度
+            if (!document.getElementById('risk-tolerance').value) {
+                document.getElementById('risk-tolerance-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 驗證投資期限
+            if (!document.getElementById('investment-horizon').value) {
+                document.getElementById('investment-horizon-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // 保存並繼續
+        function saveAndContinue() {
+            try {
+                // 驗證表單
+                if (!validateForm()) {
+                    return;
+                }
+                
+                // 保存表單數據
+                saveFormData();
+                
+                // 設置財務信息已完成
+                sessionStorage.setItem('financial_info_completed', 'true');
+                
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (financial_info.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加verification_center.html
+                        targetPath = pathParts.join('/') + '/verification_center.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/verification_center.html';
+                        } else {
+                            targetPath = userPath + '/verification_center.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加verification_center.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/verification_center.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/verification_center.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'verification_center.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('導航到:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('保存過程中出現錯誤:', error);
+                alert('保存錯誤: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html> 

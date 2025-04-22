@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets 原型</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #f8ba13;
+            --secondary-color: #333;
+            --dark-bg: #101630;
+            --darker-bg: #0a0e1f;
+            --light-text: #fff;
+            --muted-text: #888;
+            --border-color: #1e2747;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--darker-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: var(--muted-text);
+            margin-bottom: 30px;
+        }
+
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .page-card {
+            background-color: rgba(19, 26, 56, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .page-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .page-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .page-description {
+            font-size: 14px;
+            color: var(--muted-text);
+            margin-bottom: 15px;
+        }
+
+        .view-btn {
+            background-color: var(--primary-color);
+            color: black;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .view-btn:hover {
+            background-color: #f0b000;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--primary-color);
+        }
+
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .info-box h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .info-box p {
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            background-color: rgba(248, 186, 19, 0.1);
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-compass"></i>
+            </div>
+            <h1>MC Markets 原型</h1>
+            <p class="subtitle">選擇頁面以查看不同的原型環節</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">測試工具</h2>
+            <div class="pages-grid">
+                <div class="page-card">
+                    <h3 class="page-title">全流程測試</h3>
+                    <p class="page-description">使用此頁面可以測試所有環節，包括繞過登入限制直接進入表單頁面</p>
+                    <a href="test_all.html" class="view-btn">查看頁面</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">原型頁面</h2>
+            <div class="pages-grid">
+                <div class="page-card">
+                    <h3 class="page-title">登入頁面</h3>
+                    <p class="page-description">用戶登入系統的入口頁面</p>
+                    <a href="login.html" class="view-btn">查看頁面</a>
+                </div>
+
+                <div class="page-card">
+                    <h3 class="page-title">註冊頁面</h3>
+                    <p class="page-description">用戶創建新帳戶的頁面</p>
+                    <a href="register.html" class="view-btn">查看頁面</a>
+                </div>
+
+                <div class="page-card">
+                    <h3 class="page-title">註冊流程</h3>
+                    <p class="page-description">多步驟註冊流程，包括地區選擇、賬戶類型、個人信息和身份驗證</p>
+                    <a href="index.html" class="view-btn">查看頁面</a>
+                </div>
+
+                <div class="page-card">
+                    <h3 class="page-title">交易平台</h3>
+                    <p class="page-description">用戶完成註冊後進入的交易平台頁面</p>
+                    <a href="trading_platform.html" class="view-btn">查看頁面</a>
+                </div>
+
+                <div class="page-card">
+                    <h3 class="page-title">交易申請確認</h3>
+                    <p class="page-description">用戶點擊交易按鈕後的申請確認頁面</p>
+                    <a href="application_confirm.html" class="view-btn">查看頁面</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>如何測試完整流程</h3>
+            <p>您可以通過以下幾種方式測試完整流程：</p>
+            <ol style="margin-left: 20px; margin-bottom: 15px;">
+                <li>使用 <span class="highlight">test_all.html</span> 頁面直接測試所有環節</li>
+                <li>從 <span class="highlight">login.html</span> 或 <span class="highlight">register.html</span> 開始，然後按照正常流程操作</li>
+                <li>使用 <span class="highlight">test_all.html</span> 頁面中的「繞過登入限制」功能直接進入表單流程</li>
+            </ol>
+            <p>所有頁面在本地就能完整運行，無需部署到 GitHub。</p>
+        </div>
+    </div>
+</body>
+</html> 

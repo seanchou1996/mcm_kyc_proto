@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 就業詳情</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #212529;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --border-color: #333;
+            --accent-color: #007bff;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --gray-color: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .back-button {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        
+        .back-button:hover {
+            color: var(--primary-color);
+        }
+        
+        .logo {
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .account-balance {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .balance-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .content-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .content-subtitle {
+            color: var(--gray-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .info-box {
+            background-color: rgba(23, 162, 184, 0.1);
+            border-left: 4px solid var(--info-color);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.25);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-color);
+            font-size: 1rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23e0e0e0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.25);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: #0069d9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e0a800;
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .conditional-panel {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(33, 37, 41, 0.5);
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+        
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            .buttons-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* 響應式媒體查詢 - 針對H5移動設備優化 */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 12px 0;
+            }
+            
+            .account-balance {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            
+            .balance-item {
+                margin: 5px;
+                width: 45%;
+                text-align: left;
+            }
+            
+            .content-container {
+                padding: 15px;
+            }
+            
+            .employment-form {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .page-subtitle {
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .form-label {
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            
+            .form-select, .form-input {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .conditional-section {
+                padding-left: 10px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .info-box {
+                padding: 12px;
+                font-size: 13px;
+                margin-bottom: 15px;
+            }
+        }
+        
+        /* 更小屏幕設備的進一步優化 */
+        @media screen and (max-width: 480px) {
+            .content-container {
+                padding: 10px;
+            }
+            
+            .employment-form {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            
+            .page-subtitle {
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+            
+            .back-button {
+                left: 10px;
+            }
+            
+            .balance-item {
+                width: 100%;
+                margin: 3px 0;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .info-box {
+                padding: 10px;
+                font-size: 12px;
+            }
+            
+            .form-input::placeholder {
+                font-size: 12px;
+            }
+            
+            .conditional-section {
+                margin-top: 8px;
+                padding-left: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="logo">
+            <img src="https://via.placeholder.com/150x40/ffc107/212529.png?text=MC+MARKETS" alt="MC Markets Logo">
+        </div>
+        <div style="width: 40px;"></div> <!-- 平衡空間 -->
+    </div>
+    
+    <div class="account-balance">
+        <span>帳戶餘額</span>
+        <span class="balance-amount">$ 10,000.00</span>
+    </div>
+    
+    <div class="content-container">
+        <h1 class="content-title">就業詳情</h1>
+        <p class="content-subtitle">請提供您的就業資訊，以完成您的帳戶驗證</p>
+        
+        <div class="info-box">
+            <p>根據國際反洗錢法規要求，我們需要收集並驗證您的就業資訊。所有提供的資料都將被安全存儲並保密處理。</p>
+        </div>
+        
+        <form id="employment-form">
+            <div class="form-group">
+                <label for="employment-status" class="form-label">就業狀態</label>
+                <select id="employment-status" class="form-select" onchange="toggleEmployerFields()">
+                    <option value="">請選擇</option>
+                    <option value="employed">受僱</option>
+                    <option value="self-employed">自僱</option>
+                    <option value="retired">退休</option>
+                    <option value="student">學生</option>
+                    <option value="unemployed">未就業</option>
+                </select>
+                <div id="employment-status-error" class="error-message">請選擇您的就業狀態</div>
+            </div>
+            
+            <div id="occupation-panel">
+                <div class="form-group">
+                    <label for="occupation" class="form-label">職業</label>
+                    <input type="text" id="occupation" class="form-control" placeholder="請輸入您的職業">
+                    <div id="occupation-error" class="error-message">請輸入您的職業</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="industry" class="form-label">行業</label>
+                    <select id="industry" class="form-select">
+                        <option value="">請選擇</option>
+                        <option value="finance">金融/銀行業</option>
+                        <option value="it">資訊科技</option>
+                        <option value="healthcare">醫療保健</option>
+                        <option value="education">教育</option>
+                        <option value="manufacturing">製造業</option>
+                        <option value="retail">零售業</option>
+                        <option value="professional">專業服務（法律、會計等）</option>
+                        <option value="government">政府/公共部門</option>
+                        <option value="construction">建築業</option>
+                        <option value="agriculture">農業</option>
+                        <option value="transportation">運輸/物流</option>
+                        <option value="hospitality">餐飲/酒店業</option>
+                        <option value="media">媒體/娛樂</option>
+                        <option value="energy">能源/公用事業</option>
+                        <option value="other">其他</option>
+                    </select>
+                    <div id="industry-error" class="error-message">請選擇您的行業</div>
+                </div>
+            </div>
+            
+            <div id="employer-panel" class="conditional-panel">
+                <div class="form-group">
+                    <label for="employer-name" class="form-label">僱主名稱</label>
+                    <input type="text" id="employer-name" class="form-control" placeholder="請輸入您的僱主名稱">
+                    <div id="employer-name-error" class="error-message">請輸入您的僱主名稱</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="employer-address" class="form-label">僱主地址</label>
+                    <input type="text" id="employer-address" class="form-control" placeholder="請輸入僱主地址">
+                    <div id="employer-address-error" class="error-message">請輸入僱主地址</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="employment-years" class="form-label">工作年資</label>
+                    <select id="employment-years" class="form-select">
+                        <option value="">請選擇</option>
+                        <option value="0-1">少於1年</option>
+                        <option value="1-3">1-3年</option>
+                        <option value="3-5">3-5年</option>
+                        <option value="5-10">5-10年</option>
+                        <option value="10+">10年以上</option>
+                    </select>
+                    <div id="employment-years-error" class="error-message">請選擇您的工作年資</div>
+                </div>
+            </div>
+            
+            <div id="business-panel" class="conditional-panel">
+                <div class="form-group">
+                    <label for="business-name" class="form-label">企業/商號名稱</label>
+                    <input type="text" id="business-name" class="form-control" placeholder="請輸入您的企業或商號名稱">
+                    <div id="business-name-error" class="error-message">請輸入您的企業或商號名稱</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="business-years" class="form-label">企業經營年數</label>
+                    <select id="business-years" class="form-select">
+                        <option value="">請選擇</option>
+                        <option value="0-1">少於1年</option>
+                        <option value="1-3">1-3年</option>
+                        <option value="3-5">3-5年</option>
+                        <option value="5-10">5-10年</option>
+                        <option value="10+">10年以上</option>
+                    </select>
+                    <div id="business-years-error" class="error-message">請選擇您的企業經營年數</div>
+                </div>
+            </div>
+            
+            <div id="education-panel" class="conditional-panel">
+                <div class="form-group">
+                    <label for="institution-name" class="form-label">學校/教育機構名稱</label>
+                    <input type="text" id="institution-name" class="form-control" placeholder="請輸入您的學校或教育機構名稱">
+                    <div id="institution-name-error" class="error-message">請輸入您的學校或教育機構名稱</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="education-level" class="form-label">教育程度</label>
+                    <select id="education-level" class="form-select">
+                        <option value="">請選擇</option>
+                        <option value="high-school">高中</option>
+                        <option value="bachelor">學士學位</option>
+                        <option value="master">碩士學位</option>
+                        <option value="doctorate">博士學位</option>
+                        <option value="other">其他</option>
+                    </select>
+                    <div id="education-level-error" class="error-message">請選擇您的教育程度</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="study-field" class="form-label">研究領域/專業</label>
+                    <input type="text" id="study-field" class="form-control" placeholder="請輸入您的研究領域或專業">
+                    <div id="study-field-error" class="error-message">請輸入您的研究領域或專業</div>
+                </div>
+            </div>
+            
+            <div class="buttons-container">
+                <button type="button" class="btn btn-secondary" onclick="goBack()">返回</button>
+                <button type="button" class="btn btn-primary" onclick="saveAndContinue()">保存並繼續</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 檢查是否有保存的表單數據並恢復
+            restoreFormData();
+            
+            // 初始化表單顯示
+            toggleEmployerFields();
+        });
+        
+        // 切換雇主信息顯示/隱藏
+        function toggleEmployerFields() {
+            const employmentStatus = document.getElementById('employment-status').value;
+            const employerPanel = document.getElementById('employer-panel');
+            const businessPanel = document.getElementById('business-panel');
+            const educationPanel = document.getElementById('education-panel');
+            const occupationPanel = document.getElementById('occupation-panel');
+            
+            // 首先隱藏所有面板
+            employerPanel.style.display = 'none';
+            businessPanel.style.display = 'none';
+            educationPanel.style.display = 'none';
+            
+            // 根據就業狀態顯示相應面板
+            if (employmentStatus === 'employed') {
+                occupationPanel.style.display = 'block';
+                employerPanel.style.display = 'block';
+            } else if (employmentStatus === 'self-employed') {
+                occupationPanel.style.display = 'block';
+                businessPanel.style.display = 'block';
+            } else if (employmentStatus === 'student') {
+                occupationPanel.style.display = 'block';
+                educationPanel.style.display = 'block';
+            } else if (employmentStatus === 'retired' || employmentStatus === 'unemployed') {
+                occupationPanel.style.display = 'none';
+            } else {
+                occupationPanel.style.display = 'block';
+            }
+        }
+        
+        // 返回上一頁
+        function goBack() {
+            try {
+                // 保存當前表單數據
+                saveFormData();
+                
+                // 檢查是否來自test_all頁面
+                if (sessionStorage.getItem('fromTestAll') === 'true') {
+                    // 獲取當前文件的完整路徑
+                    const currentPath = window.location.href;
+                    
+                    // 分析路徑以處理各種情況
+                    let targetPath;
+                    
+                    // 檢查是否是文件系統路徑 (file://)
+                    if (currentPath.startsWith('file://')) {
+                        // 拆分路徑並替換最後一個部分
+                        const pathParts = currentPath.split('/');
+                        pathParts.pop(); // 移除最後一個部分 (employment_details.html)
+                        
+                        // 檢查是否在mcmarkets_prototype目錄中
+                        if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                            // 在mcmarkets_prototype中，直接添加test_all.html
+                            targetPath = pathParts.join('/') + '/test_all.html';
+                        } 
+                        // 處理桌面路徑
+                        else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                            // 用戶正在桌面上開啟文件
+                            const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                            const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                            // 檢查桌面上是否有mcmarkets_prototype目錄
+                            if (currentPath.includes('mcmarkets_prototype')) {
+                                targetPath = userPath + '/mcmarkets_prototype/test_all.html';
+                            } else {
+                                targetPath = userPath + '/test_all.html';
+                            }
+                        }
+                        else {
+                            // 嘗試添加test_all.html
+                            const baseDir = pathParts.join('/');
+                            // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                            if (baseDir.includes('/seanchou/')) {
+                                targetPath = baseDir + '/test_all.html';
+                            } else {
+                                // 回退方案 - 使用絕對路徑
+                                targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/test_all.html';
+                            }
+                        }
+                    } else {
+                        // 網站路徑，使用相對路徑
+                        targetPath = 'test_all.html';
+                    }
+                    
+                    // 記錄並跳轉
+                    console.log('返回到test_all頁面:', targetPath);
+                    window.location.href = targetPath;
+                } else {
+                    // 返回驗證中心
+                    // 獲取當前文件的完整路徑
+                    const currentPath = window.location.href;
+                    
+                    // 分析路徑以處理各種情況
+                    let targetPath;
+                    
+                    // 檢查是否是文件系統路徑 (file://)
+                    if (currentPath.startsWith('file://')) {
+                        // 拆分路徑並替換最後一個部分
+                        const pathParts = currentPath.split('/');
+                        pathParts.pop(); // 移除最後一個部分 (employment_details.html)
+                        
+                        // 檢查是否在mcmarkets_prototype目錄中
+                        if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                            // 在mcmarkets_prototype中，直接添加verification_center.html
+                            targetPath = pathParts.join('/') + '/verification_center.html';
+                        } 
+                        // 處理桌面路徑
+                        else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                            // 用戶正在桌面上開啟文件
+                            const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                            const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                            // 檢查桌面上是否有mcmarkets_prototype目錄
+                            if (currentPath.includes('mcmarkets_prototype')) {
+                                targetPath = userPath + '/mcmarkets_prototype/verification_center.html';
+                            } else {
+                                targetPath = userPath + '/verification_center.html';
+                            }
+                        }
+                        else {
+                            // 嘗試添加verification_center.html
+                            const baseDir = pathParts.join('/');
+                            // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                            if (baseDir.includes('/seanchou/')) {
+                                targetPath = baseDir + '/verification_center.html';
+                            } else {
+                                // 回退方案 - 使用絕對路徑
+                                targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/verification_center.html';
+                            }
+                        }
+                    } else {
+                        // 網站路徑，使用相對路徑
+                        targetPath = 'verification_center.html';
+                    }
+                    
+                    // 記錄並跳轉
+                    console.log('返回到驗證中心:', targetPath);
+                    window.location.href = targetPath;
+                }
+            } catch (error) {
+                console.error('返回過程中出現錯誤:', error);
+                alert('返回錯誤: ' + error.message);
+            }
+        }
+        
+        // 保存表單數據到localStorage
+        function saveFormData() {
+            try {
+                const formData = {
+                    employmentStatus: document.getElementById('employment-status').value,
+                    occupation: document.getElementById('occupation').value,
+                    industry: document.getElementById('industry').value,
+                    employerName: document.getElementById('employer-name').value,
+                    employerAddress: document.getElementById('employer-address').value,
+                    employmentYears: document.getElementById('employment-years').value,
+                    businessName: document.getElementById('business-name').value,
+                    businessYears: document.getElementById('business-years').value,
+                    institutionName: document.getElementById('institution-name').value,
+                    educationLevel: document.getElementById('education-level').value,
+                    studyField: document.getElementById('study-field').value
+                };
+                
+                localStorage.setItem('employment_form_data', JSON.stringify(formData));
+                console.log('表單數據已保存到localStorage');
+            } catch (error) {
+                console.error('保存表單數據時出錯:', error);
+            }
+        }
+        
+        // 從localStorage恢復表單數據
+        function restoreFormData() {
+            try {
+                const savedData = localStorage.getItem('employment_form_data');
+                if (savedData) {
+                    const formData = JSON.parse(savedData);
+                    
+                    // 填充表單字段
+                    document.getElementById('employment-status').value = formData.employmentStatus || '';
+                    document.getElementById('occupation').value = formData.occupation || '';
+                    document.getElementById('industry').value = formData.industry || '';
+                    document.getElementById('employer-name').value = formData.employerName || '';
+                    document.getElementById('employer-address').value = formData.employerAddress || '';
+                    document.getElementById('employment-years').value = formData.employmentYears || '';
+                    document.getElementById('business-name').value = formData.businessName || '';
+                    document.getElementById('business-years').value = formData.businessYears || '';
+                    document.getElementById('institution-name').value = formData.institutionName || '';
+                    document.getElementById('education-level').value = formData.educationLevel || '';
+                    document.getElementById('study-field').value = formData.studyField || '';
+                    
+                    console.log('已從localStorage恢復表單數據');
+                }
+            } catch (error) {
+                console.error('恢復表單數據時出錯:', error);
+            }
+        }
+        
+        // 驗證表單
+        function validateForm() {
+            let isValid = true;
+            const employmentStatus = document.getElementById('employment-status').value;
+            
+            // 重置所有錯誤消息
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+            });
+            
+            // 驗證就業狀態
+            if (!employmentStatus) {
+                document.getElementById('employment-status-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 根據就業狀態驗證相應字段
+            if (employmentStatus === 'employed' || employmentStatus === 'self-employed' || employmentStatus === 'student') {
+                // 驗證職業
+                const occupation = document.getElementById('occupation').value;
+                if (!occupation) {
+                    document.getElementById('occupation-error').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // 驗證行業
+                const industry = document.getElementById('industry').value;
+                if (!industry) {
+                    document.getElementById('industry-error').style.display = 'block';
+                    isValid = false;
+                }
+            }
+            
+            // 對於受僱人員
+            if (employmentStatus === 'employed') {
+                // 驗證僱主名稱
+                const employerName = document.getElementById('employer-name').value;
+                if (!employerName) {
+                    document.getElementById('employer-name-error').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // 驗證僱主地址
+                const employerAddress = document.getElementById('employer-address').value;
+                if (!employerAddress) {
+                    document.getElementById('employer-address-error').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // 驗證工作年資
+                const employmentYears = document.getElementById('employment-years').value;
+                if (!employmentYears) {
+                    document.getElementById('employment-years-error').style.display = 'block';
+                    isValid = false;
+                }
+            }
+            
+            // 對於自僱人士
+            if (employmentStatus === 'self-employed') {
+                // 驗證企業名稱
+                const businessName = document.getElementById('business-name').value;
+                if (!businessName) {
+                    document.getElementById('business-name-error').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // 驗證企業經營年數
+                const businessYears = document.getElementById('business-years').value;
+                if (!businessYears) {
+                    document.getElementById('business-years-error').style.display = 'block';
+                    isValid = false;
+                }
+            }
+            
+            // 對於學生
+            if (employmentStatus === 'student') {
+                // 驗證教育機構名稱
+                const institutionName = document.getElementById('institution-name').value;
+                if (!institutionName) {
+                    document.getElementById('institution-name-error').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // 驗證教育程度
+                const educationLevel = document.getElementById('education-level').value;
+                if (!educationLevel) {
+                    document.getElementById('education-level-error').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // 驗證研究領域
+                const studyField = document.getElementById('study-field').value;
+                if (!studyField) {
+                    document.getElementById('study-field-error').style.display = 'block';
+                    isValid = false;
+                }
+            }
+            
+            return isValid;
+        }
+        
+        // 保存並繼續
+        function saveAndContinue() {
+            try {
+                // 驗證表單
+                if (!validateForm()) {
+                    return;
+                }
+                
+                // 保存表單數據
+                saveFormData();
+                
+                // 設置就業詳情已完成
+                sessionStorage.setItem('employment_details_completed', 'true');
+                
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (employment_details.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加verification_center.html
+                        targetPath = pathParts.join('/') + '/verification_center.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/verification_center.html';
+                        } else {
+                            targetPath = userPath + '/verification_center.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加verification_center.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/verification_center.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/verification_center.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'verification_center.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('導航到:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('保存過程中出現錯誤:', error);
+                alert('保存錯誤: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html> 

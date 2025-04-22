@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 入金</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #e6ad00;
+            --accent-color: #ffcf40;
+            --light-color: #f1f5f9;
+            --dark-color: #0a0a14;
+            --dark-blue: #10235e;
+            --border-color: #2d2d3a;
+            --gray-color: #6b7280;
+            --bg-color: #0a0a14;
+            --button-blue: #1e88e5;
+            --card-bg: #13131f;
+            --success-color: #4CAF50;
+            --info-color: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--dark-blue);
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .account-balance {
+            display: flex;
+            justify-content: flex-end;
+            background-color: var(--dark-blue);
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .balance-item {
+            margin-left: 30px;
+            text-align: center;
+        }
+        
+        .balance-label {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+        
+        .balance-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--light-color);
+        }
+        
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+        
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: var(--light-color);
+            text-align: center;
+        }
+        
+        .deposit-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        
+        .deposit-method {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .deposit-method:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .method-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .method-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--dark-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+        
+        .method-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .method-tag {
+            margin-left: auto;
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--primary-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .method-details {
+            margin-bottom: 10px;
+            color: var(--gray-color);
+            font-size: 14px;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        
+        .detail-label {
+            flex: 1;
+        }
+        
+        .detail-value {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .note-text {
+            font-size: 12px;
+            color: var(--gray-color);
+            text-align: center;
+            margin-top: 30px;
+            max-width: 800px;
+            line-height: 1.5;
+        }
+        
+        .alert-banner {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 30px auto;
+            max-width: 1000px;
+            width: 100%;
+        }
+        
+        .alert-title {
+            display: flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .alert-title i {
+            margin-right: 10px;
+        }
+        
+        .alert-content {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* 覆蓋對話框樣式 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .dialog {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+        }
+        
+        .overlay.active .dialog {
+            transform: translateY(0);
+        }
+        
+        .dialog-title {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .dialog-title i {
+            margin-right: 12px;
+        }
+        
+        .dialog-content {
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--light-color);
+        }
+        
+        .dialog-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .dialog-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dialog-btn-primary {
+            background-color: var(--button-blue);
+            color: white;
+        }
+        
+        .dialog-btn-primary:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+        }
+        
+        .info-text {
+            color: var(--gray-color);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        /* 響應式媒體查詢 - 針對H5移動設備優化 */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 12px 0;
+            }
+            
+            .account-balance {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            
+            .balance-item {
+                margin: 5px;
+                width: 45%;
+                text-align: left;
+            }
+            
+            .content-container {
+                padding: 15px;
+            }
+            
+            .deposit-container {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .payment-methods {
+                flex-direction: column;
+            }
+            
+            .payment-method {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .payment-method-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .amount-presets {
+                flex-wrap: wrap;
+            }
+            
+            .amount-preset {
+                width: calc(50% - 10px);
+                margin: 5px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .info-box {
+                padding: 12px;
+                font-size: 13px;
+            }
+        }
+        
+        /* 更小屏幕設備的進一步優化 */
+        @media screen and (max-width: 480px) {
+            .content-container {
+                padding: 10px;
+            }
+            
+            .deposit-container {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            .back-button {
+                left: 10px;
+            }
+            
+            .balance-item {
+                width: 100%;
+                margin: 3px 0;
+            }
+            
+            .payment-method-title {
+                font-size: 14px;
+            }
+            
+            .payment-method-description {
+                font-size: 12px;
+            }
+            
+            .info-box {
+                padding: 10px;
+                font-size: 12px;
+            }
+            
+            .form-label {
+                font-size: 14px;
+            }
+            
+            .form-input {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            
+            .amount-preset {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <img src="assets/images/logo.png" alt="MC Markets Logo" style="height: 40px;" onerror="this.src='https://via.placeholder.com/180x40/ffc107/000000?text=MC+Markets';this.onerror='';">
+    </div>
+    
+    <div class="account-balance">
+        <div class="balance-item">
+            <div class="balance-label">可用餘額</div>
+            <div class="balance-value">$0.00 USD</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">帳戶編號</div>
+            <div class="balance-value">22321458</div>
+        </div>
+    </div>
+    
+    <div class="content-container">
+        <h1 class="page-title">入金</h1>
+        
+        <div class="deposit-methods">
+            <div class="deposit-method">
+                <div class="method-header">
+                    <div class="method-icon">
+                        <i class="fas fa-credit-card" style="color: #1e88e5;"></i>
+                    </div>
+                    <div class="method-title">信用卡</div>
+                    <div class="method-tag"></div>
+                </div>
+                <div class="method-details">
+                    <div class="detail-row">
+                        <div class="detail-label">到賬時間</div>
+                        <div class="detail-value">即時 - 30 分鐘</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">費用</div>
+                        <div class="detail-value">0%</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">限額</div>
+                        <div class="detail-value">10 - 10,000 USD</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="deposit-method">
+                <div class="method-header">
+                    <div class="method-icon">
+                        <i class="fab fa-bitcoin" style="color: #f7931a;"></i>
+                    </div>
+                    <div class="method-title">Bitcoin (BTC)</div>
+                    <div class="method-tag"></div>
+                </div>
+                <div class="method-details">
+                    <div class="detail-row">
+                        <div class="detail-label">到賬時間</div>
+                        <div class="detail-value">即時 - 1 小時</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">費用</div>
+                        <div class="detail-value">0%</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">限額</div>
+                        <div class="detail-value">10 - 200,000 USD</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="deposit-method">
+                <div class="method-header">
+                    <div class="method-icon">
+                        <i class="fab fa-cc-paypal" style="color: #0070ba;"></i>
+                    </div>
+                    <div class="method-title">Swapped.com</div>
+                    <div class="method-tag"></div>
+                </div>
+                <div class="method-details">
+                    <div class="detail-row">
+                        <div class="detail-label">到賬時間</div>
+                        <div class="detail-value">即時 - 30 分鐘</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">費用</div>
+                        <div class="detail-value">0%</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">限額</div>
+                        <div class="detail-value">10 - 100,000 USD</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="deposit-method">
+                <div class="method-header">
+                    <div class="method-icon">
+                        <i class="fas fa-exchange-alt" style="color: #26a17b;"></i>
+                    </div>
+                    <div class="method-title">Tether (USDT ERC20)</div>
+                    <div class="method-tag"></div>
+                </div>
+                <div class="method-details">
+                    <div class="detail-row">
+                        <div class="detail-label">到賬時間</div>
+                        <div class="detail-value">即時 - 15 分鐘</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">費用</div>
+                        <div class="detail-value">0%</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">限額</div>
+                        <div class="detail-value">10 - 200,000 USD</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert-banner">
+            <div class="alert-title">
+                <i class="fas fa-info-circle"></i>
+                <span>入金功能將在帳戶驗證完成後開啟</span>
+            </div>
+            <div class="alert-content">
+                為確保您的帳戶安全並符合金融監管要求，請先完成身份驗證及相關資料提交。一旦驗證通過，所有入金方式將立即可用。
+            </div>
+        </div>
+        
+        <p class="note-text">
+            MC Markets 致力於提供安全、便捷的交易環境。所有交易資金均存放於隔離帳戶，嚴格遵循金融監管規定。如需協助，請聯繫我們的24/7客戶支援團隊。
+        </p>
+    </div>
+    
+    <!-- 覆蓋對話框 -->
+    <div class="overlay" id="verification-dialog">
+        <div class="dialog">
+            <div class="dialog-title">
+                <i class="fas fa-shield-alt"></i>
+                <span>完成您的帳戶驗證</span>
+            </div>
+            <div class="dialog-content">
+                <p>根據國際金融監管要求，您需要先完成所有必要的驗證步驟。</p>
+                <p style="margin-top: 10px;">我們將帶您前往驗證中心，您可以在那裡完成：</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>身份證件驗證</li>
+                    <li>居住地址驗證</li>
+                    <li>就業詳情</li>
+                    <li>財務信息</li>
+                    <li>稅務國家</li>
+                </ul>
+            </div>
+            <div class="dialog-buttons">
+                <button class="dialog-btn dialog-btn-primary" onclick="navigateToVerificationCenter()">前往驗證中心</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function goBack() {
+            // 獲取當前文件的完整路徑
+            const currentPath = window.location.href;
+            console.log('當前完整路徑:', currentPath);
+            
+            // 分析路徑以處理各種情況
+            let targetPath;
+            
+            // 檢查是否是文件系統路徑 (file://)
+            if (currentPath.startsWith('file://')) {
+                // 拆分路徑並替換最後一個部分
+                const pathParts = currentPath.split('/');
+                pathParts.pop(); // 移除最後一個部分 (deposit.html)
+                
+                // 檢查是否來自test_all.html頁面
+                if (sessionStorage.getItem('fromTestAll') === 'true') {
+                    // 如果來自test_all頁面，直接返回該頁面
+                    const testAllPath = pathParts.join('/') + '/test_all.html';
+                    targetPath = testAllPath;
+                    sessionStorage.removeItem('fromTestAll'); // 清除標記
+                }
+                // 檢查是否在mcmarkets_prototype目錄中
+                else if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                    // 在mcmarkets_prototype中，返回主頁
+                    targetPath = pathParts.join('/') + '/residential_address.html';
+                } 
+                // 處理桌面路徑
+                else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                    // 用戶正在桌面上開啟文件
+                    const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                    const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                    // 檢查桌面上是否有mcmarkets_prototype目錄
+                    if (currentPath.includes('mcmarkets_prototype')) {
+                        targetPath = userPath + '/mcmarkets_prototype/residential_address.html';
+                    } else {
+                        targetPath = userPath + '/residential_address.html';
+                    }
+                }
+                else {
+                    // 嘗試添加residential_address.html
+                    const baseDir = pathParts.join('/');
+                    // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                    if (baseDir.includes('/seanchou/')) {
+                        targetPath = baseDir + '/residential_address.html';
+                    } else {
+                        // 回退方案 - 使用絕對路徑
+                        targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/residential_address.html';
+                    }
+                }
+            } else {
+                // 網站路徑，使用相對路徑
+                targetPath = 'residential_address.html';
+            }
+            
+            // 記錄並跳轉
+            console.log('返回到:', targetPath);
+            window.location.href = targetPath;
+        }
+        
+        // 添加頁面載入時顯示對話框
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延遲顯示對話框，讓頁面先渲染完成
+            setTimeout(function() {
+                document.getElementById('verification-dialog').classList.add('active');
+            }, 500);
+            
+            // 為整個頁面添加點擊事件
+            document.body.addEventListener('click', function(e) {
+                // 排除返回按鈕的點擊和對話框內部的點擊
+                if (e.target.closest('.back-button') || e.target.closest('.dialog')) {
+                    return;
+                }
+                
+                // 如果對話框是開啟狀態，則關閉它，否則開啟它
+                if (document.getElementById('verification-dialog').classList.contains('active')) {
+                    document.getElementById('verification-dialog').classList.remove('active');
+                } else {
+                    document.getElementById('verification-dialog').classList.add('active');
+                }
+            });
+        });
+        
+        // 導航到驗證中心函數
+        function navigateToVerificationCenter() {
+            try {
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (deposit.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加verification_center.html
+                        targetPath = pathParts.join('/') + '/verification_center.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/verification_center.html';
+                        } else {
+                            targetPath = userPath + '/verification_center.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加verification_center.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/verification_center.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/verification_center.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'verification_center.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('導航到驗證中心:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('導航過程中出現錯誤:', error);
+                alert('導航錯誤: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html> 

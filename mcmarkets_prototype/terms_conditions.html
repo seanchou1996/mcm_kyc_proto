@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 條款與條件</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #e6ad00;
+            --accent-color: #ffcf40;
+            --light-color: #f1f5f9;
+            --dark-color: #0a0a14;
+            --dark-blue: #10235e;
+            --border-color: #2d2d3a;
+            --gray-color: #6b7280;
+            --bg-color: #0a0a14;
+            --button-blue: #1e88e5;
+            --card-bg: #13131f;
+            --success-color: #4CAF50;
+            --error-color: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--dark-blue);
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .account-balance {
+            display: flex;
+            justify-content: flex-end;
+            background-color: var(--dark-blue);
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .balance-item {
+            margin-left: 30px;
+            text-align: center;
+        }
+        
+        .balance-label {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+        
+        .balance-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--light-color);
+        }
+        
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+        
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: var(--light-color);
+            text-align: center;
+        }
+        
+        .terms-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .info-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid var(--primary-color);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .info-box p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--light-color);
+        }
+        
+        .info-icon {
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+        
+        .agreement-section {
+            margin-top: 20px;
+        }
+        
+        .agreement-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .agreement-checkbox input {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--button-blue);
+        }
+        
+        .agreement-checkbox label {
+            font-size: 16px;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+        
+        .document-links {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        .document-link {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-color);
+            border-radius: 5px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: var(--light-color);
+            transition: all 0.3s ease;
+        }
+        
+        .document-link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
+        }
+        
+        .document-icon {
+            font-size: 20px;
+            margin-right: 15px;
+            color: var(--button-blue);
+        }
+        
+        .document-info {
+            flex: 1;
+        }
+        
+        .document-title {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .document-arrow {
+            font-size: 20px;
+            color: var(--gray-color);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--light-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--button-blue);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn-primary:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary:disabled {
+            background-color: rgba(30, 136, 229, 0.5);
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <img src="assets/images/logo.png" alt="MC Markets Logo" style="height: 40px;" onerror="this.src='https://via.placeholder.com/180x40/ffc107/000000?text=MC+Markets';this.onerror='';">
+    </div>
+    
+    <div class="account-balance">
+        <div class="balance-item">
+            <div class="balance-label">可用餘額</div>
+            <div class="balance-value">$0.00 USD</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">帳戶編號</div>
+            <div class="balance-value">22321458</div>
+        </div>
+    </div>
+    
+    <div class="content-container">
+        <h1 class="page-title">條款與條件</h1>
+        
+        <div class="terms-container">
+            <div class="info-box">
+                <p><i class="fas fa-info-circle info-icon"></i> 我們為什麼要收集這些資訊？</p>
+                <p>根據國際金融監管要求，我們必須收集並驗證客戶資訊，以提供安全且合規的交易服務。這些資訊將受到嚴格保護，並只用於合法目的。</p>
+            </div>
+            
+            <div class="document-links">
+                <a href="#" class="document-link">
+                    <i class="fas fa-file-alt document-icon"></i>
+                    <div class="document-info">
+                        <h3 class="document-title">訂單執行政策</h3>
+                    </div>
+                    <i class="fas fa-chevron-right document-arrow"></i>
+                </a>
+                
+                <a href="#" class="document-link">
+                    <i class="fas fa-file-alt document-icon"></i>
+                    <div class="document-info">
+                        <h3 class="document-title">風險披露通知</h3>
+                    </div>
+                    <i class="fas fa-chevron-right document-arrow"></i>
+                </a>
+                
+                <a href="#" class="document-link">
+                    <i class="fas fa-file-alt document-icon"></i>
+                    <div class="document-info">
+                        <h3 class="document-title">關鍵資訊文件</h3>
+                    </div>
+                    <i class="fas fa-chevron-right document-arrow"></i>
+                </a>
+                
+                <a href="#" class="document-link">
+                    <i class="fas fa-shield-alt document-icon"></i>
+                    <div class="document-info">
+                        <h3 class="document-title">隱私政策</h3>
+                    </div>
+                    <i class="fas fa-chevron-right document-arrow"></i>
+                </a>
+            </div>
+            
+            <div class="agreement-section">
+                <div class="agreement-checkbox">
+                    <input type="checkbox" id="terms-agreement" onchange="checkAgreement()">
+                    <label for="terms-agreement">我已詳細閱讀並接受 Plus500SEY 的使用者協議</label>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="goBack()">
+                    返回
+                </button>
+                <button class="btn btn-primary" id="complete-btn" disabled onclick="completeTerms()">
+                    完成
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function checkAgreement() {
+            const termsAgreement = document.getElementById('terms-agreement');
+            const completeBtn = document.getElementById('complete-btn');
+            
+            // 啟用/禁用完成按鈕
+            completeBtn.disabled = !termsAgreement.checked;
+        }
+        
+        function completeTerms() {
+            // 儲存協議已接受
+            sessionStorage.setItem('terms_conditions_completed', 'true');
+            
+            // 返回驗證中心
+            goBack();
+        }
+        
+        function goBack() {
+            // 獲取當前文件的完整路徑
+            const currentPath = window.location.href;
+            console.log('當前完整路徑:', currentPath);
+            
+            // 分析路徑以處理各種情況
+            let targetPath;
+            
+            // 檢查是否是文件系統路徑 (file://)
+            if (currentPath.startsWith('file://')) {
+                // 拆分路徑並替換最後一個部分
+                const pathParts = currentPath.split('/');
+                pathParts.pop(); // 移除最後一個部分 (terms_conditions.html)
+                
+                // 檢查是否在mcmarkets_prototype目錄中
+                if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                    // 在mcmarkets_prototype中，直接添加verification_center.html
+                    targetPath = pathParts.join('/') + '/verification_center.html';
+                } 
+                // 處理桌面路徑
+                else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                    // 用戶正在桌面上開啟文件
+                    const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                    const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                    // 檢查桌面上是否有mcmarkets_prototype目錄
+                    if (currentPath.includes('mcmarkets_prototype')) {
+                        targetPath = userPath + '/mcmarkets_prototype/verification_center.html';
+                    } else {
+                        targetPath = userPath + '/verification_center.html';
+                    }
+                }
+                else {
+                    // 嘗試添加verification_center.html
+                    const baseDir = pathParts.join('/');
+                    // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                    if (baseDir.includes('/seanchou/')) {
+                        targetPath = baseDir + '/verification_center.html';
+                    } else {
+                        // 回退方案 - 使用絕對路徑
+                        targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/verification_center.html';
+                    }
+                }
+            } else {
+                // 網站路徑，使用相對路徑
+                targetPath = 'verification_center.html';
+            }
+            
+            // 記錄並跳轉
+            console.log('返回到:', targetPath);
+            window.location.href = targetPath;
+        }
+    </script>
+</body>
+</html> 

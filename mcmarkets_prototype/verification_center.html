@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 驗證中心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #e6ad00;
+            --accent-color: #ffcf40;
+            --light-color: #f1f5f9;
+            --dark-color: #0a0a14;
+            --dark-blue: #10235e;
+            --border-color: #2d2d3a;
+            --gray-color: #6b7280;
+            --bg-color: #0a0a14;
+            --button-blue: #1e88e5;
+            --card-bg: #13131f;
+            --success-color: #4CAF50;
+            --error-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--dark-blue);
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .account-balance {
+            display: flex;
+            justify-content: flex-end;
+            background-color: var(--dark-blue);
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .balance-item {
+            margin-left: 30px;
+            text-align: center;
+        }
+        
+        .balance-label {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+        
+        .balance-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--light-color);
+        }
+        
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+        
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--light-color);
+            text-align: center;
+        }
+        
+        .page-subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: var(--gray-color);
+            text-align: center;
+            max-width: 800px;
+        }
+        
+        .verification-container {
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 20px;
+        }
+        
+        .section-header {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        .forms-container {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .form-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .form-item:last-child {
+            border-bottom: none;
+        }
+        
+        .form-info {
+            flex: 1;
+        }
+        
+        .form-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-title i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .form-description {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+        
+        .form-status {
+            margin-left: 20px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .status-completed {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success-color);
+        }
+        
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning-color);
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 6px;
+        }
+        
+        .btn-primary {
+            background-color: var(--button-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: black;
+        }
+        
+        .btn-danger {
+            background-color: var(--error-color);
+            color: white;
+        }
+        
+        .verification-item {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .verification-info {
+            flex: 1;
+        }
+        
+        .verification-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .verification-title i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .verification-description {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+        
+        .verification-status {
+            margin-left: 20px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .mobile-banner {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .mobile-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--primary-color);
+        }
+        
+        .mobile-text {
+            flex: 1;
+        }
+        
+        .mobile-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .mobile-description {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+        
+        .progress-indicator-container {
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .progress-info {
+            flex: 1;
+        }
+        
+        .progress-label {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(200, 200, 200, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-left: 15px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .verification-note {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid var(--warning-color);
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            border-radius: 5px;
+        }
+        
+        /* 響應式媒體查詢 - 針對H5移動設備優化 */
+        @media screen and (max-width: 768px) {
+            .account-balance {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            
+            .balance-item {
+                margin: 5px;
+                width: 45%;
+            }
+            
+            .verification-container {
+                padding: 0;
+            }
+            
+            .form-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .form-status, .form-action {
+                margin-top: 10px;
+                margin-left: 0;
+                align-self: flex-start;
+            }
+            
+            .verifications-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-bar-container {
+                height: 15px;
+            }
+            
+            .section-header {
+                font-size: 18px;
+            }
+            
+            .form-title {
+                font-size: 16px;
+            }
+            
+            .content-container {
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 22px;
+            }
+            
+            .page-subtitle {
+                font-size: 14px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+        
+        /* 更小屏幕設備的進一步優化 */
+        @media screen and (max-width: 480px) {
+            .header {
+                padding: 10px 0;
+            }
+            
+            .back-button {
+                left: 10px;
+            }
+            
+            .balance-item {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .verification-item {
+                padding: 12px;
+            }
+            
+            .form-item {
+                padding: 12px;
+            }
+            
+            .form-description {
+                font-size: 12px;
+            }
+            
+            .verification-progress-text {
+                font-size: 12px;
+            }
+            
+            .completion-percentage {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <img src="assets/images/logo.png" alt="MC Markets Logo" style="height: 40px;" onerror="this.src='https://via.placeholder.com/180x40/ffc107/000000?text=MC+Markets';this.onerror='';">
+    </div>
+    
+    <div class="account-balance">
+        <div class="balance-item">
+            <div class="balance-label">可用餘額</div>
+            <div class="balance-value">$0.00 USD</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">帳戶編號</div>
+            <div class="balance-value">22321458</div>
+        </div>
+    </div>
+    
+    <div class="content-container">
+        <h1 class="page-title">驗證中心</h1>
+        <p class="page-subtitle">在這裡可以使用您的行動設備輕鬆上載您的文件並保持登入狀態</p>
+        
+        <div class="verification-container">
+            <!-- 表單填寫部分 -->
+            <h2 class="section-header">
+                <i class="fas fa-list-check"></i> 必要資料填寫
+            </h2>
+            
+            <!-- 添加進度指示器 -->
+            <div class="progress-indicator-container">
+                <div class="progress-info">
+                    <span class="progress-label">完成進度：</span>
+                    <span id="completion-progress">0/6 已完成</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+            </div>
+            
+            <div class="forms-container">
+                <div class="form-item">
+                    <div class="form-info">
+                        <h3 class="form-title">
+                            <i class="fas fa-briefcase"></i> 就業詳情
+                        </h3>
+                        <p class="form-description">您的職業資訊與雇主資料</p>
+                    </div>
+                    <span class="form-status status-incomplete">未填寫</span>
+                    <button class="btn btn-primary" onclick="navigateToForm('employment_details.html')">
+                        <i class="fas fa-pencil-alt"></i> 填寫
+                    </button>
+                </div>
+                
+                <div class="form-item">
+                    <div class="form-info">
+                        <h3 class="form-title">
+                            <i class="fas fa-chart-line"></i> 財務信息
+                        </h3>
+                        <p class="form-description">您的收入來源與財務狀況</p>
+                    </div>
+                    <span class="form-status status-incomplete">未填寫</span>
+                    <button class="btn btn-primary" onclick="navigateToForm('financial_info.html')">
+                        <i class="fas fa-pencil-alt"></i> 填寫
+                    </button>
+                </div>
+                
+                <div class="form-item">
+                    <div class="form-info">
+                        <h3 class="form-title">
+                            <i class="fas fa-file-invoice-dollar"></i> 稅務國家
+                        </h3>
+                        <p class="form-description">您的稅務居住地與納稅識別號</p>
+                    </div>
+                    <span class="form-status status-completed">已填寫</span>
+                    <button class="btn btn-primary" onclick="navigateToForm('tax_country.html')">
+                        <i class="fas fa-edit"></i> 編輯
+                    </button>
+                </div>
+                
+                <div class="form-item">
+                    <div class="form-info">
+                        <h3 class="form-title">
+                            <i class="fas fa-chart-line"></i> 投資經驗與知識
+                        </h3>
+                        <p class="form-description">您的交易經驗與風險承受能力評估</p>
+                    </div>
+                    <span class="form-status status-pending">未填寫</span>
+                    <button class="btn btn-primary" onclick="navigateToForm('investment_experience.html')">
+                        <i class="fas fa-edit"></i> 填寫
+                    </button>
+                </div>
+                
+                <div class="form-item">
+                    <div class="form-info">
+                        <h3 class="form-title">
+                            <i class="fas fa-file-contract"></i> 條款與條件
+                        </h3>
+                        <p class="form-description">閱讀並接受我們的使用者協議</p>
+                    </div>
+                    <span class="form-status status-incomplete">未填寫</span>
+                    <button class="btn btn-primary" onclick="navigateToForm('terms_conditions.html')">
+                        <i class="fas fa-pencil-alt"></i> 查看
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 身份驗證部分 -->
+            <h2 class="section-header">
+                <i class="fas fa-id-card"></i> 身份驗證
+            </h2>
+            
+            <div class="mobile-banner">
+                <div class="mobile-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="mobile-text">
+                    <h3 class="mobile-title">在這頁可以使用您的行動設備輕鬆上載您的文件並保持登入狀態</h3>
+                    <p class="mobile-description">請按照以下步驟進行文件上傳，確保文件清晰可見且未過期。文件審核通常需要1-2個工作日。</p>
+                </div>
+            </div>
+            
+            <div class="verification-item">
+                <div class="verification-info">
+                    <h3 class="verification-title">
+                        <i class="fas fa-passport"></i> 身份證件驗證
+                    </h3>
+                    <p class="verification-description">您的身份證、護照、ROC（臺灣）居住證、駕照照片</p>
+                </div>
+                <span class="verification-status status-pending">查看中</span>
+                <button class="btn btn-primary" onclick="openVerificationUpload('identity')">
+                    <i class="fas fa-upload"></i> 驗證
+                </button>
+            </div>
+            
+            <div class="verification-item">
+                <div class="verification-info">
+                    <h3 class="verification-title">
+                        <i class="fas fa-home"></i> 居住地址驗證
+                    </h3>
+                    <p class="verification-description">您的身份證/ROC（臺灣）居住證/駕駛執照，或一份載有您的地址和姓名且在過去3個月內簽發的文件，例如：銀行對賬單、公共事業費或電話費帳單、養老金或保險（汽車保險除外）的單據。</p>
+                </div>
+                <span class="verification-status status-pending">查看中</span>
+                <button class="btn btn-primary" onclick="openVerificationUpload('address')">
+                    <i class="fas fa-upload"></i> 驗證
+                </button>
+            </div>
+            
+            <div class="verification-item">
+                <div class="verification-info">
+                    <h3 class="verification-title">
+                        <i class="fas fa-phone"></i> 電話驗證
+                    </h3>
+                    <p class="verification-description">驗證您的手機號碼，以確保帳戶安全</p>
+                </div>
+                <span class="verification-status status-incomplete">未驗證</span>
+                <button class="btn btn-primary" onclick="navigateToForm('phone_verification.html')">
+                    <i class="fas fa-phone-alt"></i> 驗證
+                </button>
+            </div>
+            
+            <div class="verification-item">
+                <div class="verification-info">
+                    <h3 class="verification-title">
+                        <i class="fas fa-envelope"></i> 電子郵箱驗證
+                    </h3>
+                    <p class="verification-description">確認您的電子郵箱地址</p>
+                </div>
+                <span class="verification-status status-completed">已驗證</span>
+                <button class="btn btn-primary" onclick="navigateToForm('email_verification.html')">
+                    <i class="fas fa-edit"></i> 編輯
+                </button>
+            </div>
+            
+            <!-- 添加2FA驗證設置 -->
+            <div class="verification-item">
+                <div class="verification-info">
+                    <h3 class="verification-title">
+                        <i class="fas fa-shield-alt"></i> 2FA驗證設置
+                    </h3>
+                    <p class="verification-description">提高您的帳戶安全性，設置雙重身份驗證</p>
+                </div>
+                <span class="verification-status status-incomplete">未設置</span>
+                <button class="btn btn-primary" onclick="navigateToForm('2fa_setup.html')">
+                    <i class="fas fa-lock"></i> 設置
+                </button>
+            </div>
+        </div>
+        
+        <div class="verification-container" style="margin-top: 20px;">
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <i class="fas fa-info-circle" style="margin-right: 10px; color: var(--info-color);"></i>
+                <p style="color: var(--gray-color); font-size: 14px;">您可以通過我們的Windows、網頁、iPhone或Android平台上傳文件照片，還可以利用我們的行動應用程式拍一張該文件的快照。</p>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <i class="fas fa-info-circle" style="margin-right: 10px; color: var(--info-color);"></i>
+                <p style="color: var(--gray-color); font-size: 14px;">證明文件格式可以為以下任何一種: .pdf、.png、.jpg或.gif.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 在頁面加載時檢查表單填寫和驗證狀態
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFormStatus();
+            updateVerificationStatus();
+        });
+        
+        // 更新表單填寫狀態
+        function updateFormStatus() {
+            // 檢查各表單的完成狀態
+            if (sessionStorage.getItem('personal_details_completed')) {
+                document.getElementById('personal-details-status').textContent = '已完成';
+                document.getElementById('personal-details-status').className = 'status completed';
+                document.getElementById('personal-details-btn').innerHTML = '<i class="fas fa-pencil-alt"></i> 編輯';
+            }
+            
+            if (sessionStorage.getItem('residential_address_completed')) {
+                document.getElementById('residential-address-status').textContent = '已完成';
+                document.getElementById('residential-address-status').className = 'status completed';
+                document.getElementById('residential-address-btn').innerHTML = '<i class="fas fa-pencil-alt"></i> 編輯';
+            }
+            
+            if (sessionStorage.getItem('employment_details_completed')) {
+                document.getElementById('employment-details-status').textContent = '已完成';
+                document.getElementById('employment-details-status').className = 'status completed';
+                document.getElementById('employment-details-btn').innerHTML = '<i class="fas fa-pencil-alt"></i> 編輯';
+            }
+            
+            if (sessionStorage.getItem('financial_info_completed')) {
+                document.getElementById('financial-info-status').textContent = '已完成';
+                document.getElementById('financial-info-status').className = 'status completed';
+                document.getElementById('financial-info-btn').innerHTML = '<i class="fas fa-pencil-alt"></i> 編輯';
+            }
+            
+            if (sessionStorage.getItem('tax_country_completed')) {
+                document.getElementById('tax-country-status').textContent = '已完成';
+                document.getElementById('tax-country-status').className = 'status completed';
+                document.getElementById('tax-country-btn').innerHTML = '<i class="fas fa-pencil-alt"></i> 編輯';
+            }
+            
+            if (sessionStorage.getItem('investment_experience_completed')) {
+                document.getElementById('investment-experience-status').textContent = '已完成';
+                document.getElementById('investment-experience-status').className = 'status completed';
+                document.getElementById('investment-experience-btn').innerHTML = '<i class="fas fa-pencil-alt"></i> 編輯';
+            }
+            
+            // 更新完成表單的數量和進度條
+            updateCompletionProgress();
+        }
+        
+        // 更新完成進度
+        function updateCompletionProgress() {
+            try {
+                // 獲取所有需要完成的表單項目（這裡按照頁面上的表單項計算）
+                const totalForms = 6; // 就業詳情、財務信息、稅務國家、投資經驗與知識、條款與條件等
+                let completedForms = 0;
+                
+                // 檢查每個表單的完成狀態
+                if (sessionStorage.getItem('personal_details_completed')) completedForms++;
+                if (sessionStorage.getItem('residential_address_completed')) completedForms++;
+                if (sessionStorage.getItem('employment_details_completed')) completedForms++;
+                if (sessionStorage.getItem('financial_info_completed')) completedForms++;
+                if (sessionStorage.getItem('tax_country_completed')) completedForms++;
+                if (sessionStorage.getItem('investment_experience_completed')) completedForms++;
+                
+                console.log(`已完成表單: ${completedForms}/${totalForms}`);
+                
+                // 如果頁面上有進度顯示元素，則更新它們
+                const progressIndicator = document.getElementById('completion-progress');
+                if (progressIndicator) {
+                    progressIndicator.textContent = `${completedForms}/${totalForms} 已完成`;
+                }
+                
+                // 如果有進度條，也可以更新進度條
+                const progressBar = document.getElementById('progress-bar');
+                if (progressBar) {
+                    const progressPercentage = (completedForms / totalForms) * 100;
+                    progressBar.style.width = `${progressPercentage}%`;
+                    
+                    // 根據完成進度改變顏色
+                    if (progressPercentage === 100) {
+                        progressBar.style.backgroundColor = 'var(--success-color)';
+                    } else if (progressPercentage > 50) {
+                        progressBar.style.backgroundColor = 'var(--primary-color)';
+                    } else {
+                        progressBar.style.backgroundColor = 'var(--warning-color)';
+                    }
+                }
+                
+                // 檢查是否所有表單都已完成，如果是，則可以通知用戶或啟用某些功能
+                if (completedForms === totalForms) {
+                    console.log('所有表單已完成！');
+                    // 這裡可以添加完成所有表單後的額外功能
+                    
+                    // 存儲完成狀態
+                    sessionStorage.setItem('all_forms_completed', 'true');
+                }
+            } catch (error) {
+                console.error('更新完成進度時出錯:', error);
+            }
+        }
+        
+        // 更新驗證狀態
+        function updateVerificationStatus() {
+            // 這裡應該從sessionStorage或localStorage獲取驗證狀態
+            try {
+                // 身份證件驗證狀態
+                if (sessionStorage.getItem('identity_verified') === 'true') {
+                    const verificationStatus = document.querySelector('.verification-item:nth-child(1) .verification-status');
+                    verificationStatus.className = 'verification-status status-completed';
+                    verificationStatus.textContent = '已驗證';
+                } else if (sessionStorage.getItem('identity_verified') === 'pending') {
+                    const verificationStatus = document.querySelector('.verification-item:nth-child(1) .verification-status');
+                    verificationStatus.className = 'verification-status status-pending';
+                    verificationStatus.style.backgroundColor = 'rgba(255, 193, 7, 0.2)';
+                    verificationStatus.style.color = 'var(--warning-color)';
+                    verificationStatus.textContent = '查看中';
+                }
+                
+                // 地址驗證狀態
+                if (sessionStorage.getItem('address_verification_rejected') === 'true') {
+                    const verificationStatus = document.querySelector('.verification-item:nth-child(2) .verification-status');
+                    verificationStatus.className = 'verification-status status-pending';
+                    verificationStatus.style.backgroundColor = 'rgba(220, 53, 69, 0.2)';
+                    verificationStatus.style.color = 'var(--error-color)';
+                    verificationStatus.textContent = '已拒絕';
+                } else if (sessionStorage.getItem('address_verification_pending') === 'true') {
+                    const verificationStatus = document.querySelector('.verification-item:nth-child(2) .verification-status');
+                    verificationStatus.className = 'verification-status status-pending';
+                    verificationStatus.style.backgroundColor = 'rgba(255, 193, 7, 0.2)';
+                    verificationStatus.style.color = 'var(--warning-color)';
+                    verificationStatus.textContent = '查看中';
+                }
+                
+                // 電話驗證狀態
+                if (sessionStorage.getItem('phone_verified') === 'true') {
+                    const verificationStatus = document.querySelector('.verification-item:nth-child(3) .verification-status');
+                    verificationStatus.className = 'verification-status status-completed';
+                    verificationStatus.textContent = '已驗證';
+                    document.querySelector('.verification-item:nth-child(3) .btn').innerHTML = '<i class="fas fa-edit"></i> 編輯';
+                }
+                
+                // 電子郵箱驗證狀態已設為已驗證（默認狀態）
+                
+                // 2FA驗證設置狀態
+                if (sessionStorage.getItem('2fa_setup_completed') === 'true') {
+                    const verificationStatus = document.querySelector('.verification-item:nth-child(5) .verification-status');
+                    verificationStatus.className = 'verification-status status-completed';
+                    verificationStatus.textContent = '已設置';
+                    document.querySelector('.verification-item:nth-child(5) .btn').innerHTML = '<i class="fas fa-edit"></i> 管理';
+                } else if (sessionStorage.getItem('2fa_setup_started') === 'true') {
+                    const verificationStatus = document.querySelector('.verification-item:nth-child(5) .verification-status');
+                    verificationStatus.className = 'verification-status status-pending';
+                    verificationStatus.style.backgroundColor = 'rgba(255, 193, 7, 0.2)';
+                    verificationStatus.style.color = 'var(--warning-color)';
+                    verificationStatus.textContent = '設置中';
+                }
+                
+            } catch (error) {
+                console.error('更新驗證狀態時出錯:', error);
+            }
+        }
+        
+        // 導航到表單頁面
+        function navigateToForm(formPage) {
+            try {
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (verification_center.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加目標文件
+                        targetPath = pathParts.join('/') + '/' + formPage;
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/' + formPage;
+                        } else {
+                            targetPath = userPath + '/' + formPage;
+                        }
+                    }
+                    else {
+                        // 嘗試添加目標文件
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/' + formPage;
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/' + formPage;
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = formPage;
+                }
+                
+                // 儲存來源頁面信息
+                sessionStorage.setItem('fromVerificationCenter', 'true');
+                
+                // 記錄並跳轉
+                console.log('導航到:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('導航過程中出現錯誤:', error);
+                alert('導航錯誤: ' + error.message);
+            }
+        }
+        
+        // 打開驗證上傳面板
+        function openVerificationUpload(type) {
+            if (type === 'identity') {
+                // 顯示身分證件驗證彈窗
+                const modal = document.createElement('div');
+                modal.style.position = 'fixed';
+                modal.style.top = '0';
+                modal.style.left = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                modal.style.display = 'flex';
+                modal.style.justifyContent = 'center';
+                modal.style.alignItems = 'center';
+                modal.style.zIndex = '1000';
+                
+                const modalContent = document.createElement('div');
+                modalContent.style.backgroundColor = 'var(--card-bg)';
+                modalContent.style.padding = '25px';
+                modalContent.style.borderRadius = '8px';
+                modalContent.style.width = '90%';
+                modalContent.style.maxWidth = '500px';
+                
+                modalContent.innerHTML = `
+                    <h2 style="color: var(--primary-color); margin-bottom: 15px; font-size: 24px;">
+                        <i class="fas fa-info-circle" style="margin-right: 10px;"></i>資訊
+                    </h2>
+                    <p style="margin-bottom: 20px; line-height: 1.6;">
+                        您所上傳的檔案目前正在審查，這個程序將很快完成。我們感謝您的耐心。
+                    </p>
+                    <div style="text-align: right;">
+                        <button id="confirm-btn" style="background-color: var(--button-blue); color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer;">確定</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // 添加確定按鈕點擊事件
+                document.getElementById('confirm-btn').addEventListener('click', function() {
+                    document.body.removeChild(modal);
+                });
+                
+                // 設置身份驗證查看中
+                sessionStorage.setItem('identity_verified', 'pending');
+                
+                // 更新狀態顯示
+                const verificationStatus = document.querySelector('.verification-item:nth-child(1) .verification-status');
+                verificationStatus.className = 'verification-status status-pending';
+                verificationStatus.style.backgroundColor = 'rgba(255, 193, 7, 0.2)';
+                verificationStatus.style.color = 'var(--warning-color)';
+                verificationStatus.textContent = '查看中';
+            } else if (type === 'address') {
+                // 顯示居住地址驗證彈窗
+                const modal = document.createElement('div');
+                modal.style.position = 'fixed';
+                modal.style.top = '0';
+                modal.style.left = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                modal.style.display = 'flex';
+                modal.style.justifyContent = 'center';
+                modal.style.alignItems = 'center';
+                modal.style.zIndex = '1000';
+                
+                const modalContent = document.createElement('div');
+                modalContent.style.backgroundColor = 'var(--card-bg)';
+                modalContent.style.padding = '25px';
+                modalContent.style.borderRadius = '8px';
+                modalContent.style.width = '90%';
+                modalContent.style.maxWidth = '500px';
+                
+                modalContent.innerHTML = `
+                    <h2 style="color: var(--primary-color); margin-bottom: 15px; font-size: 24px;">
+                        <i class="fas fa-info-circle" style="margin-right: 10px;"></i>資訊
+                    </h2>
+                    <p style="margin-bottom: 20px; line-height: 1.6;">
+                        您所上傳的檔案目前正在審查，這個程序將很快完成。我們感謝您的耐心。
+                    </p>
+                    <div style="text-align: right;">
+                        <button id="confirm-btn" style="background-color: var(--button-blue); color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer;">確定</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // 添加確定按鈕點擊事件
+                document.getElementById('confirm-btn').addEventListener('click', function() {
+                    document.body.removeChild(modal);
+                });
+                
+                // 設置地址驗證查看中
+                sessionStorage.setItem('address_verification_rejected', 'false');
+                sessionStorage.setItem('address_verification_pending', 'true');
+                
+                // 更新狀態顯示
+                const verificationStatus = document.querySelector('.verification-item:nth-child(2) .verification-status');
+                verificationStatus.className = 'verification-status status-pending';
+                verificationStatus.style.backgroundColor = 'rgba(255, 193, 7, 0.2)';
+                verificationStatus.style.color = 'var(--warning-color)';
+                verificationStatus.textContent = '查看中';
+            }
+        }
+        
+        // 返回上一頁
+        function goBack() {
+            try {
+                // 檢查是否來自test_all頁面
+                if (sessionStorage.getItem('fromTestAll') === 'true') {
+                    // 獲取當前文件的完整路徑
+                    const currentPath = window.location.href;
+                    
+                    // 分析路徑以處理各種情況
+                    let targetPath;
+                    
+                    // 檢查是否是文件系統路徑 (file://)
+                    if (currentPath.startsWith('file://')) {
+                        // 拆分路徑並替換最後一個部分
+                        const pathParts = currentPath.split('/');
+                        pathParts.pop(); // 移除最後一個部分 (verification_center.html)
+                        
+                        // 檢查是否在mcmarkets_prototype目錄中
+                        if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                            // 在mcmarkets_prototype中，直接添加test_all.html
+                            targetPath = pathParts.join('/') + '/test_all.html';
+                        } 
+                        // 處理桌面路徑
+                        else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                            // 用戶正在桌面上開啟文件
+                            const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                            const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                            // 檢查桌面上是否有mcmarkets_prototype目錄
+                            if (currentPath.includes('mcmarkets_prototype')) {
+                                targetPath = userPath + '/mcmarkets_prototype/test_all.html';
+                            } else {
+                                targetPath = userPath + '/test_all.html';
+                            }
+                        }
+                        else {
+                            // 嘗試添加test_all.html
+                            const baseDir = pathParts.join('/');
+                            // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                            if (baseDir.includes('/seanchou/')) {
+                                targetPath = baseDir + '/test_all.html';
+                            } else {
+                                // 回退方案 - 使用絕對路徑
+                                targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/test_all.html';
+                            }
+                        }
+                    } else {
+                        // 網站路徑，使用相對路徑
+                        targetPath = 'test_all.html';
+                    }
+                    
+                    // 記錄並跳轉
+                    console.log('返回到test_all頁面:', targetPath);
+                    window.location.href = targetPath;
+                } else {
+                    // 獲取當前文件的完整路徑
+                    const currentPath = window.location.href;
+                    
+                    // 分析路徑以處理各種情況
+                    let targetPath;
+                    
+                    // 檢查是否是文件系統路徑 (file://)
+                    if (currentPath.startsWith('file://')) {
+                        // 拆分路徑並替換最後一個部分
+                        const pathParts = currentPath.split('/');
+                        pathParts.pop(); // 移除最後一個部分 (verification_center.html)
+                        
+                        // 檢查是否在mcmarkets_prototype目錄中
+                        if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                            // 在mcmarkets_prototype中，直接添加deposit.html
+                            targetPath = pathParts.join('/') + '/deposit.html';
+                        } 
+                        // 處理桌面路徑
+                        else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                            // 用戶正在桌面上開啟文件
+                            const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                            const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                            // 檢查桌面上是否有mcmarkets_prototype目錄
+                            if (currentPath.includes('mcmarkets_prototype')) {
+                                targetPath = userPath + '/mcmarkets_prototype/deposit.html';
+                            } else {
+                                targetPath = userPath + '/deposit.html';
+                            }
+                        }
+                        else {
+                            // 嘗試添加deposit.html
+                            const baseDir = pathParts.join('/');
+                            // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                            if (baseDir.includes('/seanchou/')) {
+                                targetPath = baseDir + '/deposit.html';
+                            } else {
+                                // 回退方案 - 使用絕對路徑
+                                targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/deposit.html';
+                            }
+                        }
+                    } else {
+                        // 網站路徑，使用相對路徑
+                        targetPath = 'deposit.html';
+                    }
+                    
+                    // 記錄並跳轉
+                    console.log('返回到入金頁面:', targetPath);
+                    window.location.href = targetPath;
+                }
+            } catch (error) {
+                console.error('返回過程中出現錯誤:', error);
+                alert('返回錯誤: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html> 

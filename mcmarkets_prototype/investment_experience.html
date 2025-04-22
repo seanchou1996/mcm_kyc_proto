@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 投資經驗與知識</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #e6ad00;
+            --accent-color: #ffcf40;
+            --light-color: #f1f5f9;
+            --dark-color: #0a0a14;
+            --dark-blue: #10235e;
+            --border-color: #2d2d3a;
+            --gray-color: #6b7280;
+            --bg-color: #0a0a14;
+            --button-blue: #1e88e5;
+            --card-bg: #13131f;
+            --success-color: #4CAF50;
+            --error-color: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--dark-blue);
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .account-balance {
+            display: flex;
+            justify-content: flex-end;
+            background-color: var(--dark-blue);
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .balance-item {
+            margin-left: 30px;
+            text-align: center;
+        }
+        
+        .balance-label {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+        
+        .balance-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--light-color);
+        }
+        
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--light-color);
+            text-align: center;
+        }
+        
+        .form-container {
+            width: 100%;
+            max-width: 700px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--light-color);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            font-size: 16px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 15px) center;
+            cursor: pointer;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            font-size: 16px;
+        }
+        
+        .form-select:focus, .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--button-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .info-text {
+            color: var(--gray-color);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .error-text {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .required-mark {
+            color: var(--error-color);
+        }
+        
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .info-box p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--light-color);
+        }
+        
+        .radio-group {
+            margin-top: 12px;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .radio-input {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+        }
+        
+        .radio-label {
+            font-size: 16px;
+        }
+        
+        .radio-detail {
+            font-size: 14px;
+            color: var(--gray-color);
+            margin-top: 3px;
+            margin-left: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <img src="assets/images/logo.png" alt="MC Markets Logo" style="height: 40px;" onerror="this.src='https://via.placeholder.com/180x40/ffc107/000000?text=MC+Markets';this.onerror='';">
+    </div>
+    
+    <div class="account-balance">
+        <div class="balance-item">
+            <div class="balance-label">可用餘額</div>
+            <div class="balance-value">$0.00 USD</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">帳戶編號</div>
+            <div class="balance-value">22321458</div>
+        </div>
+    </div>
+    
+    <div class="content-container">
+        <h1 class="page-title">投資經驗與知識</h1>
+        
+        <div class="form-container">
+            <div class="info-box">
+                <p><i class="fas fa-info-circle"></i> 為了確保我們能夠提供適合您風險承受能力的產品和服務，請如實回答以下問題。這將幫助我們評估您的投資經驗和金融市場知識水平。</p>
+            </div>
+            
+            <form id="investment-experience-form">
+                <div class="form-group">
+                    <label class="form-label">您之前是否有金融產品交易經驗？ <span class="required-mark">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" class="radio-input" id="trading-experience-yes" name="trading-experience" value="yes">
+                            <label class="radio-label" for="trading-experience-yes">是</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" class="radio-input" id="trading-experience-no" name="trading-experience" value="no">
+                            <label class="radio-label" for="trading-experience-no">否</label>
+                        </div>
+                    </div>
+                    <div class="error-text" id="trading-experience-error">請選擇您的交易經驗</div>
+                </div>
+                
+                <div id="experience-details" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="trading-years">您有多少年交易經驗？ <span class="required-mark">*</span></label>
+                        <select class="form-select" id="trading-years">
+                            <option value="" selected disabled>請選擇</option>
+                            <option value="less-1">不到1年</option>
+                            <option value="1-3">1-3年</option>
+                            <option value="3-5">3-5年</option>
+                            <option value="more-5">5年以上</option>
+                        </select>
+                        <div class="error-text" id="trading-years-error">請選擇您的交易年數</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="trading-frequency">您多久進行一次交易？ <span class="required-mark">*</span></label>
+                        <select class="form-select" id="trading-frequency">
+                            <option value="" selected disabled>請選擇</option>
+                            <option value="daily">每天</option>
+                            <option value="weekly">每週</option>
+                            <option value="monthly">每月</option>
+                            <option value="quarterly">每季度</option>
+                            <option value="rarely">很少</option>
+                        </select>
+                        <div class="error-text" id="trading-frequency-error">請選擇您的交易頻率</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">您有哪些金融產品的交易經驗？ <span class="required-mark">*</span></label>
+                        <p class="info-text">請選擇所有適用項</p>
+                        
+                        <div class="radio-item">
+                            <input type="checkbox" class="radio-input" id="experience-forex">
+                            <label class="radio-label" for="experience-forex">外匯</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="checkbox" class="radio-input" id="experience-stocks">
+                            <label class="radio-label" for="experience-stocks">股票</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="checkbox" class="radio-input" id="experience-commodities">
+                            <label class="radio-label" for="experience-commodities">商品</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="checkbox" class="radio-input" id="experience-indices">
+                            <label class="radio-label" for="experience-indices">指數</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="checkbox" class="radio-input" id="experience-bonds">
+                            <label class="radio-label" for="experience-bonds">債券</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="checkbox" class="radio-input" id="experience-crypto">
+                            <label class="radio-label" for="experience-crypto">加密貨幣</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="checkbox" class="radio-input" id="experience-cfd">
+                            <label class="radio-label" for="experience-cfd">差價合約 (CFD)</label>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="checkbox" class="radio-input" id="experience-options">
+                            <label class="radio-label" for="experience-options">期權</label>
+                        </div>
+                        
+                        <div class="error-text" id="experience-products-error">請至少選擇一項金融產品</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">您對金融市場和交易工具的了解程度？ <span class="required-mark">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" class="radio-input" id="knowledge-beginner" name="knowledge-level" value="beginner">
+                            <label class="radio-label" for="knowledge-beginner">初學者</label>
+                            <p class="radio-detail">我對金融市場和交易工具知之甚少</p>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" class="radio-input" id="knowledge-basic" name="knowledge-level" value="basic">
+                            <label class="radio-label" for="knowledge-basic">基礎</label>
+                            <p class="radio-detail">我了解基本概念，但缺乏實際經驗</p>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" class="radio-input" id="knowledge-intermediate" name="knowledge-level" value="intermediate">
+                            <label class="radio-label" for="knowledge-intermediate">中級</label>
+                            <p class="radio-detail">我了解多數金融產品和交易策略</p>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" class="radio-input" id="knowledge-advanced" name="knowledge-level" value="advanced">
+                            <label class="radio-label" for="knowledge-advanced">高級</label>
+                            <p class="radio-detail">我熟悉金融市場，經常交易並使用複雜策略</p>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" class="radio-input" id="knowledge-expert" name="knowledge-level" value="expert">
+                            <label class="radio-label" for="knowledge-expert">專家</label>
+                            <p class="radio-detail">我擁有專業的金融背景和豐富的交易經驗</p>
+                        </div>
+                    </div>
+                    <div class="error-text" id="knowledge-level-error">請選擇您的知識水平</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">您了解交易槓桿產品的風險嗎？ <span class="required-mark">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" class="radio-input" id="leverage-risk-yes" name="leverage-risk" value="yes">
+                            <label class="radio-label" for="leverage-risk-yes">是</label>
+                            <p class="radio-detail">我了解槓桿交易可能導致損失超過初始投資金額</p>
+                        </div>
+                        
+                        <div class="radio-item">
+                            <input type="radio" class="radio-input" id="leverage-risk-no" name="leverage-risk" value="no">
+                            <label class="radio-label" for="leverage-risk-no">否</label>
+                            <p class="radio-detail">我不確定槓桿交易的風險</p>
+                        </div>
+                    </div>
+                    <div class="error-text" id="leverage-risk-error">請選擇您對槓桿風險的了解程度</div>
+                </div>
+                
+                <div class="btn-container">
+                    <button type="button" class="btn" style="background-color: transparent; color: var(--light-color); border: 1px solid var(--border-color);" onclick="goBack()">
+                        返回
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="saveAndContinue()">
+                        儲存並繼續
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 根據交易經驗顯示/隱藏相應欄位
+            document.querySelectorAll('input[name="trading-experience"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    const experienceDetails = document.getElementById('experience-details');
+                    if (this.value === 'yes') {
+                        experienceDetails.style.display = 'block';
+                    } else {
+                        experienceDetails.style.display = 'none';
+                    }
+                });
+            });
+            
+            // 載入已保存的表單數據（如果有）
+            loadFormData();
+        });
+        
+        // 載入已保存的表單數據
+        function loadFormData() {
+            try {
+                const savedData = sessionStorage.getItem('investment_experience');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    
+                    // 設置交易經驗
+                    if (data.tradingExperience === 'yes') {
+                        document.getElementById('trading-experience-yes').checked = true;
+                        document.getElementById('experience-details').style.display = 'block';
+                    } else if (data.tradingExperience === 'no') {
+                        document.getElementById('trading-experience-no').checked = true;
+                    }
+                    
+                    // 填充其他表單欄位
+                    if (data.tradingYears) document.getElementById('trading-years').value = data.tradingYears;
+                    if (data.tradingFrequency) document.getElementById('trading-frequency').value = data.tradingFrequency;
+                    
+                    // 設置產品經驗
+                    if (data.products) {
+                        if (data.products.includes('forex')) document.getElementById('experience-forex').checked = true;
+                        if (data.products.includes('stocks')) document.getElementById('experience-stocks').checked = true;
+                        if (data.products.includes('commodities')) document.getElementById('experience-commodities').checked = true;
+                        if (data.products.includes('indices')) document.getElementById('experience-indices').checked = true;
+                        if (data.products.includes('bonds')) document.getElementById('experience-bonds').checked = true;
+                        if (data.products.includes('crypto')) document.getElementById('experience-crypto').checked = true;
+                        if (data.products.includes('cfd')) document.getElementById('experience-cfd').checked = true;
+                        if (data.products.includes('options')) document.getElementById('experience-options').checked = true;
+                    }
+                    
+                    // 設置知識水平
+                    if (data.knowledgeLevel) document.querySelector(`input[name="knowledge-level"][value="${data.knowledgeLevel}"]`).checked = true;
+                    
+                    // 設置槓桿風險了解
+                    if (data.leverageRisk) document.querySelector(`input[name="leverage-risk"][value="${data.leverageRisk}"]`).checked = true;
+                }
+            } catch (error) {
+                console.error('加載表單數據時出錯:', error);
+            }
+        }
+        
+        // 驗證表單
+        function validateForm() {
+            let isValid = true;
+            
+            // 驗證交易經驗
+            const tradingExperience = document.querySelector('input[name="trading-experience"]:checked');
+            if (!tradingExperience) {
+                document.getElementById('trading-experience-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('trading-experience-error').style.display = 'none';
+                
+                // 如果有交易經驗，驗證相關欄位
+                if (tradingExperience.value === 'yes') {
+                    // 驗證交易年數
+                    if (!document.getElementById('trading-years').value) {
+                        document.getElementById('trading-years-error').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('trading-years-error').style.display = 'none';
+                    }
+                    
+                    // 驗證交易頻率
+                    if (!document.getElementById('trading-frequency').value) {
+                        document.getElementById('trading-frequency-error').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('trading-frequency-error').style.display = 'none';
+                    }
+                    
+                    // 驗證交易產品
+                    const productsChecked = document.getElementById('experience-forex').checked ||
+                                        document.getElementById('experience-stocks').checked ||
+                                        document.getElementById('experience-commodities').checked ||
+                                        document.getElementById('experience-indices').checked ||
+                                        document.getElementById('experience-bonds').checked ||
+                                        document.getElementById('experience-crypto').checked ||
+                                        document.getElementById('experience-cfd').checked ||
+                                        document.getElementById('experience-options').checked;
+                    
+                    if (!productsChecked) {
+                        document.getElementById('experience-products-error').style.display = 'block';
+                        isValid = false;
+                    } else {
+                        document.getElementById('experience-products-error').style.display = 'none';
+                    }
+                }
+            }
+            
+            // 驗證知識水平
+            if (!document.querySelector('input[name="knowledge-level"]:checked')) {
+                document.getElementById('knowledge-level-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('knowledge-level-error').style.display = 'none';
+            }
+            
+            // 驗證槓桿風險了解
+            if (!document.querySelector('input[name="leverage-risk"]:checked')) {
+                document.getElementById('leverage-risk-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('leverage-risk-error').style.display = 'none';
+            }
+            
+            return isValid;
+        }
+        
+        // 保存表單數據並繼續
+        function saveAndContinue() {
+            if (validateForm()) {
+                // 收集表單數據
+                const tradingExperience = document.querySelector('input[name="trading-experience"]:checked').value;
+                
+                const formData = {
+                    tradingExperience: tradingExperience,
+                    knowledgeLevel: document.querySelector('input[name="knowledge-level"]:checked')?.value || '',
+                    leverageRisk: document.querySelector('input[name="leverage-risk"]:checked')?.value || ''
+                };
+                
+                // 如果有交易經驗，收集相關數據
+                if (tradingExperience === 'yes') {
+                    formData.tradingYears = document.getElementById('trading-years').value;
+                    formData.tradingFrequency = document.getElementById('trading-frequency').value;
+                    
+                    // 收集交易產品
+                    const products = [];
+                    if (document.getElementById('experience-forex').checked) products.push('forex');
+                    if (document.getElementById('experience-stocks').checked) products.push('stocks');
+                    if (document.getElementById('experience-commodities').checked) products.push('commodities');
+                    if (document.getElementById('experience-indices').checked) products.push('indices');
+                    if (document.getElementById('experience-bonds').checked) products.push('bonds');
+                    if (document.getElementById('experience-crypto').checked) products.push('crypto');
+                    if (document.getElementById('experience-cfd').checked) products.push('cfd');
+                    if (document.getElementById('experience-options').checked) products.push('options');
+                    
+                    formData.products = products;
+                }
+                
+                // 保存到sessionStorage
+                sessionStorage.setItem('investment_experience', JSON.stringify(formData));
+                
+                // 標記投資經驗表單已完成
+                sessionStorage.setItem('investment_experience_completed', 'true');
+                
+                // 返回驗證中心
+                navigateToVerificationCenter();
+            }
+        }
+        
+        // 導航到驗證中心
+        function navigateToVerificationCenter() {
+            try {
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (investment_experience.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加verification_center.html
+                        targetPath = pathParts.join('/') + '/verification_center.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/verification_center.html';
+                        } else {
+                            targetPath = userPath + '/verification_center.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加verification_center.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/verification_center.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/verification_center.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'verification_center.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('返回驗證中心:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('導航過程中出現錯誤:', error);
+                alert('導航錯誤: ' + error.message);
+            }
+        }
+        
+        // 返回上一頁
+        function goBack() {
+            navigateToVerificationCenter();
+        }
+    </script>
+</body>
+</html> 

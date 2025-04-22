@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 居住地址</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #135cc5;
+            --accent-color: #4285f4;
+            --light-color: #f1f5f9;
+            --dark-color: #0a0a14;
+            --border-color: #dadce0;
+            --gray-color: #70757a;
+            --bg-color: #ffffff;
+            --error-color: #d93025;
+            --success-color: #0f9d58;
+            --info-bg: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: #202124;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--bg-color);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .header .logo {
+            height: 40px;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            max-width: 720px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #202124;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .info-box {
+            background-color: var(--info-bg);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            width: 100%;
+            border: 1px solid var(--border-color);
+        }
+        
+        .info-box-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .info-box-title i {
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+        
+        .info-text {
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #202124;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            font-size: 16px;
+            appearance: none;
+            padding-right: 30px;
+        }
+        
+        .select-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid var(--gray-color);
+            pointer-events: none;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 30px;
+        }
+        
+        .help-link {
+            display: flex;
+            align-items: center;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+        
+        .help-link i {
+            margin-right: 8px;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+        }
+        
+        .input-col {
+            flex: 1;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+        
+        .checkbox-label {
+            margin-left: 8px;
+            font-size: 14px;
+        }
+        
+        .accordion {
+            background-color: var(--bg-color);
+            color: #444;
+            cursor: pointer;
+            padding: 16px;
+            width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+            transition: 0.4s;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .accordion:hover {
+            background-color: var(--light-color);
+        }
+        
+        .panel {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-radius: 0 0 4px 4px;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-top: -8px;
+            margin-bottom: 16px;
+        }
+        
+        .panel-content {
+            padding: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .input-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+        
+        /* 頂部錯誤訊息 */
+        .error-banner {
+            background-color: var(--error-color);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+        }
+        
+        /* 響應式媒體查詢 - 針對H5移動設備優化 */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 12px 0;
+            }
+            
+            .account-balance {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            
+            .balance-item {
+                margin: 5px;
+                width: 45%;
+                text-align: left;
+            }
+            
+            .content-container {
+                padding: 15px;
+            }
+            
+            .address-form {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .form-label {
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            
+            .form-select, .form-input {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .info-text {
+                font-size: 13px;
+            }
+        }
+        
+        /* 更小屏幕設備的進一步優化 */
+        @media screen and (max-width: 480px) {
+            .content-container {
+                padding: 10px;
+            }
+            
+            .address-form {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            .back-button {
+                left: 10px;
+            }
+            
+            .balance-item {
+                width: 100%;
+                margin: 3px 0;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .form-select, .form-input {
+                padding: 8px 10px;
+            }
+            
+            .info-text {
+                font-size: 12px;
+            }
+            
+            .form-input::placeholder {
+                font-size: 12px;
+            }
+            
+            .form-grid {
+                display: block;
+            }
+            
+            .form-grid .form-group {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 添加頂部錯誤橫幅 -->
+    <div id="error-banner" class="error-banner"></div>
+    
+    <div class="header">
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <img src="assets/images/logo.png" alt="MC Markets Logo" class="logo" onerror="this.src='https://via.placeholder.com/180x40/1a73e8/ffffff?text=MC+Markets';this.onerror='';">
+    </div>
+    
+    <div class="content-container">
+        <h1 class="page-title">居住地址</h1>
+        
+        <div class="info-box">
+            <div class="info-box-title">
+                <i class="fas fa-info-circle"></i>
+                <span>為何需要提供居住地址？</span>
+            </div>
+            <p class="info-text">您的居住地址資訊用於確認您的身份，履行反洗錢法規要求，並用於風險評估和通知寄送。請確保提供您目前實際居住的地址。</p>
+        </div>
+        
+        <form id="address-form">
+            <div class="form-group">
+                <label class="form-label">地址類型</label>
+                <div class="checkbox-group">
+                    <input type="radio" id="residentialAddress" name="addressType" value="residential" checked>
+                    <label class="checkbox-label" for="residentialAddress">住宅地址</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="radio" id="businessAddress" name="addressType" value="business">
+                    <label class="checkbox-label" for="businessAddress">商業/工作地址</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="country">國家/地區</label>
+                <div class="select-wrapper">
+                    <select class="form-select" id="country" name="country">
+                        <option value="" selected disabled>請選擇國家/地區</option>
+                        <option value="AU">澳洲</option>
+                        <option value="CA">加拿大</option>
+                        <option value="CN">中國</option>
+                        <option value="FR">法國</option>
+                        <option value="DE">德國</option>
+                        <option value="HK">香港</option>
+                        <option value="JP">日本</option>
+                        <option value="SG">新加坡</option>
+                        <option value="TW">台灣</option>
+                        <option value="GB">英國</option>
+                        <option value="US">美國</option>
+                        <!-- 更多國家可以添加在這裡 -->
+                    </select>
+                </div>
+                <span id="country-error" class="error-message">請選擇國家/地區</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="addressLine1">地址行 1</label>
+                <input type="text" class="form-input" id="addressLine1" name="addressLine1" placeholder="街道名稱、門牌號碼">
+                <span id="addressLine1-error" class="error-message">請輸入地址</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="addressLine2">地址行 2 (可選)</label>
+                <input type="text" class="form-input" id="addressLine2" name="addressLine2" placeholder="公寓、單位、樓層、建築名稱等">
+            </div>
+            
+            <div class="input-row">
+                <div class="input-col">
+                    <div class="form-group">
+                        <label class="form-label" for="city">城市</label>
+                        <input type="text" class="form-input" id="city" name="city" placeholder="請輸入城市名稱">
+                        <span id="city-error" class="error-message">請輸入城市名稱</span>
+                    </div>
+                </div>
+                <div class="input-col">
+                    <div class="form-group">
+                        <label class="form-label" for="state">州/省/區</label>
+                        <input type="text" class="form-input" id="state" name="state" placeholder="請輸入州/省/區">
+                        <span id="state-error" class="error-message">請輸入州/省/區</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="postalCode">郵遞區號</label>
+                <input type="text" class="form-input" id="postalCode" name="postalCode" placeholder="請輸入郵遞區號">
+                <span id="postalCode-error" class="error-message">請輸入郵遞區號</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="phoneNumber">電話號碼</label>
+                <input type="tel" class="form-input" id="phoneNumber" name="phoneNumber" placeholder="請輸入您的電話號碼（含國碼，如：+886）">
+                <span id="phoneNumber-error" class="error-message">請輸入電話號碼</span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">您的居住地址是否為臨時住址？</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="isTemporaryAddress" name="isTemporaryAddress">
+                    <label class="checkbox-label" for="isTemporaryAddress">是的，這是臨時住址</label>
+                </div>
+            </div>
+            
+            <div id="temporaryAddressPanel" class="panel" style="display: none;">
+                <div class="panel-content">
+                    <div class="form-group">
+                        <label class="form-label" for="permanentCountry">永久居住國家/地區</label>
+                        <div class="select-wrapper">
+                            <select class="form-select" id="permanentCountry" name="permanentCountry">
+                                <option value="" selected disabled>請選擇您的永久居住國家/地區</option>
+                                <option value="AU">澳洲</option>
+                                <option value="CA">加拿大</option>
+                                <option value="CN">中國</option>
+                                <option value="FR">法國</option>
+                                <option value="DE">德國</option>
+                                <option value="HK">香港</option>
+                                <option value="JP">日本</option>
+                                <option value="SG">新加坡</option>
+                                <option value="TW">台灣</option>
+                                <option value="GB">英國</option>
+                                <option value="US">美國</option>
+                                <!-- 更多國家可以添加在這裡 -->
+                            </select>
+                        </div>
+                        <span id="permanentCountry-error" class="error-message">請選擇您的永久居住國家/地區</span>
+                    </div>
+                    <div class="info-box" style="background-color: #e8f0fe; border-color: #aecbfa;">
+                        <div class="info-box-title">
+                            <i class="fas fa-info-circle"></i>
+                            <span>提示</span>
+                        </div>
+                        <p class="info-text">若您目前使用臨時住址，我們可能會要求您在未來提供額外的居住證明文件。這是為了確保符合監管要求。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button type="button" class="accordion">
+                    可接受的地址證明文件有哪些？
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="panel">
+                    <div class="panel-content">
+                        <p>可接受的地址證明文件必須包含您的全名和完整居住地址，且最近六個月內簽發：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>水電費帳單（水、電、瓦斯、網路、有線電視等）</li>
+                            <li>銀行或信用卡對帳單</li>
+                            <li>政府機構發出的信函或文件</li>
+                            <li>租賃協議或房屋保險單</li>
+                            <li>稅務文件或工資單</li>
+                        </ul>
+                        <p style="margin-top: 10px;">請注意：行動電話帳單、信用卡帳單、駕照和身分證通常不被接受作為地址證明。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button type="button" class="btn" onclick="goBack()">返回</button>
+                <button type="button" class="btn" onclick="saveAndContinue()">提交</button>
+            </div>
+        </form>
+        
+        <a href="#" class="help-link">
+            <i class="fas fa-question-circle"></i>
+            需要協助？聯絡客戶支援
+        </a>
+    </div>
+    
+    <script>
+        // 頁面載入時從 localStorage 恢復之前填寫的資料
+        document.addEventListener('DOMContentLoaded', function() {
+            const formData = JSON.parse(localStorage.getItem('residentialAddress') || '{}');
+            
+            if (formData.addressType) {
+                document.querySelector(`input[name="addressType"][value="${formData.addressType}"]`).checked = true;
+            }
+            if (formData.country) document.getElementById('country').value = formData.country;
+            if (formData.addressLine1) document.getElementById('addressLine1').value = formData.addressLine1;
+            if (formData.addressLine2) document.getElementById('addressLine2').value = formData.addressLine2;
+            if (formData.city) document.getElementById('city').value = formData.city;
+            if (formData.state) document.getElementById('state').value = formData.state;
+            if (formData.postalCode) document.getElementById('postalCode').value = formData.postalCode;
+            if (formData.phoneNumber) document.getElementById('phoneNumber').value = formData.phoneNumber;
+            if (formData.isTemporaryAddress) {
+                document.getElementById('isTemporaryAddress').checked = formData.isTemporaryAddress;
+                togglePanel('temporaryAddressPanel', formData.isTemporaryAddress);
+            }
+            if (formData.permanentCountry) document.getElementById('permanentCountry').value = formData.permanentCountry;
+            
+            // 設置手風琴面板的點擊事件
+            setupAccordions();
+            
+            // 設置複選框的變更事件
+            document.getElementById('isTemporaryAddress').addEventListener('change', function() {
+                togglePanel('temporaryAddressPanel', this.checked);
+            });
+        });
+        
+        // 設置手風琴面板
+        function setupAccordions() {
+            const accordions = document.getElementsByClassName("accordion");
+            
+            for (let i = 0; i < accordions.length; i++) {
+                accordions[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    
+                    // 切換箭頭方向
+                    const icon = this.querySelector("i");
+                    if (icon.classList.contains("fa-chevron-down")) {
+                        icon.classList.remove("fa-chevron-down");
+                        icon.classList.add("fa-chevron-up");
+                    } else {
+                        icon.classList.remove("fa-chevron-up");
+                        icon.classList.add("fa-chevron-down");
+                    }
+                    
+                    const panel = this.nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
+                });
+            }
+        }
+        
+        // 切換面板顯示
+        function togglePanel(panelId, show) {
+            const panel = document.getElementById(panelId);
+            panel.style.display = show ? 'block' : 'none';
+            if (show) {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            } else {
+                panel.style.maxHeight = null;
+            }
+        }
+        
+        // 返回按鈕功能
+        function goBack() {
+            try {
+                // 儲存當前表單數據
+                saveFormData();
+                
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (residential_address.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加tax_country.html
+                        targetPath = pathParts.join('/') + '/tax_country.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/tax_country.html';
+                        } else {
+                            targetPath = userPath + '/tax_country.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加tax_country.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/tax_country.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/tax_country.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'tax_country.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('返回到:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('導航過程中出現錯誤:', error);
+                const errorBanner = document.getElementById('error-banner');
+                errorBanner.textContent = '返回導航錯誤: ' + error.message;
+                errorBanner.style.display = 'block';
+                setTimeout(function() {
+                    errorBanner.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // 儲存表單數據
+        function saveFormData() {
+            const formData = {
+                addressType: document.querySelector('input[name="addressType"]:checked')?.value,
+                country: document.getElementById('country').value,
+                addressLine1: document.getElementById('addressLine1').value,
+                addressLine2: document.getElementById('addressLine2').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                postalCode: document.getElementById('postalCode').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                isTemporaryAddress: document.getElementById('isTemporaryAddress').checked,
+                permanentCountry: document.getElementById('permanentCountry').value
+            };
+            
+            localStorage.setItem('residentialAddress', JSON.stringify(formData));
+            console.log('居住地址資訊已儲存:', formData);
+        }
+        
+        // 繼續到下一步
+        function saveAndContinue() {
+            try {
+                // 移除所有錯誤提示
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                let hasError = false;
+                
+                // 表單驗證
+                const country = document.getElementById('country').value;
+                const addressLine1 = document.getElementById('addressLine1').value.trim();
+                const city = document.getElementById('city').value.trim();
+                const state = document.getElementById('state').value.trim();
+                const postalCode = document.getElementById('postalCode').value.trim();
+                const phoneNumber = document.getElementById('phoneNumber').value.trim();
+                
+                if (!country) {
+                    document.getElementById('country-error').style.display = 'block';
+                    hasError = true;
+                }
+                
+                if (!addressLine1) {
+                    document.getElementById('addressLine1-error').style.display = 'block';
+                    hasError = true;
+                }
+                
+                if (!city) {
+                    document.getElementById('city-error').style.display = 'block';
+                    hasError = true;
+                }
+                
+                if (!state) {
+                    document.getElementById('state-error').style.display = 'block';
+                    hasError = true;
+                }
+                
+                if (!postalCode) {
+                    document.getElementById('postalCode-error').style.display = 'block';
+                    hasError = true;
+                }
+                
+                if (!phoneNumber) {
+                    document.getElementById('phoneNumber-error').style.display = 'block';
+                    hasError = true;
+                }
+                
+                // 如果勾選了臨時住址，檢查永久居住國家
+                if (document.getElementById('isTemporaryAddress').checked) {
+                    const permanentCountry = document.getElementById('permanentCountry').value;
+                    if (!permanentCountry) {
+                        document.getElementById('permanentCountry-error').style.display = 'block';
+                        hasError = true;
+                    }
+                }
+                
+                if (hasError) {
+                    return;
+                }
+                
+                // 儲存資料
+                saveFormData();
+                
+                // 儲存所有步驟的完成狀態
+                saveCompletionStatus();
+                
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (residential_address.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加trading_platform.html
+                        targetPath = pathParts.join('/') + '/trading_platform.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/trading_platform.html';
+                        } else {
+                            targetPath = userPath + '/trading_platform.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加trading_platform.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/trading_platform.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/trading_platform.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'trading_platform.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('居住地址設置完成，跳轉到:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('導航過程中出現錯誤:', error);
+                const errorBanner = document.getElementById('error-banner');
+                errorBanner.textContent = '提交導航錯誤: ' + error.message;
+                errorBanner.style.display = 'block';
+                setTimeout(function() {
+                    errorBanner.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // 儲存完成狀態
+        function saveCompletionStatus() {
+            // 儲存所有表單完成的標記
+            localStorage.setItem('registrationCompleted', 'true');
+            
+            // 這裡可以添加更多完成狀態的邏輯
+            const registrationData = {
+                personalInfo: JSON.parse(localStorage.getItem('personalInfo') || '{}'),
+                taxCountryInfo: JSON.parse(localStorage.getItem('taxCountryInfo') || '{}'),
+                residentialAddress: JSON.parse(localStorage.getItem('residentialAddress') || '{}'),
+                completedAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('registrationData', JSON.stringify(registrationData));
+            console.log('註冊資料已完成並儲存:', registrationData);
+        }
+    </script>
+</body>
+</html> 

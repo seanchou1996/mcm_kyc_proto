@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 電話確認</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #e6ad00;
+            --accent-color: #ffcf40;
+            --light-color: #f1f5f9;
+            --dark-color: #0a0a14;
+            --dark-blue: #10235e;
+            --border-color: #2d2d3a;
+            --gray-color: #6b7280;
+            --bg-color: #0a0a14;
+            --button-blue: #1e88e5;
+            --card-bg: #13131f;
+            --success-color: #4CAF50;
+            --error-color: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--dark-blue);
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .account-balance {
+            display: flex;
+            justify-content: flex-end;
+            background-color: var(--dark-blue);
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .balance-item {
+            margin-left: 30px;
+            text-align: center;
+        }
+        
+        .balance-label {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+        
+        .balance-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--light-color);
+        }
+        
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--light-color);
+            text-align: center;
+        }
+        
+        .verification-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .verification-step {
+            margin-bottom: 30px;
+        }
+        
+        .step-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--light-color);
+        }
+        
+        .phone-input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .country-code {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-color);
+            padding: 12px 15px;
+            border-radius: 5px 0 0 5px;
+            border: 1px solid var(--border-color);
+            border-right: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--light-color);
+            min-width: 80px;
+        }
+        
+        .phone-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 0 5px 5px 0;
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            font-size: 16px;
+        }
+        
+        .code-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--button-blue);
+            color: var(--button-blue);
+        }
+        
+        .btn-primary {
+            background-color: var(--button-blue);
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(30, 136, 229, 0.1);
+        }
+        
+        .btn-primary:hover {
+            background-color: #1565c0;
+        }
+        
+        .form-note {
+            margin-top: 20px;
+            color: var(--gray-color);
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .form-note i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+        
+        .support-link {
+            color: var(--button-blue);
+            text-decoration: none;
+        }
+        
+        .support-link:hover {
+            text-decoration: underline;
+        }
+        
+        .verification-success {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(76, 175, 80, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .success-icon i {
+            font-size: 40px;
+            color: var(--success-color);
+        }
+        
+        .success-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--success-color);
+        }
+        
+        .success-message {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: var(--light-color);
+        }
+        
+        .btn-centered {
+            display: block;
+            margin: 0 auto;
+            min-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <img src="assets/images/logo.png" alt="MC Markets Logo" style="height: 40px;" onerror="this.src='https://via.placeholder.com/180x40/ffc107/000000?text=MC+Markets';this.onerror='';">
+    </div>
+    
+    <div class="account-balance">
+        <div class="balance-item">
+            <div class="balance-label">可用餘額</div>
+            <div class="balance-value">$0.00 USD</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">帳戶編號</div>
+            <div class="balance-value">22321458</div>
+        </div>
+    </div>
+    
+    <div class="content-container">
+        <h1 class="page-title">電話確認</h1>
+        
+        <div class="verification-container" id="verification-form">
+            <div class="verification-step">
+                <p class="step-title">驗證碼將通過簡訊或打電話發給你。</p>
+                
+                <div class="phone-input-group">
+                    <div class="country-code">
+                        <span>+886</span>
+                    </div>
+                    <input type="tel" class="phone-input" id="phone-number" placeholder="967370070">
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-outline" id="sms-button">
+                        <i class="fas fa-comment-alt"></i> 傳簡訊給我
+                    </button>
+                    <button class="btn btn-primary" id="call-button">
+                        <i class="fas fa-phone-alt"></i> 打電話給我
+                    </button>
+                </div>
+            </div>
+            
+            <div class="verification-step" id="code-step" style="display: none;">
+                <p class="step-title">第2步：輸入你收到的驗證碼。</p>
+                <input type="text" class="code-input" id="verification-code" placeholder="609678">
+                <button class="btn btn-primary" id="submit-code">
+                    送出
+                </button>
+            </div>
+            
+            <p class="form-note">
+                <i class="fas fa-headset"></i> 需要協助? <a href="#" class="support-link">即時支援</a>
+            </p>
+        </div>
+        
+        <div class="verification-container verification-success" id="success-container">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 class="success-title">Plus500</h2>
+            <p class="success-message">您的電話號碼已成功驗證。謝謝！</p>
+            <button class="btn btn-primary btn-centered" id="confirm-button">
+                確定
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const smsButton = document.getElementById('sms-button');
+            const callButton = document.getElementById('call-button');
+            const codeStep = document.getElementById('code-step');
+            const submitCode = document.getElementById('submit-code');
+            const verificationForm = document.getElementById('verification-form');
+            const successContainer = document.getElementById('success-container');
+            const confirmButton = document.getElementById('confirm-button');
+            
+            // 傳送簡訊按鈕點擊事件
+            smsButton.addEventListener('click', function() {
+                const phoneNumber = document.getElementById('phone-number').value;
+                if (!phoneNumber) {
+                    alert('請輸入電話號碼');
+                    return;
+                }
+                
+                codeStep.style.display = 'block';
+                document.querySelector('.verification-step:first-child .step-title').textContent = '第1步：在下方輸入你的電話號碼。';
+            });
+            
+            // 撥打電話按鈕點擊事件
+            callButton.addEventListener('click', function() {
+                const phoneNumber = document.getElementById('phone-number').value;
+                if (!phoneNumber) {
+                    alert('請輸入電話號碼');
+                    return;
+                }
+                
+                codeStep.style.display = 'block';
+                document.querySelector('.verification-step:first-child .step-title').textContent = '第1步：在下方輸入你的電話號碼。';
+            });
+            
+            // 送出驗證碼按鈕點擊事件
+            submitCode.addEventListener('click', function() {
+                const verificationCode = document.getElementById('verification-code').value;
+                if (!verificationCode) {
+                    alert('請輸入驗證碼');
+                    return;
+                }
+                
+                // 顯示成功畫面
+                verificationForm.style.display = 'none';
+                successContainer.style.display = 'block';
+                
+                // 將電話驗證狀態儲存至sessionStorage
+                sessionStorage.setItem('phone_verified', 'true');
+            });
+            
+            // 確認按鈕點擊事件
+            confirmButton.addEventListener('click', function() {
+                goBack();
+            });
+        });
+        
+        function goBack() {
+            // 獲取當前文件的完整路徑
+            const currentPath = window.location.href;
+            console.log('當前完整路徑:', currentPath);
+            
+            // 分析路徑以處理各種情況
+            let targetPath;
+            
+            // 檢查是否是文件系統路徑 (file://)
+            if (currentPath.startsWith('file://')) {
+                // 拆分路徑並替換最後一個部分
+                const pathParts = currentPath.split('/');
+                pathParts.pop(); // 移除最後一個部分 (phone_verification.html)
+                
+                // 檢查是否在mcmarkets_prototype目錄中
+                if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                    // 在mcmarkets_prototype中，直接添加verification_center.html
+                    targetPath = pathParts.join('/') + '/verification_center.html';
+                } 
+                // 處理桌面路徑
+                else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                    // 用戶正在桌面上開啟文件
+                    const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                    const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                    // 檢查桌面上是否有mcmarkets_prototype目錄
+                    if (currentPath.includes('mcmarkets_prototype')) {
+                        targetPath = userPath + '/mcmarkets_prototype/verification_center.html';
+                    } else {
+                        targetPath = userPath + '/verification_center.html';
+                    }
+                }
+                else {
+                    // 嘗試添加verification_center.html
+                    const baseDir = pathParts.join('/');
+                    // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                    if (baseDir.includes('/seanchou/')) {
+                        targetPath = baseDir + '/verification_center.html';
+                    } else {
+                        // 回退方案 - 使用絕對路徑
+                        targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/verification_center.html';
+                    }
+                }
+            } else {
+                // 網站路徑，使用相對路徑
+                targetPath = 'verification_center.html';
+            }
+            
+            // 記錄並跳轉
+            console.log('返回到:', targetPath);
+            window.location.href = targetPath;
+        }
+    </script>
+</body>
+</html> 

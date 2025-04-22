@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 客戶身份驗證 (KYC)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #e6ad00;
+            --accent-color: #ffcf40;
+            --light-color: #f1f5f9;
+            --dark-color: #0a0a14;
+            --dark-blue: #10235e;
+            --border-color: #2d2d3a;
+            --gray-color: #6b7280;
+            --bg-color: #0a0a14;
+            --button-blue: #1e88e5;
+            --success-color: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--dark-blue);
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+        }
+        
+        .account-balance {
+            display: flex;
+            justify-content: flex-end;
+            background-color: var(--dark-blue);
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .balance-item {
+            margin-left: 30px;
+            text-align: center;
+        }
+        
+        .balance-label {
+            font-size: 12px;
+            color: var(--gray-color);
+        }
+        
+        .balance-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--light-color);
+        }
+        
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--bg-color);
+            background-image: url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.03" fill-rule="evenodd"%3E%3Cpath d="M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z"/%3E%3C/g%3E%3C/svg%3E');
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--light-color);
+            text-align: center;
+        }
+        
+        .country-form {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--dark-color);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--light-color);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            font-size: 16px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 15px) center;
+            cursor: pointer;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--button-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .info-text {
+            color: var(--gray-color);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .help-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .help-link i {
+            margin-right: 8px;
+        }
+        
+        .help-link:hover {
+            text-decoration: underline;
+        }
+        
+        .ip-notice {
+            font-size: 12px;
+            color: var(--gray-color);
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        .flag-icon {
+            width: 20px;
+            height: 15px;
+            margin-right: 10px;
+            vertical-align: middle;
+            display: inline-block;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .regulatory-info {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--primary-color);
+            display: none;
+        }
+
+        .regulatory-info p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--light-color);
+        }
+
+        .warning-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .warning-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .warning-title i {
+            margin-right: 8px;
+        }
+
+        .warning-title span {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .warning-content {
+            color: var(--gray-color);
+            font-size: 14px;
+        }
+
+        .warning-message {
+            font-size: 14px;
+            margin-top: 10px;
+            color: var(--primary-color);
+        }
+        
+        /* 響應式媒體查詢 - 針對H5移動設備優化 */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 12px 0;
+            }
+            
+            .account-balance {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            
+            .balance-item {
+                margin: 5px;
+                width: 45%;
+                text-align: left;
+            }
+            
+            .content-container {
+                padding: 15px;
+            }
+            
+            .country-form {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .form-select, .form-label {
+                font-size: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .info-text, .ip-notice {
+                font-size: 12px;
+            }
+            
+            .warning-box {
+                padding: 12px;
+                font-size: 13px;
+            }
+        }
+        
+        /* 更小屏幕設備的進一步優化 */
+        @media screen and (max-width: 480px) {
+            .content-container {
+                padding: 10px;
+            }
+            
+            .country-form {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .balance-item {
+                width: 100%;
+                margin: 3px 0;
+            }
+            
+            .form-select {
+                padding: 10px;
+            }
+            
+            .warning-box {
+                padding: 10px;
+                font-size: 12px;
+                margin: 10px 0;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="assets/images/logo.png" alt="MC Markets Logo" style="height: 40px;" onerror="this.src='https://via.placeholder.com/180x40/ffc107/000000?text=MC+Markets';this.onerror='';">
+    </div>
+    
+    <div class="account-balance">
+        <div class="balance-item">
+            <div class="balance-label">可用余額</div>
+            <div class="balance-value">€0.00</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">淨值</div>
+            <div class="balance-value">€0.00</div>
+        </div>
+        <div class="balance-item">
+            <div class="balance-label">維持保證金</div>
+            <div class="balance-value">€0.00</div>
+        </div>
+    </div>
+    
+    <div class="content-container">
+        <h1 class="page-title">國家</h1>
+        
+        <div class="country-form">
+            <div class="form-group">
+                <label class="form-label" for="country">居住國家/地區</label>
+                <select class="form-select" id="country">
+                    <option value="tw" selected>臺灣地區</option>
+                    <option value="hk">香港特別行政區</option>
+                    <option value="mo">澳門特別行政區</option>
+                    <option value="jp">日本</option>
+                    <option value="sg">新加坡</option>
+                    <option value="au">澳大利亞</option>
+                    <option value="ca">加拿大</option>
+                    <option value="us">美國</option>
+                    <option value="gb">英國</option>
+                    <option value="de">德國</option>
+                    <!-- 更多國家選項... -->
+                </select>
+                <p class="ip-notice">* 根據您的IP地址，我們已預設您的國家/地區為「臺灣地區」</p>
+            </div>
+            
+            <div class="form-group" style="margin-top: 15px; margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; background-color: rgba(30, 136, 229, 0.1); padding: 10px 15px; border-radius: 5px; border-left: 3px solid var(--button-blue);">
+                    <input type="checkbox" id="same-country" checked style="margin-right: 10px; width: 18px; height: 18px;">
+                    <label for="same-country" style="cursor: pointer; display: flex; align-items: center;">
+                        我的出生地和國籍與我的居住國相同。
+                    </label>
+                </div>
+            </div>
+            
+            <div id="additional-countries" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label" for="nationality">國籍</label>
+                    <select class="form-select" id="nationality">
+                        <option value="tw">臺灣地區</option>
+                        <option value="hk">香港特別行政區</option>
+                        <option value="mo">澳門特別行政區</option>
+                        <option value="jp">日本</option>
+                        <option value="sg">新加坡</option>
+                        <option value="au">澳大利亞</option>
+                        <option value="ca">加拿大</option>
+                        <option value="us">美國</option>
+                        <option value="gb">英國</option>
+                        <option value="de">德國</option>
+                        <!-- 更多國家選項... -->
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="birthplace">出生地</label>
+                    <select class="form-select" id="birthplace">
+                        <option value="tw">臺灣地區</option>
+                        <option value="hk">香港特別行政區</option>
+                        <option value="mo">澳門特別行政區</option>
+                        <option value="jp">日本</option>
+                        <option value="sg">新加坡</option>
+                        <option value="au">澳大利亞</option>
+                        <option value="ca">加拿大</option>
+                        <option value="us">美國</option>
+                        <option value="gb">英國</option>
+                        <option value="de">德國</option>
+                        <!-- 更多國家選項... -->
+                    </select>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <div class="warning-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>重要提示</span>
+                </div>
+                <p>
+                    請確保選擇正確的居住國家/地區。您的選擇將決定適用的監管框架。若選擇歐盟國家，您的帳戶將受塞浦路斯證券交易委員會 (CySEC) 監管；非歐盟國家則由塞舌爾金融服務管理局 (FSA) 監管。提供不正確的居住地信息可能導致帳戶限制或關閉。
+                </p>
+            </div>
+            
+            <div id="regulatoryInfo" class="regulatory-info">
+                <p id="regulatoryText"></p>
+            </div>
+            
+            <div class="form-group" style="margin-top: 25px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
+                <div style="display: flex; align-items: center;">
+                    <input type="checkbox" id="islamic-account" style="margin-right: 10px; width: 18px; height: 18px;">
+                    <label for="islamic-account" style="cursor: pointer; display: flex; align-items: center;">
+                        我需要伊斯蘭帳戶（無掉期/無利息）
+                        <span style="margin-left: 10px; background-color: rgba(255, 193, 7, 0.2); color: var(--primary-color); padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">伊斯蘭</span>
+                    </label>
+                </div>
+                <p style="color: var(--gray-color); font-size: 0.9rem; margin-top: 8px; margin-left: 28px;">
+                    *請注意，伊斯蘭帳戶為遵循伊斯蘭教法的投資者提供無掉期（無利息）交易服務。選擇此選項可能需要額外的驗證文件，以確認您的資格。
+                </p>
+            </div>
+            
+            <a href="#" class="help-link">
+                <i class="fas fa-question-circle"></i>
+                我們為什麼要收集這些資訊？
+            </a>
+            
+            <div class="btn-container">
+                <button id="next-step" class="btn btn-primary">下一步</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 自動檢測用戶IP，設置國家選擇（模擬）
+            console.log('檢測用戶IP，預設國家為臺灣地區');
+            
+            // 歐盟國家代碼列表
+            const euCountries = ['at', 'be', 'bg', 'hr', 'cy', 'cz', 'dk', 'ee', 'fi', 'fr', 'de', 'gr', 'hu', 'ie', 'it', 'lv', 'lt', 'lu', 'mt', 'nl', 'pl', 'pt', 'ro', 'sk', 'si', 'es', 'se'];
+            
+            // 更新監管信息顯示
+            function updateRegulatoryInfo() {
+                const selectedCountry = document.getElementById('country').value;
+                const regulatoryInfo = document.getElementById('regulatoryInfo');
+                const regulatoryText = document.getElementById('regulatoryText');
+                
+                // 檢查是否為歐盟國家
+                const isEuCountry = euCountries.includes(selectedCountry);
+                
+                if (isEuCountry) {
+                    regulatoryText.innerHTML = "根據您選擇的歐盟成員國居住地，您將在 MC Markets EU Ltd 開設交易帳戶。繼續申請流程即表示您確認將與受塞浦路斯證券交易委員會 (CySEC) 授權並監管的 MC Markets EU Ltd 建立業務關係。";
+                } else {
+                    regulatoryText.innerHTML = "依據您所選擇的非歐盟居住地，您的交易帳戶將通過 MC Markets SEY Ltd 開立。繼續申請流程即表示您確認將與受塞舌爾金融服務管理局 (FSA Seychelles SD039) 許可及監管的 MC Markets SEY Ltd 建立業務關係。";
+                }
+                
+                regulatoryInfo.style.display = 'block';
+            }
+            
+            // 國家選擇變更時更新監管信息
+            document.getElementById('country').addEventListener('change', updateRegulatoryInfo);
+            
+            // 更新國籍和出生地選擇框的值
+            function updateCountrySelections() {
+                const residenceCountry = document.getElementById('country').value;
+                if (document.getElementById('same-country').checked) {
+                    document.getElementById('nationality').value = residenceCountry;
+                    document.getElementById('birthplace').value = residenceCountry;
+                }
+            }
+            
+            // 國家選擇變更時同步更新國籍和出生地
+            document.getElementById('country').addEventListener('change', function() {
+                updateCountrySelections();
+                updateRegulatoryInfo();
+            });
+            
+            // 處理"我的出生地和國籍與我的居住國相同"選項的切換
+            document.getElementById('same-country').addEventListener('change', function() {
+                const additionalCountries = document.getElementById('additional-countries');
+                if (this.checked) {
+                    additionalCountries.style.display = 'none';
+                    updateCountrySelections();
+                } else {
+                    additionalCountries.style.display = 'block';
+                }
+            });
+            
+            // 初始化顯示監管信息和更新國籍/出生地
+            updateRegulatoryInfo();
+            updateCountrySelections();
+            
+            // 下一步按鈕點擊事件
+            document.getElementById('next-step').addEventListener('click', function() {
+                // 儲存選擇的國家到sessionStorage
+                const selectedCountry = document.getElementById('country').value;
+                const selectedCountryText = document.getElementById('country').options[document.getElementById('country').selectedIndex].text;
+                
+                sessionStorage.setItem('selected_country', selectedCountry);
+                sessionStorage.setItem('selected_country_text', selectedCountryText);
+                console.log('國家已選擇:', selectedCountryText, '(', selectedCountry, ')');
+                
+                // 移除alert提示
+                // alert('您已選擇: ' + selectedCountryText + '\n即將進入下一步驟');
+                
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (kyc_verification.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加personal_info.html
+                        targetPath = pathParts.join('/') + '/personal_info.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/personal_info.html';
+                        } else {
+                            targetPath = userPath + '/personal_info.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加mcmarkets_prototype/personal_info.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用相對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/personal_info.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/personal_info.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'personal_info.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('國家已選擇，跳轉到:', targetPath);
+                window.location.href = targetPath;
+            });
+        });
+    </script>
+</body>
+</html> 

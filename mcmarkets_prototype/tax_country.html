@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 稅務國家信息</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --background-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #f5f5f5;
+            --subtitle-color: #bbbbbb;
+            --border-color: #333333;
+            --primary-color: #0078ff;
+            --button-color: #0078ff;
+            --button-hover: #0056b3;
+            --error-color: #ff3b30;
+            --success-color: #34c759;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: var(--container-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-button {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-area {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .logo {
+            height: 30px;
+        }
+
+        .account-balance {
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            flex: 1;
+            padding: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .content-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .content-subtitle {
+            font-size: 1rem;
+            color: var(--subtitle-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .info-box {
+            background-color: var(--container-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-box p {
+            margin-bottom: 1rem;
+        }
+
+        .form-section {
+            background-color: var(--container-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .button {
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .primary-button {
+            background-color: var(--button-color);
+            color: white;
+        }
+
+        .primary-button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .secondary-button {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .secondary-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .form-section {
+                padding: 1rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .button {
+                width: 100%;
+            }
+        }
+
+        /* Custom styles for this page */
+        .flag-icon {
+            width: 24px;
+            height: 16px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .country-selector {
+            position: relative;
+        }
+
+        .country-selector select {
+            padding-left: 2.5rem;
+        }
+
+        .selected-flag {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+
+        .checkbox-label {
+            flex: 1;
+        }
+
+        .add-country-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px dashed var(--border-color);
+            background-color: transparent;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-country-btn:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .country-entry {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .country-entry .remove-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: transparent;
+            border: none;
+            color: var(--subtitle-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .country-entry .remove-btn:hover {
+            color: var(--error-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* TIN信息相關樣式 */
+        .tax-form .tin-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--gray-color);
+        }
+        
+        /* 響應式媒體查詢 - 針對H5移動設備優化 */
+        @media screen and (max-width: 768px) {
+            .header {
+                padding: 12px 0;
+            }
+            
+            .account-balance {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            
+            .balance-item {
+                margin: 5px;
+                width: 45%;
+                text-align: left;
+            }
+            
+            .content-container {
+                padding: 15px;
+            }
+            
+            .tax-form {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .page-subtitle {
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .form-label {
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            
+            .form-select, .form-input {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .info-box {
+                padding: 12px;
+                font-size: 13px;
+                margin-bottom: 15px;
+            }
+            
+            .tax-country-item {
+                padding: 10px;
+            }
+            
+            .tax-country-label {
+                font-size: 14px;
+            }
+            
+            .tax-info {
+                font-size: 13px;
+            }
+        }
+        
+        /* 更小屏幕設備的進一步優化 */
+        @media screen and (max-width: 480px) {
+            .content-container {
+                padding: 10px;
+            }
+            
+            .tax-form {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            
+            .page-subtitle {
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+            
+            .back-button {
+                left: 10px;
+            }
+            
+            .balance-item {
+                width: 100%;
+                margin: 3px 0;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .info-box {
+                padding: 10px;
+                font-size: 12px;
+            }
+            
+            .btn-add {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+            
+            .tax-country-item {
+                padding: 8px;
+                margin-bottom: 8px;
+            }
+            
+            .tax-country-label {
+                font-size: 13px;
+            }
+            
+            .tax-info {
+                font-size: 12px;
+            }
+            
+            .tax-form .tin-info {
+                font-size: 12px;
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="back-button" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i> 返回
+        </button>
+        <div class="logo-area">
+            <img src="logo.png" alt="MC Markets Logo" class="logo">
+        </div>
+        <div class="account-balance">
+            餘額: $0.00
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="content-title">稅務國家信息</h1>
+        <p class="content-subtitle">請提供您的稅務居民身份信息</p>
+        
+        <div class="info-box">
+            <p>根據國際稅務法規和FATCA/CRS合規要求，我們需要收集您的稅務居民身份信息。這些信息有助於我們確保遵守相關稅務報告義務。</p>
+            <p>請確保提供準確的信息，以避免可能的帳戶限制或服務中斷。</p>
+        </div>
+
+        <form id="taxCountryForm">
+            <div class="form-section">
+                <h3>稅務居民信息</h3>
+                
+                <div class="form-group">
+                    <label for="primaryTaxCountry">主要稅務居民國家/地區</label>
+                    <div class="country-selector">
+                        <div class="selected-flag">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <select id="primaryTaxCountry" name="primaryTaxCountry">
+                            <option value="">請選擇</option>
+                            <option value="HK">中國香港</option>
+                            <option value="TW">中國台灣</option>
+                            <option value="CN">中國大陸</option>
+                            <option value="US">美國</option>
+                            <option value="GB">英國</option>
+                            <option value="SG">新加坡</option>
+                            <option value="AU">澳大利亞</option>
+                            <option value="CA">加拿大</option>
+                            <option value="JP">日本</option>
+                            <!-- 其他國家可以根據需要添加 -->
+                        </select>
+                    </div>
+                    <div id="primaryTaxCountryError" class="error-message">請選擇您的稅務居民國家/地區</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="taxIdNumber">納稅人識別號碼 (TIN)</label>
+                    <input type="text" id="taxIdNumber" name="taxIdNumber" placeholder="請輸入您的納稅人識別號碼">
+                    <div id="taxIdNumberError" class="error-message">請輸入有效的納稅人識別號碼</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="noTinReason">如果無法提供納稅人識別號碼，請說明原因</label>
+                    <select id="noTinReason" name="noTinReason">
+                        <option value="">不適用 - 我已提供納稅人識別號碼</option>
+                        <option value="reason1">我的居住國家/地區不發放納稅人識別號碼</option>
+                        <option value="reason2">我無法獲取納稅人識別號碼（請在下方說明原因）</option>
+                        <option value="reason3">納稅人識別號碼不是必需的</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="tinReasonGroup" style="display: none;">
+                    <label for="tinReasonExplanation">請說明無法提供納稅人識別號碼的原因</label>
+                    <input type="text" id="tinReasonExplanation" name="tinReasonExplanation" placeholder="請提供詳細說明">
+                    <div id="tinReasonExplanationError" class="error-message">請說明無法提供納稅人識別號碼的原因</div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>多重稅務居民身份</h3>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="multipleResidence" name="multipleResidence">
+                    <label for="multipleResidence" class="checkbox-label">我是多個國家/地區的稅務居民</label>
+                </div>
+                
+                <div id="additionalCountriesSection" class="hidden">
+                    <div id="additionalCountriesList">
+                        <!-- 額外國家將在這裡動態添加 -->
+                    </div>
+                    
+                    <button type="button" id="addCountryBtn" class="add-country-btn">
+                        <i class="fas fa-plus"></i> 添加另一個稅務居民國家/地區
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>美國稅務身份聲明 (FATCA)</h3>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="notUSPerson" name="notUSPerson">
+                    <label for="notUSPerson" class="checkbox-label">我確認我不是美國公民或美國稅務居民</label>
+                </div>
+                <div id="notUSPersonError" class="error-message">您必須確認您的美國稅務身份</div>
+                
+                <div class="form-group">
+                    <label for="facta">您是否持有美國綠卡或滿足美國實質居留測試？</label>
+                    <select id="facta" name="facta">
+                        <option value="">請選擇</option>
+                        <option value="no">否</option>
+                        <option value="yes">是</option>
+                    </select>
+                    <div id="factaError" class="error-message">請選擇一個選項</div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>稅務合規聲明</h3>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="taxComplianceConfirm" name="taxComplianceConfirm">
+                    <label for="taxComplianceConfirm" class="checkbox-label">我確認我已遵守我的稅務居民國家/地區的所有適用稅務申報和繳納義務</label>
+                </div>
+                <div id="taxComplianceConfirmError" class="error-message">您必須確認稅務合規</div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="informationCorrect" name="informationCorrect">
+                    <label for="informationCorrect" class="checkbox-label">我確認我提供的所有稅務信息是真實、準確和完整的</label>
+                </div>
+                <div id="informationCorrectError" class="error-message">您必須確認信息的準確性</div>
+            </div>
+            
+            <div class="button-group">
+                <button type="button" class="button secondary-button" onclick="goBack()">返回</button>
+                <button type="button" class="button primary-button" onclick="saveAndContinue()">保存並繼續</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        restoreFormData();
+        
+        // 為國家選擇器添加事件監聽器
+        const countrySelect = document.getElementById('tax-country');
+        if (countrySelect) {
+            countrySelect.addEventListener('change', function() {
+                // 如果選擇了"其他"，顯示手動輸入欄位
+                const otherInputContainer = document.getElementById('other-country-container');
+                if (otherInputContainer) {
+                    otherInputContainer.style.display = this.value === 'other' ? 'block' : 'none';
+                }
+            });
+        }
+        
+        // 為TIN原因選擇器添加事件監聽器
+        const tinReasonSelect = document.getElementById('tin-reason');
+        if (tinReasonSelect) {
+            tinReasonSelect.addEventListener('change', function() {
+                // 如果選擇了"其他原因"，顯示手動輸入欄位
+                const otherReasonContainer = document.getElementById('other-reason-container');
+                if (otherReasonContainer) {
+                    otherReasonContainer.style.display = this.value === 'other' ? 'block' : 'none';
+                }
+            });
+        }
+        
+        // 為多重稅務居民選擇器添加事件監聽器
+        const multiTaxResidentSelect = document.getElementById('multi-tax-resident');
+        if (multiTaxResidentSelect) {
+            multiTaxResidentSelect.addEventListener('change', function() {
+                // 如果選擇了"是"，顯示額外的稅務居民資訊區域
+                const additionalTaxInfoContainer = document.getElementById('additional-tax-info');
+                if (additionalTaxInfoContainer) {
+                    additionalTaxInfoContainer.style.display = this.value === 'yes' ? 'block' : 'none';
+                }
+            });
+        }
+    });
+
+    // 返回上一頁
+    function goBack() {
+        // 保存當前表單數據
+        saveFormData();
+        
+        // 確定目標返回頁面
+        let targetPage = 'verification_center.html';
+        
+        // 從sessionStorage中檢查前一頁
+        const prevPage = sessionStorage.getItem('prevPage');
+        if (prevPage && prevPage.includes('test_all.html')) {
+            targetPage = 'test_all.html';
+        }
+        
+        // 檢測當前路徑並構建目標路徑
+        const currentPath = window.location.href;
+        let targetPath;
+        
+        console.log('當前路徑:', currentPath);
+        
+        if (currentPath.includes('file:///')) {
+            // 如果是本地文件系統路徑
+            if (currentPath.includes('/Desktop/')) {
+                // 如果在桌面上
+                if (currentPath.includes('/mcmarkets_prototype/')) {
+                    // 如果在mcmarkets_prototype文件夾中
+                    targetPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1) + targetPage;
+                } else {
+                    // 如果直接在桌面上
+                    targetPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1) + targetPage;
+                }
+            } else {
+                // 其他本地路徑情況
+                targetPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1) + targetPage;
+            }
+        } else {
+            // 如果是網站路徑
+            targetPath = targetPage;
+        }
+        
+        console.log('導航到:', targetPath);
+        window.location.href = targetPath;
+    }
+
+    // 保存表單數據
+    function saveFormData() {
+        // 主要稅務居民國家信息
+        localStorage.setItem('tax_country', document.getElementById('tax-country').value);
+        const otherCountryInput = document.getElementById('other-country');
+        if (otherCountryInput && otherCountryInput.style.display !== 'none') {
+            localStorage.setItem('tax_country_other', otherCountryInput.value);
+        }
+        
+        // 納稅人識別號信息
+        localStorage.setItem('tin_number', document.getElementById('tin-number').value);
+        localStorage.setItem('tin_reason', document.getElementById('tin-reason').value);
+        const otherReasonInput = document.getElementById('other-reason');
+        if (otherReasonInput && otherReasonInput.style.display !== 'none') {
+            localStorage.setItem('tin_reason_other', otherReasonInput.value);
+        }
+        
+        // 多重稅務居民信息
+        localStorage.setItem('multi_tax_resident', document.getElementById('multi-tax-resident').value);
+        
+        // 額外稅務居民國家（如適用）
+        const additionalCountrySelect = document.getElementById('additional-tax-country');
+        if (additionalCountrySelect) {
+            localStorage.setItem('additional_tax_country', additionalCountrySelect.value);
+        }
+        
+        const additionalTinInput = document.getElementById('additional-tin-number');
+        if (additionalTinInput) {
+            localStorage.setItem('additional_tin_number', additionalTinInput.value);
+        }
+        
+        // FATCA和稅務合規聲明
+        localStorage.setItem('fatca_status', document.getElementById('fatca-status').value);
+        localStorage.setItem('tax_declaration', document.getElementById('tax-declaration').checked ? 'true' : 'false');
+        
+        console.log('稅務表單數據已保存');
+    }
+
+    // 恢復表單數據
+    function restoreFormData() {
+        // 主要稅務居民國家信息
+        const taxCountry = localStorage.getItem('tax_country');
+        if (taxCountry) {
+            document.getElementById('tax-country').value = taxCountry;
+            
+            // 如果選擇了"其他"，顯示並填充其他國家輸入欄位
+            if (taxCountry === 'other') {
+                const otherCountryContainer = document.getElementById('other-country-container');
+                if (otherCountryContainer) {
+                    otherCountryContainer.style.display = 'block';
+                    const otherCountry = localStorage.getItem('tax_country_other');
+                    if (otherCountry) {
+                        document.getElementById('other-country').value = otherCountry;
+                    }
+                }
+            }
+        }
+        
+        // 納稅人識別號信息
+        const tinNumber = localStorage.getItem('tin_number');
+        if (tinNumber) {
+            document.getElementById('tin-number').value = tinNumber;
+        }
+        
+        const tinReason = localStorage.getItem('tin_reason');
+        if (tinReason) {
+            document.getElementById('tin-reason').value = tinReason;
+            
+            // 如果選擇了"其他原因"，顯示並填充其他原因輸入欄位
+            if (tinReason === 'other') {
+                const otherReasonContainer = document.getElementById('other-reason-container');
+                if (otherReasonContainer) {
+                    otherReasonContainer.style.display = 'block';
+                    const otherReason = localStorage.getItem('tin_reason_other');
+                    if (otherReason) {
+                        document.getElementById('other-reason').value = otherReason;
+                    }
+                }
+            }
+        }
+        
+        // 多重稅務居民信息
+        const multiTaxResident = localStorage.getItem('multi_tax_resident');
+        if (multiTaxResident) {
+            document.getElementById('multi-tax-resident').value = multiTaxResident;
+            
+            // 如果選擇了"是"，顯示額外稅務居民信息區域
+            if (multiTaxResident === 'yes') {
+                const additionalTaxInfo = document.getElementById('additional-tax-info');
+                if (additionalTaxInfo) {
+                    additionalTaxInfo.style.display = 'block';
+                    
+                    // 恢復額外稅務居民信息
+                    const additionalTaxCountry = localStorage.getItem('additional_tax_country');
+                    if (additionalTaxCountry) {
+                        document.getElementById('additional-tax-country').value = additionalTaxCountry;
+                    }
+                    
+                    const additionalTinNumber = localStorage.getItem('additional_tin_number');
+                    if (additionalTinNumber) {
+                        document.getElementById('additional-tin-number').value = additionalTinNumber;
+                    }
+                }
+            }
+        }
+        
+        // FATCA和稅務合規聲明
+        const fatcaStatus = localStorage.getItem('fatca_status');
+        if (fatcaStatus) {
+            document.getElementById('fatca-status').value = fatcaStatus;
+        }
+        
+        const taxDeclaration = localStorage.getItem('tax_declaration');
+        if (taxDeclaration) {
+            document.getElementById('tax-declaration').checked = taxDeclaration === 'true';
+        }
+        
+        console.log('稅務表單數據已恢復');
+    }
+
+    // 驗證表單數據
+    function validateForm() {
+        let isValid = true;
+        
+        // 重置所有錯誤訊息
+        const errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach(element => {
+            element.textContent = '';
+        });
+        
+        // 驗證稅務居民國家
+        const taxCountry = document.getElementById('tax-country').value;
+        if (!taxCountry || taxCountry === '') {
+            document.getElementById('tax-country-error').textContent = '請選擇稅務居民國家';
+            isValid = false;
+        } else if (taxCountry === 'other') {
+            const otherCountry = document.getElementById('other-country').value;
+            if (!otherCountry || otherCountry.trim() === '') {
+                document.getElementById('other-country-error').textContent = '請輸入您的稅務居民國家';
+                isValid = false;
+            }
+        }
+        
+        // 驗證納稅人識別號
+        const tinNumber = document.getElementById('tin-number').value;
+        const tinReason = document.getElementById('tin-reason').value;
+        
+        if ((!tinNumber || tinNumber.trim() === '') && (!tinReason || tinReason === '')) {
+            document.getElementById('tin-number-error').textContent = '請提供納稅人識別號或選擇無法提供的原因';
+            isValid = false;
+        } else if (tinReason === 'other') {
+            const otherReason = document.getElementById('other-reason').value;
+            if (!otherReason || otherReason.trim() === '') {
+                document.getElementById('other-reason-error').textContent = '請說明無法提供納稅人識別號的原因';
+                isValid = false;
+            }
+        }
+        
+        // 驗證多重稅務居民狀態
+        const multiTaxResident = document.getElementById('multi-tax-resident').value;
+        if (!multiTaxResident || multiTaxResident === '') {
+            document.getElementById('multi-tax-resident-error').textContent = '請選擇是否有多個稅務居住國';
+            isValid = false;
+        } else if (multiTaxResident === 'yes') {
+            // 驗證額外稅務居民信息
+            const additionalTaxCountry = document.getElementById('additional-tax-country').value;
+            if (!additionalTaxCountry || additionalTaxCountry === '') {
+                document.getElementById('additional-tax-country-error').textContent = '請選擇額外稅務居民國家';
+                isValid = false;
+            }
+            
+            // 額外居民國家的TIN號碼是可選的
+        }
+        
+        // 驗證FATCA狀態
+        const fatcaStatus = document.getElementById('fatca-status').value;
+        if (!fatcaStatus || fatcaStatus === '') {
+            document.getElementById('fatca-status-error').textContent = '請選擇您的FATCA狀態';
+            isValid = false;
+        }
+        
+        // 驗證稅務聲明確認
+        const taxDeclaration = document.getElementById('tax-declaration').checked;
+        if (!taxDeclaration) {
+            document.getElementById('tax-declaration-error').textContent = '請確認您已閱讀並同意稅務聲明';
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+
+    // 保存並繼續
+    function saveAndContinue() {
+        if (!validateForm()) {
+            console.log('表單驗證失敗');
+            // 滾動到第一個錯誤
+            const firstError = document.querySelector('.error-message:not(:empty)');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+        
+        // 儲存表單數據
+        saveFormData();
+        
+        // 標記稅務國家表單為已完成
+        sessionStorage.setItem('tax_country_completed', 'true');
+        
+        // 確定目標頁面
+        let targetPage = 'verification_center.html';
+        
+        // 從sessionStorage中檢查前一頁
+        const prevPage = sessionStorage.getItem('prevPage');
+        if (prevPage && prevPage.includes('test_all.html')) {
+            targetPage = 'test_all.html';
+        }
+        
+        // 構建目標路徑
+        const currentPath = window.location.href;
+        let targetPath;
+        
+        console.log('當前路徑:', currentPath);
+        
+        if (currentPath.includes('file:///')) {
+            // 如果是本地文件系統路徑
+            if (currentPath.includes('/Desktop/')) {
+                // 如果在桌面上
+                if (currentPath.includes('/mcmarkets_prototype/')) {
+                    // 如果在mcmarkets_prototype文件夾中
+                    targetPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1) + targetPage;
+                } else {
+                    // 如果直接在桌面上
+                    targetPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1) + targetPage;
+                }
+            } else {
+                // 其他本地路徑情況
+                targetPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1) + targetPage;
+            }
+        } else {
+            // 如果是網站路徑
+            targetPath = targetPage;
+        }
+        
+        console.log('導航到:', targetPath);
+        try {
+            window.location.href = targetPath;
+        } catch (error) {
+            console.error('導航錯誤:', error);
+            alert('無法導航到下一頁。請聯繫客服支持。');
+        }
+    }
+    </script>
+</body>
+</html> 

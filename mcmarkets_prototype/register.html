@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 創建帳戶</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #e6ad00;
+            --accent-color: #ffcf40;
+            --light-color: #f1f5f9;
+            --dark-color: #0a0a14;
+            --warning-color: #ffc107;
+            --border-color: #2d2d3a;
+            --gray-color: #6b7280;
+            --bg-color: #0a0a14;
+            --card-bg: #13131f;
+            --feature-bg: #0a1e5b;
+            --button-blue: #1e88e5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .warning-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #222;
+            color: var(--light-color);
+            text-align: center;
+            padding: 8px 10px;
+            font-size: 12px;
+            z-index: 10;
+        }
+        
+        .logo-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            max-width: 180px;
+            height: auto;
+        }
+        
+        .register-container {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 20px;
+            display: flex;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .features-sidebar {
+            flex: 0 0 40%;
+            background-color: var(--feature-bg);
+            padding: 30px 20px;
+            color: white;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .feature-icon {
+            color: var(--primary-color);
+            font-size: 20px;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+        
+        .feature-text {
+            font-size: 16px;
+        }
+        
+        .register-form {
+            flex: 0 0 60%;
+            padding: 30px;
+            background-color: white;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .register-title {
+            text-align: center;
+            color: var(--feature-bg);
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: #333;
+            font-size: 16px;
+            padding: 12px 15px 12px 40px;
+            outline: none;
+        }
+        
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        
+        .input-group .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: #000000;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: background-color 0.3s;
+        }
+        
+        .register-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .separator {
+            text-align: center;
+            margin: 15px 0;
+            color: #777;
+            position: relative;
+        }
+        
+        .separator::before, .separator::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .separator::before {
+            left: 0;
+        }
+        
+        .separator::after {
+            right: 0;
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .social-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .social-btn:hover {
+            border-color: #999;
+            background-color: #f5f5f5;
+        }
+        
+        .social-btn.google {
+            color: #DB4437;
+        }
+        
+        .social-btn.facebook {
+            color: #4267B2;
+        }
+        
+        .social-btn.apple {
+            color: #555;
+        }
+        
+        .keep-logged {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .keep-logged input {
+            margin-right: 8px;
+        }
+        
+        .keep-logged label {
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .support-badge {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background-color: white;
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .support-badge i {
+            color: var(--button-blue);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .login-link a {
+            color: var(--button-blue);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .legal-info {
+            padding: 15px;
+            max-width: 800px;
+            color: #999;
+            font-size: 11px;
+            line-height: 1.5;
+            text-align: justify;
+            margin-top: 20px;
+        }
+        
+        .legal-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .legal-links a {
+            color: #999;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        .legal-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .legal-info a {
+            color: #999;
+            text-decoration: none;
+        }
+        
+        .legal-info a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .register-container {
+                flex-direction: column;
+                max-width: 480px;
+            }
+            
+            .features-sidebar, .register-form {
+                flex: auto;
+            }
+            
+            .features-sidebar {
+                padding: 20px;
+            }
+            
+            .register-form {
+                padding: 20px;
+            }
+            
+            .legal-info {
+                padding: 10px 20px;
+            }
+        }
+        
+        /* 頂部錯誤訊息 */
+        .error-banner {
+            background-color: var(--error-color);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+        }
+        
+        .login-account-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--light-color);
+        }
+        
+        /* 響應式媒體查詢 - 針對H5移動設備優化 */
+        @media screen and (max-width: 768px) {
+            .register-container {
+                width: 90%;
+                padding: 20px;
+            }
+            
+            .logo {
+                width: 120px;
+                margin-bottom: 20px;
+            }
+            
+            .register-title {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+            
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .btn-register, .social-login-button {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .option-text {
+                margin: 15px 0;
+            }
+            
+            .feature-item {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+            
+            .feature-item-title {
+                font-size: 16px;
+            }
+            
+            .feature-item-text {
+                font-size: 13px;
+            }
+            
+            .legal-text {
+                font-size: 12px;
+                margin: 15px 0;
+            }
+        }
+        
+        /* 更小屏幕設備的進一步優化 */
+        @media screen and (max-width: 480px) {
+            .register-container {
+                width: 100%;
+                padding: 15px;
+                margin-top: 30px;
+                border-radius: 0;
+            }
+            
+            .logo {
+                width: 100px;
+                margin-bottom: 15px;
+            }
+            
+            .register-title {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            
+            .form-input {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .social-login-buttons {
+                flex-direction: column;
+            }
+            
+            .social-login-button {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .feature-item {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .feature-item-title {
+                font-size: 15px;
+            }
+            
+            .feature-item-text {
+                font-size: 12px;
+            }
+            
+            .legal-text {
+                font-size: 11px;
+                line-height: 1.4;
+            }
+            
+            .remember-me label {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 添加頂部錯誤橫幅 -->
+    <div id="error-banner" class="error-banner"></div>
+    
+    <div class="warning-banner">
+        多數散戶投資者帳戶在與此提供商交易 CFD 時蒙損資金。您應確定自己是否清楚 CFD 的運作方式，以及是否能承受這高的資金損失風險。
+    </div>
+    
+    <div class="logo-container">
+        <img src="assets/images/logo.png" alt="MC Markets Logo" class="logo" onerror="this.src='https://via.placeholder.com/180x50/ffc107/000000?text=MC+Markets';this.onerror='';">
+    </div>
+    
+    <div class="register-container">
+        <div class="features-sidebar">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="feature-text">免費和無限制的模擬交易</div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="feature-text">超過2800種槓桿工具</div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="feature-text">差價小且無佣金</div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="feature-text">尖端交易技術</div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="feature-text">全面的交易學院</div>
+            </div>
+        </div>
+        
+        <div class="register-form">
+            <div class="register-title">
+                已有百萬用戶選擇MC Markets，成為<br>其中一員吧
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" placeholder="電子郵件" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="密碼" required>
+                <i class="fas fa-eye toggle-password"></i>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-user-tag"></i>
+                <input type="text" placeholder="推薦碼（選填）" id="referral-code">
+            </div>
+            
+            <button class="register-btn">創建帳戶</button>
+            
+            <div class="separator">或使用以下方式創建帳戶</div>
+            
+            <div class="social-login">
+                <button class="social-btn google">
+                    <i class="fab fa-google"></i>
+                </button>
+                <button class="social-btn facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </button>
+                <button class="social-btn apple">
+                    <i class="fab fa-apple"></i>
+                </button>
+            </div>
+            
+            <div class="keep-logged">
+                <input type="checkbox" id="keep-terms">
+                <label for="keep-terms">保持登錄狀態</label>
+            </div>
+            
+            <div class="login-link">
+                已有帳戶？<a href="login.html" id="login-link">立即登入</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="support-badge">
+        <i class="fas fa-comments"></i> 即時支援
+    </div>
+    
+    <div class="legal-info">
+        按「創建帳戶」，即表示你確認你已年滿18周歲。你已知道MC Markets可能會使用你提供的電子郵件地址就其他相關資料以及使用方式與你想聯繫，提供其產品/服務的相關資訊。我們也可能會撥打你中的電話號碼。根據你的國家/地區對於廣告、「追加設置」和「隱私政策」選項卡中描述的偏好設置。你可以隨時取消訂閱這些資訊。想多瞭解，請查閱我們的<a href="#">隱私政策</a>。
+    </div>
+    
+    <div class="legal-info" style="text-align: center;">
+        MC Markets Group擁有超過百萬註冊客戶。
+    </div>
+    
+    <div class="legal-links">
+        <a href="#">客戶意見調查</a>
+        <a href="#">條款與協議</a>
+        <a href="#">關於我們</a>
+        <a href="#">聯絡資訊文件-商品</a>
+        <a href="#">聯絡資訊文件-ETF</a>
+        <a href="#">聯絡資訊文件-外匯</a>
+        <a href="#">聯絡資訊文件-指數</a>
+        <a href="#">聯絡資訊文件-股票</a>
+        <a href="#">聯絡資訊文件-隱私</a>
+        <a href="#">聯絡資訊文件-加密貨幣預警</a>
+        <a href="#">風險警告預知</a>
+        <a href="#">Cookie政策</a>
+    </div>
+    
+    <script>
+        // 頁面初始化時進行環境檢測
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('註冊頁面初始化完成，版本: 1.2.0');
+        });
+        
+        document.querySelector('.toggle-password').addEventListener('click', function() {
+            const passwordInput = this.previousElementSibling;
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+        
+        document.querySelector('.register-btn').addEventListener('click', function() {
+            try {
+                // 設置所有必要的 sessionStorage，模擬完整註冊流程
+                sessionStorage.setItem('from_register', 'true');
+                sessionStorage.setItem('registration_completed', 'true');
+                sessionStorage.setItem('personal_info_completed', 'true');
+                sessionStorage.setItem('identity_verified', 'true');
+                
+                // 保存推薦碼（如果有）
+                const referralCode = document.getElementById('referral-code').value.trim();
+                if (referralCode) {
+                    sessionStorage.setItem('referral_code', referralCode);
+                    console.log('保存推薦碼:', referralCode);
+                }
+                
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                const targetPage = 'trading_platform.html';
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    console.log('檢測到文件系統路徑');
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    const lastPart = pathParts.pop(); // 移除最後一個部分 (register.html)
+                    console.log('路徑最後部分:', lastPart);
+                    console.log('剩餘路徑部分:', pathParts);
+                    
+                    // 直接將文件放在桌面時的特殊處理
+                    if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        console.log('檢測到桌面路徑');
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        targetPath = userPath + '/' + targetPage;
+                        console.log('使用桌面目錄路徑:', targetPath);
+                    }
+                    // 在mcmarkets_prototype目錄內的情況
+                    else if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        console.log('檢測到mcmarkets_prototype目錄路徑');
+                        // 在mcmarkets_prototype中，直接添加目標頁面
+                        targetPath = pathParts.join('/') + '/' + targetPage;
+                        console.log('使用目錄內相對路徑:', targetPath);
+                    } 
+                    // 其他情況
+                    else {
+                        console.log('使用通用處理邏輯');
+                        // 檢查路徑中是否包含用戶名seanchou
+                        const baseDir = pathParts.join('/');
+                        if (baseDir.includes('/seanchou/')) {
+                            console.log('檢測到用戶名seanchou在路徑中');
+                            // 構建絕對路徑，嘗試直接在當前目錄找trading_platform.html
+                            targetPath = baseDir + '/' + targetPage;
+                            console.log('嘗試使用同級目錄路徑:', targetPath);
+                        } else {
+                            // 回退方案 - 使用絕對簡化路徑，直接指向桌面
+                            targetPath = 'file:///Users/seanchou/Desktop/' + targetPage;
+                            console.log('使用預設桌面路徑:', targetPath);
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = targetPage;
+                    console.log('使用網站相對路徑:', targetPath);
+                }
+                
+                // 記錄並跳轉
+                console.log('最終導航到:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('導航過程中出現錯誤:', error);
+                alert('導航發生錯誤，請查看控制台獲取詳細信息。\n錯誤: ' + error.message +
+                      '\n\n請嘗試從測試頁面進入: file:///Users/seanchou/Desktop/test_all.html');
+            }
+        });
+        
+        function goBack() {
+            try {
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (register.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加login.html
+                        targetPath = pathParts.join('/') + '/login.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/login.html';
+                        } else {
+                            targetPath = userPath + '/login.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加login.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/login.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/login.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'login.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('返回到:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('導航過程中出現錯誤:', error);
+                const errorBanner = document.getElementById('error-banner');
+                errorBanner.textContent = '返回導航錯誤: ' + error.message;
+                errorBanner.style.display = 'block';
+                setTimeout(function() {
+                    errorBanner.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        function saveAndProceed() {
+            try {
+                // ... existing validation code ...
+                
+                // 儲存註冊狀態到 sessionStorage
+                sessionStorage.setItem('from_register', 'true');
+                
+                // 獲取當前文件的完整路徑
+                const currentPath = window.location.href;
+                console.log('當前完整路徑:', currentPath);
+                
+                // 分析路徑以處理各種情況
+                let targetPath;
+                
+                // 檢查是否是文件系統路徑 (file://)
+                if (currentPath.startsWith('file://')) {
+                    // 拆分路徑並替換最後一個部分
+                    const pathParts = currentPath.split('/');
+                    pathParts.pop(); // 移除最後一個部分 (register.html)
+                    
+                    // 檢查是否在mcmarkets_prototype目錄中
+                    if (pathParts[pathParts.length-1] === 'mcmarkets_prototype') {
+                        // 在mcmarkets_prototype中，直接添加trading_platform.html
+                        targetPath = pathParts.join('/') + '/trading_platform.html';
+                    } 
+                    // 處理桌面路徑
+                    else if (pathParts.includes('Desktop') || pathParts.includes('desktop')) {
+                        // 用戶正在桌面上開啟文件
+                        const desktopIndex = pathParts.findIndex(part => part === 'Desktop' || part === 'desktop');
+                        const userPath = pathParts.slice(0, desktopIndex + 1).join('/');
+                        // 檢查桌面上是否有mcmarkets_prototype目錄
+                        if (currentPath.includes('mcmarkets_prototype')) {
+                            targetPath = userPath + '/mcmarkets_prototype/trading_platform.html';
+                        } else {
+                            targetPath = userPath + '/trading_platform.html';
+                        }
+                    }
+                    else {
+                        // 嘗試添加trading_platform.html
+                        const baseDir = pathParts.join('/');
+                        // 檢查用戶名是否存在於路徑中以決定是否使用絕對路徑
+                        if (baseDir.includes('/seanchou/')) {
+                            targetPath = baseDir + '/trading_platform.html';
+                        } else {
+                            // 回退方案 - 使用絕對路徑
+                            targetPath = 'file:///Users/seanchou/Desktop/mcmarkets_prototype/trading_platform.html';
+                        }
+                    }
+                } else {
+                    // 網站路徑，使用相對路徑
+                    targetPath = 'trading_platform.html';
+                }
+                
+                // 記錄並跳轉
+                console.log('註冊完成，跳轉到:', targetPath);
+                window.location.href = targetPath;
+            } catch (error) {
+                console.error('導航過程中出現錯誤:', error);
+                const errorBanner = document.getElementById('error-banner');
+                errorBanner.textContent = '提交導航錯誤: ' + error.message;
+                errorBanner.style.display = 'block';
+                setTimeout(function() {
+                    errorBanner.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html> 
