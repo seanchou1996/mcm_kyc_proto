@@ -1,12 +1,12 @@
 {
-  "name": "mcmarkets-prototype-2",
+  "name": "mcm-kyc-proto",
   "version": 2,
+  "outputDirectory": "mcmarkets_prototype",
   "public": true,
   "cleanUrls": true,
   "trailingSlash": false,
   "github": {
-    "enabled": true,
-    "silent": false
+    "silent": true
   },
   "headers": [
     {
