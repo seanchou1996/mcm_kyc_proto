@@ -1,7 +1,6 @@
 {
-  "name": "mcm-kyc-proto",
+  "name": "mc-markets-cfd-prototype",
   "version": 2,
-  "outputDirectory": "mcmarkets_prototype",
   "public": true,
   "cleanUrls": true,
   "trailingSlash": false,
@@ -25,6 +24,20 @@
           "value": "1; mode=block"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/demo",
+      "destination": "/demo.html"
+    },
+    {
+      "source": "/test",
+      "destination": "/test_prototype.html"
     }
   ]
 } 
