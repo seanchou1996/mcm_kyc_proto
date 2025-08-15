@@ -1,0 +1,336 @@
+/* MC Markets CFD 槓桿與風控規則原型樣式 */
+
+/* CSS 變數定義 */
+:root {
+  --mc-bg: #201E24;
+  --mc-surface: #2A2F3A;
+  --mc-primary: #EFD027;
+  --mc-accent: #4DA3FF;
+  --mc-text: #E8EDF2;
+  --mc-muted: #9AA3B2;
+  --mc-danger: #FF4D4F;
+  --mc-warning: #FFC53D;
+  --mc-success: #2BCB70;
+  --radius: 16px;
+  --shadow: 0 10px 24px rgba(0,0,0,.35);
+  --font-main: "Inter", "PingFang TC", system-ui, -apple-system, "Noto Sans TC", sans-serif;
+}
+
+/* 基礎樣式 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--mc-bg);
+  color: var(--mc-text);
+  line-height: 1.6;
+}
+
+/* Tailwind CSS 類別擴展 */
+.bg-mc-bg { background-color: var(--mc-bg) !important; }
+.bg-mc-surface { background-color: var(--mc-surface) !important; }
+.bg-mc-primary { background-color: var(--mc-primary) !important; }
+.bg-mc-accent { background-color: var(--mc-accent) !important; }
+.bg-mc-danger { background-color: var(--mc-danger) !important; }
+.bg-mc-warning { background-color: var(--mc-warning) !important; }
+.bg-mc-success { background-color: var(--mc-success) !important; }
+
+.text-mc-bg { color: var(--mc-bg) !important; }
+.text-mc-surface { color: var(--mc-surface) !important; }
+.text-mc-primary { color: var(--mc-primary) !important; }
+.text-mc-accent { color: var(--mc-accent) !important; }
+.text-mc-text { color: var(--mc-text) !important; }
+.text-mc-muted { color: var(--mc-muted) !important; }
+.text-mc-danger { color: var(--mc-danger) !important; }
+.text-mc-warning { color: var(--mc-warning) !important; }
+.text-mc-success { color: var(--mc-success) !important; }
+
+.border-mc-primary\/20 { border-color: rgba(36, 203, 166, 0.2) !important; }
+.border-mc-muted\/30 { border-color: rgba(154, 163, 178, 0.3) !important; }
+
+.rounded-radius { border-radius: var(--radius) !important; }
+.shadow-lg { box-shadow: var(--shadow) !important; }
+
+.font-main { font-family: var(--font-main) !important; }
+
+/* 響應式斷點 */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.875rem;
+  }
+  
+  .space-y-12 > * + * {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .grid-cols-1.lg\:grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+/* 表格樣式 */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(154, 163, 178, 0.3);
+}
+
+th {
+  font-weight: 600;
+  color: var(--mc-primary);
+  background-color: rgba(36, 203, 166, 0.1);
+}
+
+tbody tr:hover {
+  background-color: rgba(36, 203, 166, 0.05);
+}
+
+/* 表單元素樣式 */
+input, select {
+  background-color: var(--mc-bg);
+  border: 1px solid rgba(154, 163, 178, 0.3);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  color: var(--mc-text);
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--mc-primary);
+  box-shadow: 0 0 0 3px rgba(36, 203, 166, 0.1);
+}
+
+input::placeholder {
+  color: rgba(154, 163, 178, 0.5);
+}
+
+/* 按鈕樣式 */
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Tooltip 樣式 */
+.tooltip-trigger {
+  cursor: help;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.tooltip-trigger:hover {
+  color: var(--mc-primary);
+}
+
+#tooltip-container {
+  position: fixed;
+  z-index: 1000;
+  background-color: var(--mc-surface);
+  border: 1px solid rgba(36, 203, 166, 0.2);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  box-shadow: var(--shadow);
+  font-size: 0.875rem;
+  color: var(--mc-text);
+  max-width: 20rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#tooltip-container.show {
+  opacity: 1;
+}
+
+/* 計算結果樣式 */
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(154, 163, 178, 0.2);
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-label {
+  color: var(--mc-muted);
+  font-weight: 500;
+}
+
+.result-value {
+  color: var(--mc-text);
+  font-weight: 600;
+}
+
+.result-value.warning {
+  color: var(--mc-warning);
+}
+
+.result-value.danger {
+  color: var(--mc-danger);
+}
+
+.result-value.success {
+  color: var(--mc-success);
+}
+
+/* 圖表容器樣式 */
+#margin-chart {
+  background-color: var(--mc-surface);
+  border-radius: var(--radius);
+  border: 1px solid rgba(154, 163, 178, 0.2);
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* 滾動條樣式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--mc-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--mc-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mc-primary);
+}
+
+/* 響應式表格 */
+@media (max-width: 768px) {
+  .overflow-x-auto {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  table {
+    min-width: 600px;
+  }
+}
+
+/* 狀態指示器 */
+.status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.status-indicator.tier1 {
+  background-color: var(--mc-success);
+}
+
+.status-indicator.tier2 {
+  background-color: var(--mc-warning);
+}
+
+.status-indicator.limit {
+  background-color: var(--mc-danger);
+}
+
+/* 進度條樣式 */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(154, 163, 178, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--mc-success), var(--mc-warning));
+  transition: width 0.3s ease;
+}
+
+.progress-fill.danger {
+  background: var(--mc-danger);
+}
+
+/* 響應式工具提示 */
+@media (max-width: 768px) {
+  .tooltip-trigger {
+    cursor: pointer;
+  }
+  
+  #tooltip-container {
+    max-width: 90vw;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* 打印樣式 */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .bg-mc-surface {
+    background: #f5f5f5 !important;
+  }
+  
+  .text-mc-primary {
+    color: #0066cc !important;
+  }
+  
+  .text-mc-muted {
+    color: #666 !important;
+  }
+}

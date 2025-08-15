@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets - 高端交易平台</title>
+    <style>
+        :root {
+            --primary-color: #0a2540;
+            --secondary-color: #00bcd4;
+            --accent-color: #ffc107;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --gray-color: #6c757d;
+            --light-gray: #e9ecef;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 40px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-color);
+        }
+        
+        .section {
+            padding: 3rem 0;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            color: var(--gray-color);
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #0d325d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #00a1b5;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+        }
+        
+        .btn-accent:hover {
+            background-color: #e0a800;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .form-select {
+            appearance: none;
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-container::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 3px;
+            width: 100%;
+            background-color: var(--light-gray);
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-circle.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .step-circle.completed {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .step-text {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+            text-align: center;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .account-card {
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .account-card:hover {
+            border-color: var(--secondary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .account-card.selected {
+            border-color: var(--secondary-color);
+            background-color: rgba(0, 188, 212, 0.05);
+        }
+        
+        .account-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .account-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .account-feature i {
+            color: var(--success-color);
+            margin-right: 0.5rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.6em;
+            font-size: 75%;
+            font-weight: 600;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 10rem;
+        }
+        
+        .badge-premium {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+        }
+        
+        .badge-islamic {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .badge-license {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .regulation-icon {
+            height: 60px;
+            margin-right: 1rem;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-item {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .feature-icon {
+            color: var(--success-color);
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-link {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-link a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-link a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo-container">
+                <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50">
+                    <path fill="#FFFFFF" d="M20,10 L10,25 L20,40 L30,40 L40,25 L30,10 Z"/>
+                    <path fill="#FFC107" d="M25,15 L20,25 L25,35 L30,35 L35,25 L30,15 Z"/>
+                    <text x="50" y="30" fill="#FFFFFF" font-size="20" font-weight="bold">MC Markets</text>
+                </svg>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#" class="nav-link">主頁</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">產品</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">關於我們</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">聯繫我們</a></li>
+                <li class="nav-item"><a href="#" class="nav-link btn">登錄</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 進度指示器 -->
+        <div class="progress-container">
+            <div class="progress-step">
+                <div class="step-circle active">1</div>
+                <div class="step-text">區域與監管</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">2</div>
+                <div class="step-text">賬戶類型</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">3</div>
+                <div class="step-text">個人信息</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">4</div>
+                <div class="step-text">身份驗證</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">5</div>
+                <div class="step-text">完成</div>
+            </div>
+        </div>
+
+        <!-- 區域選擇頁面 -->
+        <section id="region-section" class="section active">
+            <div class="card">
+                <h2 class="title">選擇您的區域與監管框架</h2>
+                <p class="subtitle">MC Markets 在全球多個司法管轄區獲得牌照和監管，選擇最適合您所在地區的監管框架。</p>
+                
+                <div class="form-group">
+                    <label class="form-label">您居住的國家/地區</label>
+                    <div class="select-wrapper">
+                        <select class="form-select" id="country-select">
+                            <option value="" selected disabled>選擇國家或地區</option>
+                            <option value="hk">中國香港</option>
+                            <option value="cn">中國大陸</option>
+                            <option value="sg">新加坡</option>
+                            <option value="jp">日本</option>
+                            <option value="uk">英國</option>
+                            <option value="eu">歐盟國家</option>
+                            <option value="me">中東</option>
+                            <option value="other">其他地區</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="card" id="regulatory-info">
+                    <div class="title">可用的監管框架</div>
+                    
+                    <div class="regulatory-option">
+                        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <div class="regulation-icon">
+                                <img src="https://via.placeholder.com/60x60?text=CySEC" alt="CySEC">
+                            </div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem;">CySEC 監管 <span class="badge badge-license">推薦</span></h3>
+                                <p>塞浦路斯證券交易委員會 - 歐盟認可的金融監管機構</p>
+                            </div>
+                        </div>
+                        
+                        <ul class="features-list">
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-shield-alt"></i></span>
+                                <span>客戶資金分離存放，確保最高級別的資金安全</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>投資者賠償基金保護，最高可達 20,000 歐元</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-balance-scale"></i></span>
+                                <span>嚴格的合規和反洗錢程序，保障交易安全</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-globe"></i></span>
+                                <span>護照權利允許在所有歐盟國家提供服務</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="btn btn-secondary" onclick="selectRegulation('cysec')">選擇 CySEC 監管</button>
+                    </div>
+                    
+                    <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--light-gray);">
+                    
+                    <div class="regulatory-option">
+                        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <div class="regulation-icon">
+                                <img src="https://via.placeholder.com/60x60?text=FSA" alt="FSA">
+                            </div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem;">FSA 監管</h3>
+                                <p>塞舌爾金融服務管理局 - 國際認可的離岸監管機構</p>
+                            </div>
+                        </div>
+                        
+                        <ul class="features-list">
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-unlock-alt"></i></span>
+                                <span>更大的交易靈活性和更廣泛的產品範圍</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-money-bill-wave"></i></span>
+                                <span>更高的槓桿選擇，適合有經驗的交易者</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-user-shield"></i></span>
+                                <span>強大的客戶保護和隱私政策</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-tachometer-alt"></i></span>
+                                <span>快速的賬戶開設流程和交易執行</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="btn" onclick="selectRegulation('fsa')">選擇 FSA 監管</button>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="text-align: right; margin-top: 2rem;">
+                    <button class="btn" id="region-next" onclick="nextSection('region-section', 'account-section')">繼續</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 賬戶類型選擇頁面 -->
+        <section id="account-section" class="section">
+            <div class="card">
+                <h2 class="title">選擇您的賬戶類型</h2>
+                <p class="subtitle">MC Markets 提供多種賬戶類型以滿足不同交易者的需求。選擇最適合您交易目標的賬戶類型。</p>
+                
+                <div class="grid">
+                    <div class="account-card" onclick="selectAccount('standard')">
+                        <div class="account-title">
+                            <span>標準賬戶</span>
+                            <span class="badge badge-premium">熱門選擇</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>起始資金: $200</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>槓桿: 最高 1:400</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>點差: 從 1.8 點起</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>傭金: 無</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>適合: 初學者和中級交易者</span>
+                        </div>
+                    </div>
+                    
+                    <div class="account-card" onclick="selectAccount('premium')">
+                        <div class="account-title">
+                            <span>高級賬戶</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>起始資金: $1,000</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>槓桿: 最高 1:200</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>點差: 從 0.6 點起</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>傭金: $5 每手</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>適合: 中級和高級交易者</span>
+                        </div>
+                    </div>
+                    
+                    <div class="account-card" onclick="selectAccount('professional')">
+                        <div class="account-title">
+                            <span>專業賬戶</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>起始資金: $10,000</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>槓桿: 最高 1:100</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>點差: 從 0.0 點起</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>傭金: $3.5 每手</span>
+                        </div>
+                        <div class="account-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>適合: 專業交易者和機構</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 2rem;">
+                    <h3 class="title">伊斯蘭賬戶選項</h3>
+                    <p class="subtitle">MC Markets 提供符合伊斯蘭法律的無掉期交易賬戶。</p>
+                    
+                    <div class="form-group" style="display: flex; align-items: center;">
+                        <input type="checkbox" id="islamic-account" style="margin-right: 10px;">
+                        <label for="islamic-account">我需要伊斯蘭賬戶（無掉期/無利息） <span class="badge badge-islamic">伊斯蘭</span></label>
+                    </div>
+                    <p style="color: var(--gray-color); font-size: 0.9rem;">
+                        *請注意，伊斯蘭賬戶需要額外的驗證文件，以確認您的宗教信仰。
+                    </p>
+                </div>
+                
+                <div class="form-group" style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                    <button class="btn" onclick="previousSection('account-section', 'region-section')">上一步</button>
+                    <button class="btn" onclick="nextSection('account-section', 'personal-section')">繼續</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 個人信息頁面 -->
+        <section id="personal-section" class="section">
+            <div class="card">
+                <h2 class="title">填寫個人信息</h2>
+                <p class="subtitle">請提供您的個人信息以繼續開設賬戶。所有信息都將根據我們的隱私政策進行保護。</p>
+                
+                <div class="form-group">
+                    <label class="form-label">稱謂</label>
+                    <div class="select-wrapper">
+                        <select class="form-select" id="title-select">
+                            <option value="" selected disabled>選擇稱謂</option>
+                            <option value="mr">先生</option>
+                            <option value="ms">女士</option>
+                            <option value="mrs">太太</option>
+                            <option value="dr">博士</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 20px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">名字 *</label>
+                        <input type="text" class="form-input" id="first-name" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">姓氏 *</label>
+                        <input type="text" class="form-input" id="last-name" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">電子郵件 *</label>
+                    <input type="email" class="form-input" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">手機號碼 *</label>
+                    <div style="display: flex;">
+                        <div class="select-wrapper" style="width: 120px; margin-right: 10px;">
+                            <select class="form-select" id="country-code">
+                                <option value="+852">+852 (香港)</option>
+                                <option value="+86">+86 (中國)</option>
+                                <option value="+65">+65 (新加坡)</option>
+                                <option value="+81">+81 (日本)</option>
+                                <option value="+44">+44 (英國)</option>
+                            </select>
+                        </div>
+                        <input type="tel" class="form-input" id="phone" style="flex: 1;" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">出生日期 *</label>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="select-wrapper" style="flex: 1;">
+                            <select class="form-select" id="day">
+                                <option value="" selected disabled>日</option>
+                                <!-- 1-31 日選項 -->
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <!-- ... 其他日期 ... -->
+                                <option value="31">31</option>
+                            </select>
+                        </div>
+                        <div class="select-wrapper" style="flex: 1;">
+                            <select class="form-select" id="month">
+                                <option value="" selected disabled>月</option>
+                                <option value="1">1 月</option>
+                                <option value="2">2 月</option>
+                                <!-- ... 其他月份 ... -->
+                                <option value="12">12 月</option>
+                            </select>
+                        </div>
+                        <div class="select-wrapper" style="flex: 1;">
+                            <select class="form-select" id="year">
+                                <option value="" selected disabled>年</option>
+                                <!-- 1950-2005 年選項 -->
+                                <option value="2005">2005</option>
+                                <!-- ... 其他年份 ... -->
+                                <option value="1950">1950</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">居住地址 *</label>
+                    <input type="text" class="form-input" id="address-line1" placeholder="地址第一行" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" class="form-input" id="address-line2" placeholder="地址第二行（可選）">
+                </div>
+                
+                <div style="display: flex; gap: 20px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">城市 *</label>
+                        <input type="text" class="form-input" id="city" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">郵編 *</label>
+                        <input type="text" class="form-input" id="postal-code" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">您的交易經驗 *</label>
+                    <div class="select-wrapper">
+                        <select class="form-select" id="trading-experience">
+                            <option value="" selected disabled>選擇您的交易經驗</option>
+                            <option value="beginner">初學者（不到 1 年）</option>
+                            <option value="intermediate">中級（1-3 年）</option>
+                            <option value="experienced">有經驗（3-5 年）</option>
+                            <option value="professional">專業（5 年以上）</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">估計年收入（美元）*</label>
+                    <div class="select-wrapper">
+                        <select class="form-select" id="annual-income">
+                            <option value="" selected disabled>選擇您的年收入範圍</option>
+                            <option value="below25k">低於 $25,000</option>
+                            <option value="25k-50k">$25,000 - $50,000</option>
+                            <option value="50k-100k">$50,000 - $100,000</option>
+                            <option value="100k-250k">$100,000 - $250,000</option>
+                            <option value="above250k">高於 $250,000</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">估計淨資產（美元）*</label>
+                    <div class="select-wrapper">
+                        <select class="form-select" id="net-worth">
+                            <option value="" selected disabled>選擇您的淨資產範圍</option>
+                            <option value="below50k">低於 $50,000</option>
+                            <option value="50k-100k">$50,000 - $100,000</option>
+                            <option value="100k-250k">$100,000 - $250,000</option>
+                            <option value="250k-500k">$250,000 - $500,000</option>
+                            <option value="above500k">高於 $500,000</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">資金來源 *</label>
+                    <div class="select-wrapper">
+                        <select class="form-select" id="source-of-funds">
+                            <option value="" selected disabled>選擇您的資金來源</option>
+                            <option value="salary">工資/薪資</option>
+                            <option value="savings">積蓄</option>
+                            <option value="investment">投資收益</option>
+                            <option value="inheritance">繼承</option>
+                            <option value="business">商業收入</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                    <button class="btn" onclick="previousSection('personal-section', 'account-section')">上一步</button>
+                    <button class="btn" onclick="nextSection('personal-section', 'verification-section')">繼續</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 身份驗證頁面 -->
+        <section id="verification-section" class="section">
+            <div class="card">
+                <h2 class="title">身份驗證</h2>
+                <p class="subtitle">為了遵守反洗錢（AML）和了解您的客戶（KYC）法規，我們需要驗證您的身份。</p>
+                
+                <div class="card" style="margin-bottom: 2rem;">
+                    <h3 class="title">身份證明文件</h3>
+                    <p class="subtitle">請上傳以下任一有效文件：護照、身份證或駕駛執照。</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">文件類型 *</label>
+                        <div class="select-wrapper">
+                            <select class="form-select" id="id-document-type">
+                                <option value="" selected disabled>選擇文件類型</option>
+                                <option value="passport">護照</option>
+                                <option value="id-card">身份證</option>
+                                <option value="driving-license">駕駛執照</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">上傳身份證明文件正面 *</label>
+                        <input type="file" id="id-front" accept="image/jpeg, image/png, application/pdf" style="display: none;">
+                        <div style="display: flex; align-items: center;">
+                            <button class="btn" style="margin-right: 15px;" onclick="document.getElementById('id-front').click()">
+                                <i class="fas fa-upload"></i> 上傳文件
+                            </button>
+                            <span id="id-front-filename" style="color: var(--gray-color);">未選擇文件</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">上傳身份證明文件背面（如適用）</label>
+                        <input type="file" id="id-back" accept="image/jpeg, image/png, application/pdf" style="display: none;">
+                        <div style="display: flex; align-items: center;">
+                            <button class="btn" style="margin-right: 15px;" onclick="document.getElementById('id-back').click()">
+                                <i class="fas fa-upload"></i> 上傳文件
+                            </button>
+                            <span id="id-back-filename" style="color: var(--gray-color);">未選擇文件</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-bottom: 2rem;">
+                    <h3 class="title">住址證明</h3>
+                    <p class="subtitle">請上傳最近 3 個月內的公用事業賬單、銀行對賬單或政府信件。</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">文件類型 *</label>
+                        <div class="select-wrapper">
+                            <select class="form-select" id="address-document-type">
+                                <option value="" selected disabled>選擇文件類型</option>
+                                <option value="utility-bill">公用事業賬單</option>
+                                <option value="bank-statement">銀行對賬單</option>
+                                <option value="government-letter">政府信件</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">上傳住址證明文件 *</label>
+                        <input type="file" id="address-proof" accept="image/jpeg, image/png, application/pdf" style="display: none;">
+                        <div style="display: flex; align-items: center;">
+                            <button class="btn" style="margin-right: 15px;" onclick="document.getElementById('address-proof').click()">
+                                <i class="fas fa-upload"></i> 上傳文件
+                            </button>
+                            <span id="address-proof-filename" style="color: var(--gray-color);">未選擇文件</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="title">條款與條件</h3>
+                    
+                    <div class="form-group" style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
+                        <input type="checkbox" id="terms-condition" style="margin-right: 10px; margin-top: 5px;">
+                        <label for="terms-condition" style="font-size: 0.95rem;">
+                            我確認已閱讀並同意 MC Markets 的
+                            <a href="#" style="color: var(--secondary-color);">客戶協議</a>、
+                            <a href="#" style="color: var(--secondary-color);">風險披露聲明</a>和
+                            <a href="#" style="color: var(--secondary-color);">隱私政策</a>。
+                        </label>
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; align-items: flex-start; margin-bottom: 1rem;">
+                        <input type="checkbox" id="marketing-consent" style="margin-right: 10px; margin-top: 5px;">
+                        <label for="marketing-consent" style="font-size: 0.95rem;">
+                            我同意接收來自 MC Markets 的市場分析、交易提示和促銷信息。
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                    <button class="btn" onclick="previousSection('verification-section', 'personal-section')">上一步</button>
+                    <button class="btn" onclick="nextSection('verification-section', 'complete-section')">提交申請</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 完成頁面 -->
+        <section id="complete-section" class="section">
+            <div class="card" style="text-align: center; padding: 3rem 2rem;">
+                <div style="font-size: 5rem; color: var(--success-color); margin-bottom: 2rem;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 class="title">申請已提交</h2>
+                <p class="subtitle" style="margin-bottom: 2rem;">
+                    感謝您選擇 MC Markets。我們已收到您的賬戶申請，並將在 24 小時內進行審核。
+                </p>
+                
+                <div style="background-color: var(--light-gray); padding: 1.5rem; border-radius: 8px; text-align: left; margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary-color);">下一步</h3>
+                    <ul style="list-style: none;">
+                        <li style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <div style="background-color: var(--primary-color); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">1</div>
+                            <span>我們將透過電子郵件確認您的申請。</span>
+                        </li>
+                        <li style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <div style="background-color: var(--primary-color); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">2</div>
+                            <span>我們的合規團隊將審核您提交的文件。</span>
+                        </li>
+                        <li style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <div style="background-color: var(--primary-color); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">3</div>
+                            <span>一旦您的賬戶獲得批准，您將收到登錄詳情。</span>
+                        </li>
+                        <li style="display: flex; align-items: center;">
+                            <div style="background-color: var(--primary-color); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">4</div>
+                            <span>您可以存入資金並開始交易。</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <p>您還有任何疑問嗎？</p>
+                    <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 15px;">
+                        <a href="#" class="btn">
+                            <i class="fas fa-comment-dots"></i> 在線聊天
+                        </a>
+                        <a href="#" class="btn">
+                            <i class="fas fa-envelope"></i> 電子郵件
+                        </a>
+                        <a href="#" class="btn">
+                            <i class="fas fa-phone"></i> 致電我們
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                        <i class="fas fa-home"></i> 返回主頁
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-title">關於我們</div>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">公司介紹</a></li>
+                        <li class="footer-link"><a href="#">監管信息</a></li>
+                        <li class="footer-link"><a href="#">合作夥伴</a></li>
+                        <li class="footer-link"><a href="#">招聘信息</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <div class="footer-title">交易產品</div>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">外匯</a></li>
+                        <li class="footer-link"><a href="#">差價合約</a></li>
+                        <li class="footer-link"><a href="#">指數</a></li>
+                        <li class="footer-link"><a href="#">大宗商品</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <div class="footer-title">交易平台</div>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">MT4</a></li>
+                        <li class="footer-link"><a href="#">MT5</a></li>
+                        <li class="footer-link"><a href="#">網頁交易平台</a></li>
+                        <li class="footer-link"><a href="#">移動應用</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <div class="footer-title">幫助與支持</div>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">常見問題</a></li>
+                        <li class="footer-link"><a href="#">教育中心</a></li>
+                        <li class="footer-link"><a href="#">聯繫我們</a></li>
+                        <li class="footer-link"><a href="#">網站地圖</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 MC Markets. 版權所有。外匯和差價合約交易涉及高風險，可能導致您損失全部投資資金。
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 頁面切換函數
+        function nextSection(currentSectionId, nextSectionId) {
+            document.getElementById(currentSectionId).classList.remove('active');
+            document.getElementById(nextSectionId).classList.add('active');
+            
+            // 更新進度指示器
+            updateProgressIndicator(nextSectionId);
+            
+            // 滾動到頁面頂部
+            window.scrollTo(0, 0);
+        }
+        
+        function previousSection(currentSectionId, previousSectionId) {
+            document.getElementById(currentSectionId).classList.remove('active');
+            document.getElementById(previousSectionId).classList.add('active');
+            
+            // 更新進度指示器
+            updateProgressIndicator(previousSectionId);
+            
+            // 滾動到頁面頂部
+            window.scrollTo(0, 0);
+        }
+        
+        // 更新進度指示器
+        function updateProgressIndicator(sectionId) {
+            const stepCircles = document.querySelectorAll('.step-circle');
+            
+            // 重置所有步驟
+            stepCircles.forEach(circle => {
+                circle.classList.remove('active');
+                circle.classList.remove('completed');
+            });
+            
+            let activeStepIndex = 0;
+            
+            switch(sectionId) {
+                case 'region-section':
+                    activeStepIndex = 0;
+                    break;
+                case 'account-section':
+                    activeStepIndex = 1;
+                    break;
+                case 'personal-section':
+                    activeStepIndex = 2;
+                    break;
+                case 'verification-section':
+                    activeStepIndex = 3;
+                    break;
+                case 'complete-section':
+                    activeStepIndex = 4;
+                    break;
+            }
+            
+            // 標記所有已完成的步驟
+            for (let i = 0; i < activeStepIndex; i++) {
+                stepCircles[i].classList.add('completed');
+                stepCircles[i].innerHTML = '<i class="fas fa-check"></i>';
+            }
+            
+            // 標記當前步驟為活躍
+            stepCircles[activeStepIndex].classList.add('active');
+        }
+        
+        // 選擇監管機構
+        function selectRegulation(regType) {
+            const cysecBtn = document.querySelector('.regulatory-option:first-child .btn');
+            const fsaBtn = document.querySelector('.regulatory-option:last-child .btn');
+            
+            if (regType === 'cysec') {
+                cysecBtn.classList.add('btn-secondary');
+                fsaBtn.classList.remove('btn-secondary');
+            } else {
+                cysecBtn.classList.remove('btn-secondary');
+                fsaBtn.classList.add('btn-secondary');
+            }
+        }
+        
+        // 選擇賬戶類型
+        function selectAccount(accountType) {
+            const accountCards = document.querySelectorAll('.account-card');
+            
+            accountCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            const selectedCard = event.currentTarget;
+            selectedCard.classList.add('selected');
+        }
+        
+        // 文件上傳處理
+        document.getElementById('id-front').addEventListener('change', function() {
+            if (this.files.length > 0) {
+                document.getElementById('id-front-filename').textContent = this.files[0].name;
+            }
+        });
+        
+        document.getElementById('id-back').addEventListener('change', function() {
+            if (this.files.length > 0) {
+                document.getElementById('id-back-filename').textContent = this.files[0].name;
+            }
+        });
+        
+        document.getElementById('address-proof').addEventListener('change', function() {
+            if (this.files.length > 0) {
+                document.getElementById('address-proof-filename').textContent = this.files[0].name;
+            }
+        });
+    </script>
+</body>
+</html> 

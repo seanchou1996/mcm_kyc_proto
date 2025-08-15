@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets 新功能演示</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .demo-section {
+            scroll-margin-top: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-mc-bg text-mc-text font-main">
+    <!-- Header -->
+    <header class="bg-mc-surface shadow-lg border-b border-mc-primary/20 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-mc-primary rounded-lg flex items-center justify-center">
+                        <span class="text-xl font-bold text-mc-bg">MC</span>
+                    </div>
+                    <h1 class="text-xl md:text-2xl font-bold text-mc-primary">MC Markets 新功能演示</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#features" class="text-mc-muted hover:text-mc-primary transition-colors">功能亮點</a>
+                    <a href="#demo" class="text-mc-muted hover:text-mc-primary transition-colors">互動演示</a>
+                    <a href="index.html" class="bg-mc-primary text-mc-bg px-4 py-2 rounded-radius hover:bg-mc-primary/90 transition-colors">完整原型</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 space-y-16">
+        <!-- 功能亮點 -->
+        <section id="features" class="demo-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-mc-primary text-center mb-12">🎯 新功能亮點</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 混合保證金 -->
+                <div class="feature-card bg-mc-surface rounded-radius p-6 shadow-lg border border-mc-primary/20">
+                    <div class="text-4xl mb-4">💰</div>
+                    <h3 class="text-xl font-bold text-mc-primary mb-3">混合保證金系統</h3>
+                    <p class="text-mc-muted mb-4">支援多種資產抵押，包含分層折扣機制，體現資產波動性差異與風控邏輯。</p>
+                    <ul class="text-sm text-mc-muted space-y-1">
+                        <li>• 穩定幣：100% 抵押率</li>
+                        <li>• BTC/ETH：分層折扣</li>
+                        <li>• 動態計算有效價值</li>
+                    </ul>
+                </div>
+
+                <!-- 分層槓桿 -->
+                <div class="feature-card bg-mc-surface rounded-radius p-6 shadow-lg border border-mc-primary/20">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-bold text-mc-primary mb-3">智能分層槓桿</h3>
+                    <p class="text-mc-muted mb-4">基於持倉規模的自動槓桿調整，小額高槓桿，大額穩健槓桿。</p>
+                    <ul class="text-sm text-mc-muted space-y-1">
+                        <li>• 500K 以下：高槓桿</li>
+                        <li>• 500K 以上：槓桿減半</li>
+                        <li>• 分段維保計算</li>
+                    </ul>
+                </div>
+
+                <!-- 階梯式點差 -->
+                <div class="feature-card bg-mc-surface rounded-radius p-6 shadow-lg border border-mc-primary/20">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-bold text-mc-primary mb-3">階梯式點差</h3>
+                    <p class="text-mc-muted mb-4">大額交易自動調整點差，覆蓋對沖成本，體現平台風控邏輯。</p>
+                    <ul class="text-sm text-mc-muted space-y-1">
+                        <li>• 0-100K：基礎點差</li>
+                        <li>• 100K-500K：+3~7 bps</li>
+                        <li>• >500K：+12 bps</li>
+                    </ul>
+                </div>
+
+                <!-- 響應式設計 -->
+                <div class="feature-card bg-mc-surface rounded-radius p-6 shadow-lg border border-mc-primary/20">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold text-mc-primary mb-3">全端響應式</h3>
+                    <p class="text-mc-muted mb-4">桌面端與移動端完美適配，觸控友好的交互體驗。</p>
+                    <ul class="text-sm text-mc-muted space-y-1">
+                        <li>• 移動優先設計</li>
+                        <li>• 觸控工具提示</li>
+                        <li>• 手風琴式面板</li>
+                    </ul>
+                </div>
+
+                <!-- 可配置性 -->
+                <div class="feature-card bg-mc-surface rounded-radius p-6 shadow-lg border border-mc-primary/20">
+                    <div class="text-4xl mb-4">⚙️</div>
+                    <h3 class="text-xl font-bold text-mc-primary mb-3">高度可配置</h3>
+                    <p class="text-mc-muted mb-4">所有業務參數集中配置，支援熱更新，便於後台管理。</p>
+                    <ul class="text-sm text-mc-muted space-y-1">
+                        <li>• 集中配置管理</li>
+                        <li>• 模組化架構</li>
+                        <li>• 易於擴展</li>
+                    </ul>
+                </div>
+
+                <!-- 品牌一致性 -->
+                <div class="feature-card bg-mc-surface rounded-radius p-6 shadow-lg border border-mc-primary/20">
+                    <div class="text-4xl mb-4">🎨</div>
+                    <h3 class="text-xl font-bold text-mc-primary mb-3">品牌一致性</h3>
+                    <p class="text-mc-muted mb-4">使用 MC Markets 官方色彩，專業的金融產品外觀。</p>
+                    <ul class="text-sm text-mc-muted space-y-1">
+                        <li>• 官方品牌色彩</li>
+                        <li>• 專業 UI/UX</li>
+                        <li>• 現代化設計</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 互動演示 -->
+        <section id="demo" class="demo-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-mc-primary text-center mb-12">🚀 互動演示</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 抵押品計算演示 -->
+                <div class="bg-mc-surface rounded-radius p-6 shadow-lg">
+                    <h3 class="text-xl font-bold text-mc-accent mb-4">抵押品價值計算演示</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-mc-muted mb-2">BTC 數量</label>
+                            <input type="number" id="demo-btc" value="10" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-mc-muted mb-2">ETH 數量</label>
+                            <input type="number" id="demo-eth" value="100" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                        
+                        <button onclick="calculateDemo()" class="w-full bg-mc-primary text-mc-bg font-semibold py-3 px-6 rounded-radius hover:bg-mc-primary/90 transition-colors">
+                            計算抵押價值
+                        </button>
+                        
+                        <div id="demo-result" class="p-4 bg-mc-bg rounded-radius border border-mc-primary/20">
+                            <div class="text-center text-mc-muted">點擊計算按鈕查看結果</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 槓桿計算演示 -->
+                <div class="bg-mc-surface rounded-radius p-6 shadow-lg">
+                    <h3 class="text-xl font-bold text-mc-accent mb-4">槓桿與保證金演示</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-mc-muted mb-2">名義倉位 (USD)</label>
+                            <input type="number" id="demo-notional" value="800000" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-mc-muted mb-2">品種</label>
+                            <select id="demo-symbol" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                                <option value="XAUUSD">XAUUSD (黃金)</option>
+                                <option value="BTCUSD">BTCUSD (比特幣)</option>
+                                <option value="ETHUSD">ETHUSD (以太坊)</option>
+                            </select>
+                        </div>
+                        
+                        <button onclick="calculateLeverage()" class="w-full bg-mc-primary text-mc-bg font-semibold py-3 px-6 rounded-radius hover:bg-mc-primary/90 transition-colors">
+                            計算槓桿
+                        </button>
+                        
+                        <div id="leverage-result" class="p-4 bg-mc-bg rounded-radius border border-mc-primary/20">
+                            <div class="text-center text-mc-muted">點擊計算按鈕查看結果</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 快速導航 -->
+        <section class="text-center">
+            <div class="bg-mc-surface rounded-radius p-8 shadow-lg">
+                <h2 class="text-2xl font-bold text-mc-primary mb-4">準備好體驗完整功能了嗎？</h2>
+                <p class="text-mc-muted mb-6">點擊下方按鈕進入完整的 MC Markets CFD 槓桿與風控規則原型</p>
+                <a href="index.html" class="inline-block bg-mc-primary text-mc-bg font-bold py-4 px-8 rounded-radius text-lg hover:bg-mc-primary/90 transition-all transform hover:scale-105">
+                    進入完整原型 🚀
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 抵押品計算演示
+        function calculateDemo() {
+            const btcAmount = parseFloat(document.getElementById('demo-btc').value);
+            const ethAmount = parseFloat(document.getElementById('demo-eth').value);
+            
+            const btcPrice = 45000;
+            const ethPrice = 2800;
+            
+            const btcValue = btcAmount * btcPrice;
+            const ethValue = ethAmount * ethPrice;
+            
+            // 簡化的抵押率計算
+            const btcEffective = btcValue <= 1000000 ? btcValue : 
+                                btcValue <= 2000000 ? 1000000 + (btcValue - 1000000) * 0.975 :
+                                btcValue * 0.95;
+            
+            const ethEffective = ethValue <= 500000 ? ethValue :
+                                ethValue <= 1000000 ? 500000 + (ethValue - 500000) * 0.975 :
+                                ethValue * 0.95;
+            
+            const totalMarket = btcValue + ethValue;
+            const totalEffective = btcEffective + ethEffective;
+            const efficiency = (totalEffective / totalMarket * 100).toFixed(1);
+            
+            document.getElementById('demo-result').innerHTML = `
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span>BTC 市值:</span>
+                        <span class="text-mc-text">$${btcValue.toLocaleString()}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>BTC 有效價值:</span>
+                        <span class="text-mc-primary">$${btcEffective.toLocaleString()}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>ETH 市值:</span>
+                        <span class="text-mc-text">$${ethValue.toLocaleString()}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>ETH 有效價值:</span>
+                        <span class="text-mc-primary">$${ethEffective.toLocaleString()}</span>
+                    </div>
+                    <hr class="border-mc-muted/30">
+                    <div class="flex justify-between font-semibold">
+                        <span>總市值:</span>
+                        <span class="text-mc-text">$${totalMarket.toLocaleString()}</span>
+                    </div>
+                    <div class="flex justify-between font-semibold">
+                        <span>有效抵押價值:</span>
+                        <span class="text-mc-primary">$${totalEffective.toLocaleString()}</span>
+                    </div>
+                    <div class="flex justify-between font-semibold">
+                        <span>抵押效率:</span>
+                        <span class="text-mc-accent">${efficiency}%</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 槓桿計算演示
+        function calculateLeverage() {
+            const notional = parseFloat(document.getElementById('demo-notional').value);
+            const symbol = document.getElementById('demo-symbol').value;
+            
+            let leverage, initialMargin, maintenanceMargin;
+            
+            if (symbol === 'XAUUSD') {
+                if (notional <= 500000) {
+                    leverage = 200;
+                    initialMargin = notional / 200;
+                    maintenanceMargin = notional * 0.005;
+                } else {
+                    leverage = 100;
+                    initialMargin = 500000 / 200 + (notional - 500000) / 100;
+                    maintenanceMargin = 500000 * 0.005 + (notional - 500000) * 0.020;
+                }
+            } else {
+                if (notional <= 500000) {
+                    leverage = 100;
+                    initialMargin = notional / 100;
+                    maintenanceMargin = notional * 0.008;
+                } else {
+                    leverage = 50;
+                    initialMargin = 500000 / 100 + (notional - 500000) / 50;
+                    maintenanceMargin = 500000 * 0.008 + (notional - 500000) * 0.030;
+                }
+            }
+            
+            const tier = notional <= 500000 ? '第1層' : '第2層';
+            const tierClass = notional <= 500000 ? 'text-mc-success' : 'text-mc-warning';
+            
+            document.getElementById('leverage-result').innerHTML = `
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span>當前層級:</span>
+                        <span class="${tierClass} font-semibold">${tier}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>當前槓桿:</span>
+                        <span class="text-mc-text">${leverage}x</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>名義倉位:</span>
+                        <span class="text-mc-text">$${notional.toLocaleString()}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>初始保證金:</span>
+                        <span class="text-mc-primary">$${initialMargin.toLocaleString()}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>維持保證金:</span>
+                        <span class="text-mc-warning">$${maintenanceMargin.toLocaleString()}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 平滑滾動
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

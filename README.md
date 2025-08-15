@@ -1,139 +1,158 @@
-# MC Markets - 金融市場資訊平台
+# MC Markets CFD 槓桿與風控規則原型
 
-MC Markets 是一個專注於貴金屬、外匯和指數市場的資訊平台，提供最新的市場新聞、分析和 CFD 交易平台比較。
+一個響應式的單頁原型，展示 MC Markets 的浮動槓桿系統、風控規則和互動試算器。
 
 ## 功能特點
 
-- **市場新聞**: 提供貴金屬、外匯、商品和加密貨幣等市場的最新新聞和分析
-- **CFD 平台比較**: 全面比較各大 CFD 交易平台的特點、優勢和劣勢
-- **市場行情**: 實時顯示主要金融產品的價格和變動
-- **搜索功能**: 快速查找相關新聞和平台信息
+### 🎯 核心功能
+- **交易規則總覽**: 清晰展示 USD 計價、二層浮動槓桿、分段維保等規則
+- **品種規格表**: 動態渲染所有交易品種的槓桿、維保率和限紅
+- **抵押品價值率（混合保證金）**: 支援多種資產抵押，包含分層折扣機制
+- **設計理念說明**: 從客戶和風控雙視角解釋規則設計原因
+- **互動試算器**: 實時計算保證金、槓桿、風險指標和抵押品價值
+- **視覺化圖表**: Canvas 繪製保證金曲線，直觀顯示分層效果
+
+### 📱 響應式設計
+- 移動優先的響應式佈局
+- 支持桌面端和移動端
+- 觸控友好的工具提示系統
+
+### 🎨 品牌一致性
+- 使用 MC Markets 品牌色彩
+- 現代化的 UI/UX 設計
+- 專業的金融產品外觀
 
 ## 技術架構
 
-- **後端**: Python Flask
-- **前端**: HTML, CSS, JavaScript, Bootstrap 5
-- **數據存儲**: 模擬數據（可擴展為數據庫存儲）
-- **緩存**: Flask-Caching
+### 前端技術棧
+- **HTML5**: 語義化標記
+- **Tailwind CSS**: 實用優先的 CSS 框架
+- **Vanilla JavaScript**: 原生 JS，無依賴
+- **Canvas API**: 圖表繪製
 
-## 安裝指南
-
-### 前提條件
-
-- Python 3.8 或更高版本
-- pip 包管理器
-
-### 安裝步驟
-
-1. 克隆此倉庫:
-   ```
-   git clone https://github.com/yourusername/mc-markets.git
-   cd mc-markets
-   ```
-
-2. 創建並激活虛擬環境:
-   ```
-   python -m venv venv
-   source venv/bin/activate  # 在 Windows 上使用: venv\Scripts\activate
-   ```
-
-3. 安裝依賴:
-   ```
-   pip install -r requirements.txt
-   ```
-
-4. 運行應用:
-   ```
-   ./run.sh
-   ```
-   或者手動設置環境變量並運行:
-   ```
-   export FLASK_APP=mc_markets/app.py
-   export FLASK_ENV=development
-   flask run --host=0.0.0.0 --port=5000
-   ```
-
-5. 在瀏覽器中訪問:
-   ```
-   http://localhost:5000
-   ```
-
-## 項目結構
-
+### 文件結構
 ```
-mc_markets/
-├── __init__.py          # 應用初始化
-├── app.py               # 應用入口點
-├── config.py            # 配置設置
-├── models.py            # 數據模型
-├── routes.py            # 路由定義
-├── utils.py             # 工具函數
-├── static/              # 靜態文件 (CSS, JS, 圖片)
-└── templates/           # HTML 模板
-    ├── base.html        # 基礎模板
-    ├── index.html       # 首頁
-    ├── partials/        # 部分模板 (頁頭, 頁尾等)
-    ├── news/            # 新聞相關模板
-    ├── platforms/       # 平台比較相關模板
-    └── errors/          # 錯誤頁面模板
+├── index.html          # 主頁面
+├── styles.css          # 樣式文件
+├── app.js             # 應用邏輯
+└── README.md          # 說明文檔
 ```
 
-## 開發指南
+## 配置說明
 
-### 添加新功能
+### 核心配置 (CONFIG 對象)
+所有業務規則集中在 `app.js` 的 `CONFIG` 對象中：
 
-1. 在 `routes.py` 中添加新的路由
-2. 在 `templates/` 目錄中創建相應的模板
-3. 如果需要，在 `utils.py` 中添加新的工具函數
-4. 更新 `models.py` 以支持新的數據結構
+```javascript
+const CONFIG = {
+  thresholdUSD: 500_000,        // 分層門檻
+  symbols: {                    // 品種配置
+    XAUUSD: {
+      maxLeverageL1: 200,       // 層1槓桿
+      maxLeverageL2: 100,       // 層2槓桿
+      mmrL1: 0.005,            // 層1維保率
+      mmrL2: 0.020,            // 層2維保率
+      limitUSD: 10_000_000     // 限紅
+    }
+    // ... 其他品種
+  },
+  tieredSpread: [              // 階梯式點差
+    { min: 0, addBps: 0 },
+    { min: 100_000, addBps: 3 }
+    // ...
+  ]
+};
+```
 
-### 代碼風格
+### 計算邏輯
+- **名義額**: 多空名義合計
+- **分層判斷**: >500k 進入第2層
+- **保證金計算**: 分段累加，跨層連續
+- **點差預估**: 基於階梯規則
 
-- 遵循 PEP 8 Python 代碼風格指南
-- 使用有意義的變量和函數名
-- 為函數和類添加文檔字符串
+## 使用方法
 
-## 部署指南
+### 1. 查看規則
+- 瀏覽交易規則總覽
+- 查看各品種規格表
+- 閱讀設計理念說明
 
-### 本地部署
+### 2. 使用試算器
+1. 選擇交易品種
+2. 輸入名義額（多空或總額）
+3. 點擊計算按鈕
+4. 查看結果和圖表
 
-使用提供的 `run.sh` 腳本在本地運行應用。
+### 3. 理解圖表
+- **綠線**: 初始保證金曲線
+- **黃線**: 維持保證金曲線
+- **紅虛線**: 分層門檻 (500k)
+- **紅點線**: 品種限紅線
 
-### 生產環境部署
+## 測試用例
 
-對於生產環境，建議使用 Gunicorn 作為 WSGI 服務器:
+### 基本測試
+1. **XAUUSD 名義 800,000**
+   - 初保: $5,500 (500k/200 + 300k/100)
+   - 維保: $8,500 (500k×0.5% + 300k×2.0%)
 
-1. 安裝 Gunicorn:
-   ```
-   pip install gunicorn
-   ```
+2. **ETHUSD 名義 900,000**
+   - 維保: $16,000 (500k×0.8% + 400k×3.0%)
 
-2. 運行應用:
-   ```
-   gunicorn -w 4 -b 0.0.0.0:5000 "mc_markets.app:app"
-   ```
+3. **SOLUSD 名義 >200,000**
+   - 觸發限紅警示
 
-3. 使用 Nginx 作為反向代理（推薦）。
+### 階梯式點差測試
+- 0-100K: +0 bps
+- 100K-250K: +3 bps
+- 250K-500K: +7 bps
+- >500K: +12 bps
 
-## 貢獻指南
+## 擴展性
 
-1. Fork 此倉庫
-2. 創建您的功能分支 (`git checkout -b feature/amazing-feature`)
-3. 提交您的更改 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 開啟一個 Pull Request
+### 新增品種
+只需在 `CONFIG.symbols` 中添加新配置，表格和試算器自動生效。
 
-## 許可證
+### 預留功能
+- `applyTimeRules()`: 時間規則應用
+- `checkPortfolioLimits()`: 組合限制檢查
+- 相關 UI 區塊已預留
 
-此項目採用 MIT 許可證 - 詳情請參閱 [LICENSE](LICENSE) 文件。
+### 樣式定制
+所有顏色和字體通過 CSS 變數控制，可一鍵替換品牌色彩。
 
-## 聯繫方式
+## 瀏覽器兼容性
 
-如有任何問題或建議，請通過以下方式聯繫我們:
+- Chrome 60+
+- Firefox 55+
+- Safari 12+
+- Edge 79+
 
-- 電子郵件: info@mcmarkets.com
-- 網站: [https://www.mcmarkets.com](https://www.mcmarkets.com)
+## 部署說明
+
+### 本地開發
+1. 下載所有文件到同一目錄
+2. 使用本地服務器打開 `index.html`
+3. 或直接在瀏覽器中打開
+
+### 生產部署
+- 上傳所有文件到 Web 服務器
+- 確保 `index.html` 為入口頁面
+- 檢查文件路徑和權限
+
+## 注意事項
+
+- 所有計算僅供參考，實際交易請以 MC Markets 官方規則為準
+- 原型使用 USD 計價，不使用 USDT
+- 無"永續/Perpetual"相關術語
+- 圖表數據為實時計算，不存儲用戶輸入
+
+## 版本信息
+
+- 版本: 1.0.0
+- 更新日期: 2024
+- 開發者: MC Markets 原型團隊
 
 ---
 
-**免責聲明**: MC Markets 提供的信息僅供參考，不構成投資建議。交易 CFD 涉及高風險，您可能會損失所有投資資金。 
+如有問題或建議，請聯繫開發團隊。 

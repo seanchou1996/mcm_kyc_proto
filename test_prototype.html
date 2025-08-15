@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets 原型測試</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #24CBA6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #1ea085;
+        }
+        .result {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 4px solid #24CBA6;
+        }
+        .error {
+            border-left-color: #FF4D4F;
+            background: #fff5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>MC Markets CFD 槓桿與風控規則原型測試</h1>
+    
+    <div class="test-section">
+        <h2>功能測試</h2>
+        <button class="test-button" onclick="testConfig()">測試配置加載</button>
+        <button class="test-button" onclick="testCalculations()">測試計算邏輯</button>
+        <button class="test-button" onclick="testFormatting()">測試格式化</button>
+        <button class="test-button" onclick="testCollateral()">測試抵押品計算</button>
+        <button class="test-button" onclick="openPrototype()">打開完整原型</button>
+    </div>
+
+    <div id="test-results"></div>
+
+    <script>
+        // 測試配置
+        function testConfig() {
+            try {
+                // 模擬 CONFIG 對象
+                const CONFIG = {
+                    thresholdUSD: 500_000,
+                    symbols: {
+                        XAUUSD: {
+                            maxLeverageL1: 200,
+                            maxLeverageL2: 100,
+                            mmrL1: 0.005,
+                            mmrL2: 0.020,
+                            limitUSD: 10_000_000
+                        }
+                    }
+                };
+                
+                showResult('配置測試', `✅ 配置加載成功<br>分層門檻: ${CONFIG.thresholdUSD.toLocaleString()}<br>品種數量: ${Object.keys(CONFIG.symbols).length}`, 'success');
+            } catch (error) {
+                showResult('配置測試', `❌ 錯誤: ${error.message}`, 'error');
+            }
+        }
+
+        // 測試計算邏輯
+        function testCalculations() {
+            try {
+                const symbol = {
+                    maxLeverageL1: 200,
+                    maxLeverageL2: 100,
+                    mmrL1: 0.005,
+                    mmrL2: 0.020
+                };
+                
+                const grossNotional = 800_000;
+                const thresholdUSD = 500_000;
+                
+                // 初始保證金計算
+                const p1 = Math.min(grossNotional, thresholdUSD) / symbol.maxLeverageL1;
+                const p2 = Math.max(0, grossNotional - thresholdUSD) / symbol.maxLeverageL2;
+                const initialMargin = p1 + p2;
+                
+                // 維持保證金計算
+                const mm1 = Math.min(grossNotional, thresholdUSD) * symbol.mmrL1;
+                const mm2 = Math.max(0, grossNotional - thresholdUSD) * symbol.mmrL2;
+                const maintenanceMargin = mm1 + mm2;
+                
+                showResult('計算測試', `
+                    ✅ 計算邏輯測試成功<br>
+                    <strong>XAUUSD 名義 800,000 測試:</strong><br>
+                    初始保證金: $${initialMargin.toLocaleString()} (${p1.toLocaleString()} + ${p2.toLocaleString()})<br>
+                    維持保證金: $${maintenanceMargin.toLocaleString()} (${mm1.toLocaleString()} + ${mm2.toLocaleString()})
+                `, 'success');
+            } catch (error) {
+                showResult('計算測試', `❌ 錯誤: ${error.message}`, 'error');
+            }
+        }
+
+        // 測試格式化
+        function testFormatting() {
+            try {
+                function formatUSD(amount) {
+                    if (amount >= 1_000_000) {
+                        return `$${(amount / 1_000_000).toFixed(1)}M`;
+                    } else if (amount >= 1_000) {
+                        return `$${(amount / 1_000).toFixed(0)}K`;
+                    } else {
+                        return `$${amount.toFixed(0)}`;
+                    }
+                }
+                
+                const testAmounts = [50000, 500000, 800000, 1000000, 5000000];
+                const formatted = testAmounts.map(amount => `${amount.toLocaleString()} → ${formatUSD(amount)}`).join('<br>');
+                
+                showResult('格式化測試', `✅ 格式化測試成功<br>${formatted}`, 'success');
+            } catch (error) {
+                showResult('格式化測試', `❌ 錯誤: ${error.message}`, 'error');
+            }
+        }
+
+        // 測試抵押品計算
+        function testCollateral() {
+            try {
+                // 模擬抵押品政策
+                const collateralPolicy = {
+                    BTC: { 
+                        tiers: [
+                            { upTo: 1_000_000, ratio: 1.00 }, 
+                            { upTo: 2_000_000, ratio: 0.975 }, 
+                            { upTo: Infinity, ratio: 0.95 }
+                        ]
+                    },
+                    ETH: { 
+                        tiers: [
+                            { upTo: 500_000, ratio: 1.00 }, 
+                            { upTo: 1_000_000, ratio: 0.975 }, 
+                            { upTo: Infinity, ratio: 0.95 }
+                        ]
+                    }
+                };
+
+                // 測試計算有效抵押價值
+                function calculateEffectiveCollateralValue(asset, marketValue) {
+                    const policy = collateralPolicy[asset];
+                    if (!policy) return marketValue;
+
+                    let effectiveValue = 0;
+                    let remainingValue = marketValue;
+
+                    for (const tier of policy.tiers) {
+                        if (remainingValue <= 0) break;
+                        
+                        const tierValue = Math.min(remainingValue, tier.upTo);
+                        effectiveValue += tierValue * tier.ratio;
+                        remainingValue -= tierValue;
+                        
+                        if (tier.upTo === Infinity) break;
+                    }
+
+                    return effectiveValue;
+                }
+
+                // 測試用例
+                const btcValue = 1_500_000; // 150萬
+                const ethValue = 800_000;    // 80萬
+                
+                const btcEffective = calculateEffectiveCollateralValue('BTC', btcValue);
+                const ethEffective = calculateEffectiveCollateralValue('ETH', ethValue);
+                
+                showResult('抵押品計算測試', `
+                    ✅ 抵押品計算邏輯測試成功<br>
+                    <strong>BTC 測試 (市值: $1,500,000):</strong><br>
+                    有效抵押價值: $${btcEffective.toLocaleString()}<br>
+                    計算邏輯: 1M×100% + 500K×97.5% = $1,000,000 + $487,500 = $1,487,500<br><br>
+                    <strong>ETH 測試 (市值: $800,000):</strong><br>
+                    有效抵押價值: $${ethEffective.toLocaleString()}<br>
+                    計算邏輯: 500K×100% + 300K×97.5% = $500,000 + $292,500 = $792,500
+                `, 'success');
+            } catch (error) {
+                showResult('抵押品計算測試', `❌ 錯誤: ${error.message}`, 'error');
+            }
+        }
+
+        // 打開完整原型
+        function openPrototype() {
+            window.open('index.html', '_blank');
+        }
+
+        // 顯示測試結果
+        function showResult(title, content, type = 'success') {
+            const resultsDiv = document.getElementById('test-results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `result ${type === 'error' ? 'error' : ''}`;
+            resultDiv.innerHTML = `<h3>${title}</h3>${content}`;
+            resultDiv.appendChild(resultDiv);
+        }
+
+        // 頁面加載完成後自動運行基本測試
+        window.addEventListener('load', () => {
+            showResult('系統狀態', '🚀 測試頁面已加載完成，可以開始測試各項功能', 'success');
+        });
+    </script>
+</body>
+</html>

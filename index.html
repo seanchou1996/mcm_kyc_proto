@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MC Markets｜CFD 槓桿與風控規則</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-mc-bg text-mc-text font-main">
+    <!-- Header -->
+    <header class="bg-mc-surface shadow-lg border-b border-mc-primary/20">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-mc-primary rounded-lg flex items-center justify-center">
+                        <span class="text-2xl font-bold text-mc-bg">MC</span>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-mc-primary">MC Markets</h1>
+                </div>
+                <h2 class="text-lg md:text-xl text-mc-muted">CFD 槓桿與風控規則</h2>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 space-y-12">
+        <!-- Section A: 交易規則總覽 -->
+        <section id="trading-rules" class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-mc-primary mb-4">交易規則總覽</h2>
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-mc-surface p-4 rounded-radius border border-mc-primary/20">
+                            <div class="text-mc-primary font-semibold mb-2">USD 計價</div>
+                            <div class="text-mc-muted">所有品種均以美元計價</div>
+                        </div>
+                        <div class="bg-mc-surface p-4 rounded-radius border border-mc-primary/20">
+                            <div class="text-mc-primary font-semibold mb-2">多空名義合計</div>
+                            <div class="text-mc-muted">持倉名義價值包含多空總額</div>
+                        </div>
+                        <div class="bg-mc-surface p-4 rounded-radius border border-mc-primary/20">
+                            <div class="text-mc-primary font-semibold mb-2">二層浮動槓桿</div>
+                            <div class="text-mc-muted">>500k 槓桿減半</div>
+                        </div>
+                        <div class="bg-mc-surface p-4 rounded-radius border border-mc-primary/20">
+                            <div class="text-mc-primary font-semibold mb-2">分段維保</div>
+                            <div class="text-mc-muted">跨層級時維保率分段累加</div>
+                        </div>
+                        <div class="bg-mc-surface p-4 rounded-radius border border-mc-primary/20">
+                            <div class="text-mc-primary font-semibold mb-2">單品種限紅</div>
+                            <div class="text-mc-muted">每個品種都有最大持倉限制</div>
+                        </div>
+                        <div class="bg-mc-surface p-4 rounded-radius border border-mc-primary/20">
+                            <div class="text-mc-primary font-semibold mb-2">階梯式點差</div>
+                            <div class="text-mc-muted">大體量採階梯式點差</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 各品種規格表 -->
+            <div class="bg-mc-surface rounded-radius p-6 shadow-lg">
+                <h3 class="text-2xl font-bold text-mc-primary mb-6 text-center">各品種規格表</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-mc-muted/30">
+                                <th class="text-left p-3 font-semibold text-mc-primary">品種</th>
+                                <th class="text-left p-3 font-semibold text-mc-primary">
+                                    槓桿 (L1→L2)
+                                    <button class="tooltip-trigger ml-1 text-mc-accent" aria-label="最大槓桿倍數說明" role="tooltip">ⓘ</button>
+                                </th>
+                                <th class="text-left p-3 font-semibold text-mc-primary">
+                                    分層門檻
+                                    <button class="tooltip-trigger ml-1 text-mc-accent" aria-label="分層門檻說明" role="tooltip">ⓘ</button>
+                                </th>
+                                <th class="text-left p-3 font-semibold text-mc-primary">
+                                    維保率 (L1/L2)
+                                    <button class="tooltip-trigger ml-1 text-mc-accent" aria-label="維持保證金比率說明" role="tooltip">ⓘ</button>
+                                </th>
+                                <th class="text-left p-3 font-semibold text-mc-primary">
+                                    單品種限紅 (USD)
+                                    <button class="tooltip-trigger ml-1 text-mc-accent" aria-label="單品種限紅說明" role="tooltip">ⓘ</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="symbols-table-body">
+                            <!-- 由 JavaScript 動態生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 抵押品價值率（混合保證金） -->
+            <div class="bg-mc-surface rounded-radius p-6 shadow-lg">
+                <h3 class="text-2xl font-bold text-mc-primary mb-6 text-center">抵押品價值率（混合保證金）</h3>
+                
+                <!-- 導言卡片 -->
+                <div class="bg-mc-bg rounded-radius p-4 mb-6 border border-mc-primary/20">
+                    <div class="text-center mb-4">
+                        <button id="toggle-intro" class="text-mc-primary font-semibold hover:text-mc-accent transition-colors">
+                            查看詳細說明 ▼
+                        </button>
+                    </div>
+                    <div id="intro-content" class="hidden space-y-3 text-sm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="text-mc-accent font-semibold mb-2">中文說明</h4>
+                                <p class="text-mc-muted">抵押品價值率 = 抵押資產市值 × 抵押率（分層），用於計算可用保證金與購買力。</p>
+                                <p class="text-mc-muted mt-2">我們目前採納 Top 5 市值代幣的抵押資產，並提供分層（名義金額）折扣，體現資產波動性差異與風控邏輯。</p>
+                                <p class="text-mc-muted mt-2">本頁所有「合約／交易」均不顯示「永續」字樣；計價一律為 USD。</p>
+                            </div>
+                            <div>
+                                <h4 class="text-mc-accent font-semibold mb-2">English Description</h4>
+                                <p class="text-mc-muted">Collateral Ratio = Collateral Asset Market Value × Collateral Rate (Tiered), used to calculate available margin and purchasing power.</p>
+                                <p class="text-mc-muted mt-2">We currently accept Top 5 market cap tokens as collateral assets, providing tiered (nominal amount) discounts reflecting asset volatility differences and risk control logic.</p>
+                                <p class="text-mc-muted mt-2">All "contracts/trading" on this page do not display "Perpetual" wording; pricing is consistently in USD.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 抵押品規則表 -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-semibold text-mc-accent">抵押品規則表</h4>
+                        <button id="toggle-collateral-table" class="text-mc-primary text-sm hover:text-mc-accent transition-colors">
+                            展開表格 ▼
+                        </button>
+                    </div>
+                    <div id="collateral-table-content" class="hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-mc-muted/30">
+                                        <th class="text-left p-3 font-semibold text-mc-primary">資產</th>
+                                        <th class="text-left p-3 font-semibold text-mc-primary">
+                                            層級門檻 (USD 名義值)
+                                            <button class="tooltip-trigger ml-1 text-mc-accent" aria-label="層級門檻說明" role="tooltip">ⓘ</button>
+                                        </th>
+                                        <th class="text-left p-3 font-semibold text-mc-primary">
+                                            抵押率 (%)
+                                            <button class="tooltip-trigger ml-1 text-mc-accent" aria-label="抵押率說明" role="tooltip">ⓘ</button>
+                                        </th>
+                                        <th class="text-left p-3 font-semibold text-mc-primary">
+                                            說明
+                                            <button class="tooltip-trigger ml-1 text-mc-accent" aria-label="說明提示" role="tooltip">ⓘ</button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="collateral-table-body">
+                                    <!-- 由 JavaScript 動態生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section B: 設計理念與原因 -->
+        <section id="design-rationale" class="space-y-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-mc-primary text-center mb-8">設計理念與原因</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 客戶視角 -->
+                <div class="bg-mc-surface rounded-radius p-6 shadow-lg">
+                    <h3 class="text-xl font-bold text-mc-accent mb-4 flex items-center">
+                        <span class="mr-2">👤</span> 客戶視角
+                    </h3>
+                    <ul class="space-y-3 text-mc-muted">
+                        <li class="flex items-start">
+                            <span class="text-mc-success mr-2">✓</span>
+                            <span>小額長期保持高槓桿、低維保，體驗流暢</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-mc-success mr-2">✓</span>
+                            <span>規則公開、計算可預期</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-mc-success mr-2">✓</span>
+                            <span>分段設計避免突然的槓桿變化</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 風控視角 -->
+                <div class="bg-mc-surface rounded-radius p-6 shadow-lg">
+                    <h3 class="text-xl font-bold text-mc-warning mb-4 flex items-center">
+                        <span class="mr-2">🛡️</span> 風控視角
+                    </h3>
+                    <ul class="space-y-3 text-mc-muted">
+                        <li class="flex items-start">
+                            <span class="text-mc-success mr-2">✓</span>
+                            <span>第2層「槓桿減半 + 維保放大（~3.5–4×）」抑制倍投</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-mc-success mr-2">✓</span>
+                            <span>逼近限紅禁止加倉</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-mc-success mr-2">✓</span>
+                            <span>大單採階梯式點差覆蓋對沖成本</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-mc-success mr-2">✓</span>
+                            <span>整體符合 Pareto Optimality</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section C: 互動試算器 -->
+        <section id="calculator" class="space-y-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-mc-primary text-center mb-8">互動試算器</h2>
+            
+            <!-- 抵押倉位面板 -->
+            <div class="bg-mc-surface rounded-radius p-6 shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-mc-accent">抵押倉位</h3>
+                    <button id="toggle-collateral-panel" class="text-mc-primary text-sm hover:text-mc-accent transition-colors">
+                        展開面板 ▼
+                    </button>
+                </div>
+                <div id="collateral-panel-content" class="hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-mc-muted mb-2">USD 現金</label>
+                            <input type="number" id="collateral-usd" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-mc-muted mb-2">USDT</label>
+                            <input type="number" id="collateral-usdt" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-mc-muted mb-2">USDC</label>
+                            <input type="number" id="collateral-usdc" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-mc-muted mb-2">BTC</label>
+                            <input type="number" id="collateral-btc" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-mc-muted mb-2">ETH</label>
+                            <input type="number" id="collateral-eth" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-mc-muted mb-2">BNB</label>
+                            <input type="number" id="collateral-bnb" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-mc-muted mb-2">XRP</label>
+                            <input type="number" id="collateral-xrp" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                        </div>
+                    </div>
+                    
+                    <!-- 抵押品價值摘要 -->
+                    <div class="mt-4 p-4 bg-mc-bg rounded-radius border border-mc-primary/20">
+                        <h4 class="text-mc-primary font-semibold mb-2">抵押品價值摘要</h4>
+                        <div id="collateral-summary" class="text-sm text-mc-muted">
+                            請輸入抵押品數量以查看摘要
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 計算器表單 -->
+                <div class="bg-mc-surface rounded-radius p-6 shadow-lg space-y-6">
+                    <h3 class="text-xl font-bold text-mc-accent mb-4">參數設定</h3>
+                    
+                    <!-- 品種選擇 -->
+                    <div>
+                        <label class="block text-mc-muted mb-2">選擇品種</label>
+                        <select id="symbol-select" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                            <!-- 由 JavaScript 動態生成 -->
+                        </select>
+                    </div>
+
+                    <!-- 名義額輸入 -->
+                    <div>
+                        <label class="block text-mc-muted mb-2">多頭名義額 (USD)</label>
+                        <input type="number" id="long-notional" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-mc-muted mb-2">空頭名義額 (USD)</label>
+                        <input type="number" id="short-notional" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-mc-muted mb-2">或直接輸入名義總額 (USD)</label>
+                        <input type="number" id="total-notional" placeholder="0" class="w-full bg-mc-bg border border-mc-muted/30 rounded-radius p-3 text-mc-text focus:border-mc-primary focus:outline-none">
+                    </div>
+
+                    <button id="calculate-btn" class="w-full bg-mc-primary text-mc-bg font-semibold mb-4 py-3 px-6 rounded-radius hover:bg-mc-primary/90 transition-colors">
+                        計算
+                    </button>
+                </div>
+
+                <!-- 計算結果 -->
+                <div class="bg-mc-surface rounded-radius p-6 shadow-lg space-y-6">
+                    <h3 class="text-xl font-bold text-mc-accent mb-4">計算結果</h3>
+                    
+                    <div id="calculation-results" class="space-y-4">
+                        <div class="text-center text-mc-muted">
+                            請選擇品種並輸入名義額後點擊計算
+                        </div>
+                    </div>
+
+                    <!-- 階梯式點差預估 -->
+                    <div class="border-t border-mc-muted/30 pt-4">
+                        <h4 class="text-mc-primary font-semibold mb-2">預估階梯式點差</h4>
+                        <div id="spread-estimate" class="text-mc-muted">
+                            尚未計算
+                        </div>
+                    </div>
+
+                    <!-- 點差階梯對照 -->
+                    <div class="border-t border-mc-muted/30 pt-4">
+                        <h4 class="text-mc-primary font-semibold mb-2">名義成交量區間 → 點差階梯</h4>
+                        <div id="spread-tiers" class="text-sm text-mc-muted">
+                            <div class="space-y-1">
+                                <div>0 - 100K: +0 bps</div>
+                                <div>100K - 250K: +3 bps</div>
+                                <div>250K - 500K: +7 bps</div>
+                                <div>>500K: +12 bps</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 圖表區域 -->
+            <div class="bg-mc-surface rounded-radius p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-mc-accent mb-4 text-center">保證金曲線圖</h3>
+                <div class="flex justify-center">
+                    <canvas id="margin-chart" width="800" height="400" class="max-w-full h-auto"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 預留功能區塊 -->
+        <section id="future-features" class="bg-mc-surface rounded-radius p-6 shadow-lg">
+            <h2 class="text-2xl font-bold text-mc-muted text-center mb-4">預留功能</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center text-mc-muted">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">時間規則</h3>
+                    <p>特定時段臨時降槓桿功能</p>
+                    <p class="text-sm opacity-75">尚未啟用</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">組合限制</h3>
+                    <p>跨品種組合持倉限制</p>
+                    <p class="text-sm opacity-75">尚未啟用</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Tooltip 容器 -->
+    <div id="tooltip-container" class="fixed z-50 bg-mc-surface border border-mc-primary/20 rounded-radius p-3 shadow-lg text-sm text-mc-text max-w-xs pointer-events-none opacity-0 transition-opacity duration-200"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

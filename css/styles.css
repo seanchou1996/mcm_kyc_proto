@@ -1,0 +1,401 @@
+/* 
+ * MC Markets 原型 (第二版) - 主樣式文件
+ * 此文件將包含從內聯樣式提取的所有CSS
+ * 未來會進行更新以改進設計和用戶體驗
+ */
+
+/* 後續將從index.html提取樣式到此文件 */ 
+
+/* 全局重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 變量定義 */
+:root {
+    --primary-color: #f8ba13;
+    --secondary-color: #333;
+    --dark-bg: #000000;
+    --darker-bg: #000000;
+    --light-text: #fff;
+    --muted-text: #888;
+    --border-color: #333;
+    --success-color: #4CAF50;
+    --error-color: #f44336;
+    --card-bg: #222;
+    --light-color: #f8f9fa;
+    --dark-color: #121212;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --gray-color: #bbbbbb;
+    --light-gray: #2a2a2a;
+    --form-bg: #1e1e1e;
+    --hover-color: #252525;
+    --footer-bg: #0a0a0a;
+}
+
+/* 背景色強制 */
+html, body {
+    background-color: #000000 !important;
+    background-image: none !important;
+    color: #ffffff;
+}
+
+/* 主體樣式 */
+body {
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 容器樣式 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    background-color: #000000 !important;
+}
+
+/* 頭部樣式 */
+.header {
+    background-color: #000 !important;
+    color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 40px;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+}
+
+.nav-item {
+    margin-left: 1.5rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #f8ba13;
+}
+
+.nav-link.btn {
+    background-color: #f8ba13;
+    color: #000;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.nav-link.btn:hover {
+    background-color: #eab909;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 進度條樣式 */
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111 !important;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--light-gray);
+    color: var(--light-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.step-circle.active {
+    background-color: #f8ba13;
+    color: #000000;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(248, 186, 19, 0.5);
+}
+
+.step-circle.completed {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.step-text {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--muted-text);
+    text-align: center;
+}
+
+.progress-line {
+    flex-grow: 1;
+    height: 3px;
+    background-color: var(--light-gray);
+    margin: 0 10px;
+    position: relative;
+    top: -20px;
+}
+
+/* 監管選項樣式 */
+.regulatory-options {
+    margin: 2rem 0;
+}
+
+.regulatory-option {
+    padding: 2rem;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    background-color: #222 !important;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.regulatory-option:hover:not(.disabled) {
+    border-color: rgba(248, 186, 19, 0.3);
+    background-color: rgba(248, 186, 19, 0.03) !important;
+}
+
+.regulatory-option.selected {
+    border-color: #f8ba13;
+    background-color: rgba(248, 186, 19, 0.05) !important;
+}
+
+.regulatory-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.regulatory-option h3 {
+    color: #f8ba13;
+    margin-bottom: 1rem;
+}
+
+.regulatory-option p {
+    color: #cccccc;
+    margin-bottom: 1.5rem;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features-list li {
+    margin-bottom: 1rem;
+    color: #cccccc;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.features-list li:before {
+    content: "•";
+    color: #f8ba13;
+    position: absolute;
+    left: 0;
+}
+
+/* 帳戶類型樣式 */
+.account-types {
+    margin: 2rem 0;
+}
+
+.account-option {
+    padding: 2rem;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    background-color: #222 !important;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.account-option:hover {
+    border-color: rgba(248, 186, 19, 0.3);
+    background-color: rgba(248, 186, 19, 0.03) !important;
+}
+
+.account-option.selected {
+    border-color: #f8ba13;
+    background-color: rgba(248, 186, 19, 0.05) !important;
+}
+
+.account-option h3 {
+    color: #f8ba13;
+    margin-bottom: 1rem;
+}
+
+.main-description {
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+}
+
+/* 專業帳戶展開面板 */
+.details-panel {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.expand-button {
+    background: none;
+    border: none;
+    color: #f8ba13;
+    cursor: pointer;
+    padding: 0.8rem 0;
+    margin-top: 1rem;
+    font-size: 1rem;
+    text-align: left;
+    width: 100%;
+}
+
+.expand-button:hover {
+    text-decoration: underline;
+}
+
+.professional-type {
+    margin-bottom: 2rem;
+}
+
+.professional-type:last-child {
+    margin-bottom: 0;
+}
+
+.professional-type h4 {
+    color: #f8ba13;
+    margin-bottom: 1rem;
+}
+
+.professional-type p {
+    color: #cccccc;
+    margin-bottom: 1rem;
+}
+
+.professional-type ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin: 0;
+}
+
+.professional-type ul li {
+    margin-bottom: 0.8rem;
+    color: #cccccc;
+}
+
+/* 按鈕樣式 */
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn:not(:disabled) {
+    background-color: #f8ba13;
+    color: #000;
+}
+
+.btn:disabled {
+    background-color: #555;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 2px solid #f8ba13;
+    color: #f8ba13;
+}
+
+.btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(248, 186, 19, 0.3);
+}
+
+/* 標籤樣式 */
+.badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-left: 0.8rem;
+}
+
+.badge-license {
+    background-color: rgba(248, 186, 19, 0.2);
+    color: #f8ba13;
+}
+
+/* 表單元素樣式 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    font-size: 1rem;
+    appearance: none;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+    border-color: #FFD700;
+} 
